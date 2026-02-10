@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx nuxi@latest init:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm rebuild:*)",
+      "Bash(npm run build-release:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(node:*)",
+      "Bash(npm run install:*)",
+      "Bash(timeout:*)",
+      "Bash(curl:*)",
+      "Bash(tasklist:*)"
+    ]
+  }
+}

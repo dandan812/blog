@@ -1,0 +1,76 @@
+/* assets/css/main.css */
+@import "tailwindcss";
+
+/* 自定义主题配置（Tailwind 4 新语法） */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+}
+
+/* 基础样式 */
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold mt-8 mb-4;
+  }
+
+  h3 {
+    @apply text-xl font-semibold mt-6 mb-3;
+  }
+
+  p {
+    @apply leading-relaxed mb-4;
+  }
+
+  a {
+    @apply text-primary hover:text-primary-dark transition-colors;
+  }
+
+  code {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  ul {
+    @apply list-disc list-inside mb-4;
+  }
+
+  ol {
+    @apply list-decimal list-inside mb-4;
+  }
+
+  blockquote {
+    @apply border-l-4 border-primary pl-4 italic text-gray-600 my-4;
+  }
+}
+
+/* 组件样式 */
+@layer components {
+  .prose {
+    @apply max-w-none;
+  }
+
+  .btn {
+    @apply px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  }
+}

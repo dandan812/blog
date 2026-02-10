@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.output/
+.nuxt/
+dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Misc
+*.local
+.cache/
