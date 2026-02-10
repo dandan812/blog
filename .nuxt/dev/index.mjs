@@ -2487,7 +2487,22 @@ const plugins = [
 _cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"7d265-70CY2vCaDd7xPLsflLIiiwMtZJw\"",
+    "mtime": "2026-02-10T12:31:27.657Z",
+    "size": 512613,
+    "path": "index.mjs.map"
+  },
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"20426-8laK4URtNZda8MUP1luibodZVc0\"",
+    "mtime": "2026-02-10T12:31:27.671Z",
+    "size": 132134,
+    "path": "index.mjs"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -3009,12 +3024,8 @@ async function runTask(name, {
   }
 }
 
-const checksums = {
-  "content": "v3.5.0--eedDbeh5h53VyCa1-MYhLL3npQX_ScuDCiOQMkLckRI"
-};
-const checksumsStructure = {
-  "content": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI"
-};
+const checksums = {};
+const checksumsStructure = {};
 const tables = {
   "content": "_content_content",
   "info": "_content_info"

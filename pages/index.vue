@@ -1,33 +1,296 @@
 <!-- https://nuxt.com/docs/getting-started/installation -->
 <template>
-  <div class="space-y-16">
-    <!-- Hero 区域 -->
-    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 via-white to-primary/10 py-20 md:py-32">
-      <div class="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
+  <div class="space-y-20">
+    <!-- Hero 区域 - 增强版 -->
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-24 md:py-32">
+      <!-- 动态背景效果 -->
+      <div class="absolute inset-0">
+        <!-- 网格背景 -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+
+        <!-- 渐变光晕 -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
+        <div
+          class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"
+          style="animation-delay: 1s;"
+        />
+
+        <!-- 浮动粒子效果 -->
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-float" />
+          <div
+            class="absolute top-1/3 right-1/3 w-3 h-3 bg-white/10 rounded-full animate-float"
+            style="animation-delay: 0.5s;"
+          />
+          <div
+            class="absolute bottom-1/4 left-1/3 w-2 h-2 bg-white/20 rounded-full animate-float"
+            style="animation-delay: 1s;"
+          />
+          <div
+            class="absolute bottom-1/3 right-1/4 w-4 h-4 bg-white/10 rounded-full animate-float"
+            style="animation-delay: 1.5s;"
+          />
+        </div>
+      </div>
+
+      <!-- 主要内容 -->
       <div class="relative container mx-auto px-4 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-          探索技术与创意
+        <!-- 徽章 -->
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/80 mb-8 animate-fade-in-up"
+        >
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          基于 Nuxt 4 + Vue 3.6
+        </div>
+
+        <!-- 主标题 -->
+        <h1
+          class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight animate-fade-in-up stagger-1"
+        >
+          <span class="bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
+            探索技术与创意
+          </span>
         </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+
+        <!-- 副标题 -->
+        <p
+          class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up stagger-2"
+        >
           分享关于前端开发、Vue 生态和工程化实践的见解与经验。
-          使用 Nuxt 4 + Vue 3.6 构建的现代化博客。
+          <br class="hidden md:block">
+          构建现代化、高性能的技术博客。
+        </p>
+
+        <!-- CTA 按钮组 -->
+        <div
+          class="flex flex-wrap items-center justify-center gap-4 animate-fade-in-up stagger-3"
+        >
+          <NuxtLink
+            to="/blog"
+            class="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25"
+          >
+            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 transition-opacity" />
+            <Icon
+              name="lucide:book-open"
+              class="w-5 h-5 group-hover:scale-110 transition-transform"
+            />
+            浏览文章
+            <Icon
+              name="lucide:arrow-right"
+              class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+            />
+          </NuxtLink>
+
+          <a
+            href="https://github.com/dandan812/blog"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105"
+          >
+            <Icon
+              name="lucide:github"
+              class="w-5 h-5 group-hover:scale-110 transition-transform"
+            />
+            查看源码
+            <Icon
+              name="lucide:external-link"
+              class="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity"
+            />
+          </a>
+        </div>
+
+        <!-- 统计数据 -->
+        <div
+          class="flex items-center justify-center gap-12 mt-16 animate-fade-in-up stagger-4"
+        >
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white">
+              10+
+            </div>
+            <div class="text-sm text-gray-400 mt-1">
+              技术文章
+            </div>
+          </div>
+          <div class="w-px h-12 bg-white/20" />
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white">
+              500+
+            </div>
+            <div class="text-sm text-gray-400 mt-1">
+              阅读量
+            </div>
+          </div>
+          <div class="w-px h-12 bg-white/20" />
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white">
+              3
+            </div>
+            <div class="text-sm text-gray-400 mt-1">
+              技术栈
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部装饰 -->
+      <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+    </section>
+
+    <!-- 最新文章 - 增强版 -->
+    <section>
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-2">
+            最新文章
+          </h2>
+          <p class="text-gray-600">
+            探索最新的技术洞见和实践经验
+          </p>
+        </div>
+        <NuxtLink
+          to="/blog"
+          class="group inline-flex items-center gap-2 mt-4 md:mt-0 text-primary hover:text-primary-dark font-medium"
+        >
+          查看全部文章
+          <Icon
+            name="lucide:arrow-right"
+            class="w-4 h-4 group-hover:translate-x-2 transition-transform"
+          />
+        </NuxtLink>
+      </div>
+
+      <!-- 文章网格 - 响应式 -->
+      <div
+        v-if="latestArticles?.length"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <ArticleCard
+          v-for="(article) in latestArticles"
+          :key="article.path"
+          :article="{ ...article, date: article.meta?.date as string || '' }"
+          class="transform transition-all duration-500 hover:-translate-y-2"
+        />
+      </div>
+
+      <!-- 空状态 -->
+      <div
+        v-else
+        class="text-center py-20 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl"
+      >
+        <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Icon
+            name="lucide:file-x"
+            class="w-12 h-12 text-gray-400"
+          />
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+          暂无文章
+        </h3>
+        <p class="text-gray-500 mb-6">
+          敬请期待更多精彩内容
+        </p>
+        <NuxtLink
+          to="/blog"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+        >
+          <Icon
+            name="lucide:plus"
+            class="w-4 h-4"
+          />
+          写点什么
+        </NuxtLink>
+      </div>
+    </section>
+
+    <!-- 特性展示 - 玻璃拟态设计 -->
+    <section class="relative py-20">
+      <!-- 背景装饰 -->
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-3xl" />
+      <div class="absolute top-10 left-10 w-72 h-72 bg-purple-200/30 rounded-full blur-3xl" />
+      <div class="absolute bottom-10 right-10 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl" />
+
+      <div class="relative container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            技术栈特性
+          </h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            探索现代 Web 开发的最佳实践
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            v-for="(feature) in features"
+            :key="feature.title"
+            class="group relative p-8 bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+          >
+            <!-- 悬停效果 -->
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            <!-- 图标容器 -->
+            <div class="relative w-16 h-16 mb-6">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl transform rotate-6 group-hover:rotate-12 transition-transform" />
+              <div class="absolute inset-0 bg-white rounded-2xl flex items-center justify-center">
+                <Icon
+                  :name="feature.icon"
+                  class="w-8 h-8 text-primary"
+                />
+              </div>
+            </div>
+
+            <h3 class="relative text-xl font-bold text-gray-900 mb-3">
+              {{ feature.title }}
+            </h3>
+            <p class="relative text-gray-600 leading-relaxed">
+              {{ feature.description }}
+            </p>
+
+            <!-- 箭头指示器 -->
+            <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Icon
+                  name="lucide:arrow-right"
+                  class="w-5 h-5 text-primary"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA 区域 -->
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 to-blue-600 py-16">
+      <!-- 装饰背景 -->
+      <div class="absolute inset-0">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+      </div>
+
+      <div class="relative container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          准备好开始了吗？
+        </h2>
+        <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+          探索更多技术文章，了解最新的开发趋势和最佳实践
         </p>
         <div class="flex flex-wrap items-center justify-center gap-4">
           <NuxtLink
             to="/blog"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
           >
             <Icon
               name="lucide:book-open"
               class="w-5 h-5"
             />
-            浏览文章
+            开始阅读
           </NuxtLink>
           <a
-            href="https://github.com"
+            href="https://github.com/dandan812/blog"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold border border-white/20 hover:bg-white/20 transition-all duration-300"
           >
             <Icon
               name="lucide:github"
@@ -38,80 +301,11 @@
         </div>
       </div>
     </section>
-
-    <!-- 最新文章 -->
-    <section>
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-bold text-gray-900">
-          最新文章
-        </h2>
-        <NuxtLink
-          to="/blog"
-          class="group inline-flex items-center gap-1 text-primary hover:text-primary-dark font-medium"
-        >
-          查看全部
-          <Icon
-            name="lucide:arrow-right"
-            class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-          />
-        </NuxtLink>
-      </div>
-
-      <div
-        v-if="latestArticles?.length"
-        class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        <ArticleCard
-          v-for="article in latestArticles"
-          :key="article.path"
-          :article="{ ...article, date: article.meta?.date as string || '' }"
-        />
-      </div>
-
-      <div
-        v-else
-        class="text-center py-12"
-      >
-        <Icon
-          name="lucide:file-x"
-          class="w-12 h-12 text-gray-300 mx-auto mb-4"
-        />
-        <p class="text-gray-500">
-          暂无文章
-        </p>
-      </div>
-    </section>
-
-    <!-- 特性展示 -->
-    <section class="py-12 border-t border-gray-200">
-      <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
-        技术栈特性
-      </h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div
-          v-for="feature in features"
-          :key="feature.title"
-          class="group p-6 bg-white rounded-xl border border-gray-200 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
-        >
-          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-            <Icon
-              :name="feature.icon"
-              class="w-6 h-6 text-primary"
-            />
-          </div>
-          <h3 class="font-semibold text-gray-900 mb-2 text-center">
-            {{ feature.title }}
-          </h3>
-          <p class="text-gray-600 text-sm text-center">
-            {{ feature.description }}
-          </p>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import type { Feature } from '~/types'
 
 useHead({
@@ -126,6 +320,14 @@ const { data: latestArticles } = await useAsyncData('latest-posts', () =>
     .limit(6)
     .all(),
 )
+
+const isLoaded = ref(false)
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 100)
+})
 
 const features: Feature[] = [
   {
@@ -145,3 +347,66 @@ const features: Feature[] = [
   },
 ]
 </script>
+
+<style scoped>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+</style>
