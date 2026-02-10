@@ -100,106 +100,10 @@
         </div>
 
         <!-- 统计数据 -->
-        <div
-          class="flex items-center justify-center gap-12 mt-16 animate-fade-in-up stagger-4"
-        >
-          <div class="text-center">
-            <div class="text-3xl font-bold text-white">
-              10+
-            </div>
-            <div class="text-sm text-gray-400 mt-1">
-              技术文章
-            </div>
-          </div>
-          <div class="w-px h-12 bg-white/20" />
-          <div class="text-center">
-            <div class="text-3xl font-bold text-white">
-              500+
-            </div>
-            <div class="text-sm text-gray-400 mt-1">
-              阅读量
-            </div>
-          </div>
-          <div class="w-px h-12 bg-white/20" />
-          <div class="text-center">
-            <div class="text-3xl font-bold text-white">
-              3
-            </div>
-            <div class="text-sm text-gray-400 mt-1">
-              技术栈
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- 底部装饰 -->
       <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-    </section>
-
-    <!-- 最新文章 - 增强版 -->
-    <section>
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-900 mb-2">
-            最新文章
-          </h2>
-          <p class="text-gray-600">
-            探索最新的技术洞见和实践经验
-          </p>
-        </div>
-        <NuxtLink
-          to="/blog"
-          class="group inline-flex items-center gap-2 mt-4 md:mt-0 text-primary hover:text-primary-dark font-medium"
-        >
-          查看全部文章
-          <Icon
-            name="lucide:arrow-right"
-            class="w-4 h-4 group-hover:translate-x-2 transition-transform"
-          />
-        </NuxtLink>
-      </div>
-
-      <!-- 文章网格 - 响应式 -->
-      <div
-        v-if="latestArticles?.length"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        <ArticleCard
-          v-for="(article) in latestArticles"
-          :key="article.path"
-          :article="{ ...article, date: article.meta?.date as string || '' }"
-          class="transform transition-all duration-500 hover:-translate-y-2"
-        />
-      </div>
-
-      <!-- 空状态 -->
-      <div
-        v-else
-        class="text-center py-20 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl"
-      >
-        <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-          <Icon
-            name="lucide:file-x"
-            class="w-12 h-12 text-gray-400"
-          />
-        </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">
-          暂无文章
-        </h3>
-        <p class="text-gray-500 mb-6">
-          敬请期待更多精彩内容
-        </p>
-        <NuxtLink
-          to="/blog"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
-        >
-          <Icon
-            name="lucide:plus"
-            class="w-4 h-4"
-          />
-          写点什么
-        </NuxtLink>
-      </div>
     </section>
 
     <!-- 特性展示 - 玻璃拟态设计 -->
@@ -286,18 +190,6 @@
             />
             开始阅读
           </NuxtLink>
-          <a
-            href="https://github.com/dandan812/blog"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold border border-white/20 hover:bg-white/20 transition-all duration-300"
-          >
-            <Icon
-              name="lucide:github"
-              class="w-5 h-5"
-            />
-            GitHub
-          </a>
         </div>
       </div>
     </section>
@@ -314,12 +206,6 @@ useHead({
     { name: 'description', content: '使用 Nuxt 4 + Vue 3.6 构建的现代化技术博客' },
   ],
 })
-
-const { data: latestArticles } = await useAsyncData('latest-posts', () =>
-  queryCollection('content')
-    .limit(6)
-    .all(),
-)
 
 const isLoaded = ref(false)
 
