@@ -1,7 +1,9 @@
 <!-- pages/about.vue -->
 <template>
   <div class="max-w-3xl mx-auto">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6">关于</h1>
+    <h1 class="text-4xl font-bold text-gray-900 mb-6">
+      关于
+    </h1>
 
     <div class="prose prose-lg">
       <p>
@@ -24,8 +26,18 @@
       <p>如果你有任何问题或建议，欢迎通过以下方式联系我：</p>
 
       <ul>
-        <li>GitHub: <a href="https://github.com" target="_blank">github.com/yourusername</a></li>
-        <li>Twitter: <a href="https://twitter.com" target="_blank">@yourusername</a></li>
+        <li>
+          GitHub: <a
+            href="https://github.com"
+            target="_blank"
+          >github.com/yourusername</a>
+        </li>
+        <li>
+          Twitter: <a
+            href="https://twitter.com"
+            target="_blank"
+          >@yourusername</a>
+        </li>
         <li>Email: <a href="mailto:hello@example.com">hello@example.com</a></li>
       </ul>
     </div>

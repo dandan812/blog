@@ -12,7 +12,10 @@
 
       <div class="relative container mx-auto px-4">
         <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/80 mb-6">
-          <Icon name="lucide:book-open" class="w-4 h-4" />
+          <Icon
+            name="lucide:book-open"
+            class="w-4 h-4"
+          />
           技术文章集散地
         </div>
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -36,7 +39,7 @@
             筛选：
           </span>
           <button
-            v-for="(category, index) in categories"
+            v-for="(category) in categories"
             :key="category as PropertyKey"
             :class="[
               'group relative px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-300',
@@ -89,7 +92,10 @@
         class="relative flex items-center gap-4 mt-6 pt-6 border-t border-gray-100"
       >
         <div class="flex items-center gap-2 text-sm text-gray-600">
-          <Icon name="lucide:filter" class="w-4 h-4" />
+          <Icon
+            name="lucide:filter"
+            class="w-4 h-4"
+          />
           <span>当前筛选：</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
@@ -102,7 +108,10 @@
               class="hover:text-purple-900"
               @click="filterState.category = 'all'"
             >
-              <Icon name="lucide:x" class="w-3 h-3" />
+              <Icon
+                name="lucide:x"
+                class="w-3 h-3"
+              />
             </button>
           </span>
           <span
@@ -114,7 +123,10 @@
               class="hover:text-blue-900"
               @click="filterState.searchQuery = ''"
             >
-              <Icon name="lucide:x" class="w-3 h-3" />
+              <Icon
+                name="lucide:x"
+                class="w-3 h-3"
+              />
             </button>
           </span>
         </div>
@@ -123,7 +135,10 @@
           @click="resetFilters"
         >
           <span class="flex items-center gap-1">
-            <Icon name="lucide:rotate-ccw" class="w-4 h-4" />
+            <Icon
+              name="lucide:rotate-ccw"
+              class="w-4 h-4"
+            />
             重置筛选
           </span>
         </button>
@@ -158,7 +173,10 @@
           ]"
           @click="viewMode = 'grid'"
         >
-          <Icon name="lucide:grid" class="w-5 h-5" />
+          <Icon
+            name="lucide:grid"
+            class="w-5 h-5"
+          />
         </button>
         <button
           :class="[
@@ -167,7 +185,10 @@
           ]"
           @click="viewMode = 'list'"
         >
-          <Icon name="lucide:list" class="w-5 h-5" />
+          <Icon
+            name="lucide:list"
+            class="w-5 h-5"
+          />
         </button>
       </div>
     </div>
@@ -221,7 +242,10 @@
         class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary-dark transition-colors"
         @click="resetFilters"
       >
-        <Icon name="lucide:rotate-ccw" class="w-5 h-5" />
+        <Icon
+          name="lucide:rotate-ccw"
+          class="w-5 h-5"
+        />
         重置筛选
       </button>
     </div>
@@ -245,7 +269,10 @@
           class="group relative px-5 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           @click="goToPage(1)"
         >
-          <Icon name="lucide:chevrons-left" class="w-5 h-5" />
+          <Icon
+            name="lucide:chevrons-left"
+            class="w-5 h-5"
+          />
         </button>
 
         <button
@@ -253,7 +280,10 @@
           class="group relative px-5 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           @click="goToPage(filterState.currentPage - 1)"
         >
-          <Icon name="lucide:chevron-left" class="w-5 h-5" />
+          <Icon
+            name="lucide:chevron-left"
+            class="w-5 h-5"
+          />
         </button>
 
         <!-- 页码列表 -->
@@ -278,7 +308,10 @@
           class="group relative px-5 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           @click="goToPage(filterState.currentPage + 1)"
         >
-          <Icon name="lucide:chevron-right" class="w-5 h-5" />
+          <Icon
+            name="lucide:chevron-right"
+            class="w-5 h-5"
+          />
         </button>
 
         <button
@@ -286,7 +319,10 @@
           class="group relative px-5 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           @click="goToPage(totalPages)"
         >
-          <Icon name="lucide:chevrons-right" class="w-5 h-5" />
+          <Icon
+            name="lucide:chevrons-right"
+            class="w-5 h-5"
+          />
         </button>
       </div>
     </div>
@@ -400,7 +436,8 @@ const displayedPages = computed(() => {
     if (prev) {
       if (i - prev === 2) {
         rangeWithDots.push(prev + 1)
-      } else if (i - prev !== 1) {
+      }
+      else if (i - prev !== 1) {
         rangeWithDots.push(-1)
       }
     }
