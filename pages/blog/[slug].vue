@@ -16,8 +16,14 @@
       <!-- 粒子效果 -->
       <div class="absolute inset-0 overflow-hidden">
         <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-float" />
-        <div class="absolute top-1/3 right-1/3 w-3 h-3 bg-white/10 rounded-full animate-float" style="animation-delay: 0.5s;" />
-        <div class="absolute bottom-1/4 left-1/3 w-2 h-2 bg-white/20 rounded-full animate-float" style="animation-delay: 1s;" />
+        <div
+          class="absolute top-1/3 right-1/3 w-3 h-3 bg-white/10 rounded-full animate-float"
+          style="animation-delay: 0.5s;"
+        />
+        <div
+          class="absolute bottom-1/4 left-1/3 w-2 h-2 bg-white/20 rounded-full animate-float"
+          style="animation-delay: 1s;"
+        />
       </div>
 
       <div class="relative container mx-auto px-4 py-20">
@@ -27,7 +33,10 @@
             to="/blog"
             class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300"
           >
-            <Icon name="lucide:arrow-left" class="w-4 h-4" />
+            <Icon
+              name="lucide:arrow-left"
+              class="w-4 h-4"
+            />
             返回博客
           </NuxtLink>
         </div>
@@ -35,13 +44,22 @@
         <!-- 文章元信息 -->
         <div class="flex flex-wrap items-center gap-4 mb-6 text-white/70">
           <div class="flex items-center gap-2">
-            <Icon name="lucide:calendar" class="w-4 h-4" />
+            <Icon
+              name="lucide:calendar"
+              class="w-4 h-4"
+            />
             <time :datetime="post.meta?.date as string">
               {{ formatDate((post.meta?.date as string) || '') }}
             </time>
           </div>
-          <span v-if="post.meta?.readingTime" class="flex items-center gap-2">
-            <Icon name="lucide:clock" class="w-4 h-4" />
+          <span
+            v-if="post.meta?.readingTime"
+            class="flex items-center gap-2"
+          >
+            <Icon
+              name="lucide:clock"
+              class="w-4 h-4"
+            />
             {{ post.meta?.readingTime }} 分钟阅读
           </span>
         </div>
@@ -73,8 +91,12 @@
             <span class="text-white font-bold text-lg">D</span>
           </div>
           <div>
-            <p class="text-white font-medium">dandan812</p>
-            <p class="text-white/60 text-sm">技术博主 & 开发者</p>
+            <p class="text-white font-medium">
+              dandan812
+            </p>
+            <p class="text-white/60 text-sm">
+              技术博主 & 开发者
+            </p>
           </div>
         </div>
       </div>
@@ -118,25 +140,37 @@
                 class="group relative w-12 h-12 bg-gray-100 hover:bg-blue-500 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
                 @click="shareToTwitter"
               >
-                <Icon name="lucide:twitter" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors" />
+                <Icon
+                  name="lucide:twitter"
+                  class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"
+                />
               </button>
               <button
                 class="group relative w-12 h-12 bg-gray-100 hover:bg-green-500 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
                 @click="shareToWechat"
               >
-                <Icon name="lucide:message-circle" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors" />
+                <Icon
+                  name="lucide:message-circle"
+                  class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"
+                />
               </button>
               <button
                 class="group relative w-12 h-12 bg-gray-100 hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
                 @click="shareToLinkedin"
               >
-                <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors" />
+                <Icon
+                  name="lucide:linkedin"
+                  class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"
+                />
               </button>
               <button
                 class="group relative w-12 h-12 bg-gray-100 hover:bg-gray-900 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
                 @click="copyLink"
               >
-                <Icon name="lucide:link" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors" />
+                <Icon
+                  name="lucide:link"
+                  class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"
+                />
               </button>
             </div>
           </div>
@@ -152,7 +186,10 @@
               <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div class="relative flex items-start gap-4">
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                  <Icon name="lucide:arrow-left" class="w-5 h-5 text-gray-600" />
+                  <Icon
+                    name="lucide:arrow-left"
+                    class="w-5 h-5 text-gray-600"
+                  />
                 </div>
                 <div class="flex-1">
                   <p class="text-sm text-gray-500 mb-1">
@@ -182,7 +219,10 @@
                   </p>
                 </div>
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                  <Icon name="lucide:arrow-right" class="w-5 h-5 text-gray-600" />
+                  <Icon
+                    name="lucide:arrow-right"
+                    class="w-5 h-5 text-gray-600"
+                  />
                 </div>
               </div>
             </NuxtLink>
@@ -247,14 +287,20 @@
           to="/blog"
           class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
         >
-          <Icon name="lucide:arrow-left" class="w-5 h-5" />
+          <Icon
+            name="lucide:arrow-left"
+            class="w-5 h-5"
+          />
           返回博客
         </NuxtLink>
         <NuxtLink
           to="/"
           class="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors"
         >
-          <Icon name="lucide:home" class="w-5 h-5" />
+          <Icon
+            name="lucide:home"
+            class="w-5 h-5"
+          />
           返回首页
         </NuxtLink>
       </div>
@@ -303,7 +349,6 @@ const nextPost = computed(() => {
 
 const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
 const shareTitle = computed(() => post.value?.title || '')
-const shareDescription = computed(() => post.value?.description || '')
 
 const formatDate = (date: string) => {
   if (!date) return ''
