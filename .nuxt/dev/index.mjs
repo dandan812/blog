@@ -991,7 +991,9 @@ const _inlineRuntimeConfig = {
     "baseURL": "/_ipx",
     "alias": {},
     "fs": {
-      "dir": []
+      "dir": [
+        "C:/Users/hulian/Desktop/huliang/bolg/blog/public"
+      ]
     },
     "http": {
       "domains": []
@@ -2487,22 +2489,7 @@ const plugins = [
 _cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI
 ];
 
-const assets = {
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"7d265-70CY2vCaDd7xPLsflLIiiwMtZJw\"",
-    "mtime": "2026-02-10T12:31:27.657Z",
-    "size": 512613,
-    "path": "index.mjs.map"
-  },
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"20426-8laK4URtNZda8MUP1luibodZVc0\"",
-    "mtime": "2026-02-10T12:31:27.671Z",
-    "size": 132134,
-    "path": "index.mjs"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -3024,8 +3011,12 @@ async function runTask(name, {
   }
 }
 
-const checksums = {};
-const checksumsStructure = {};
+const checksums = {
+  "content": "v3.5.0--YL1q1k-Boyw6TyxrJrfdrQ8nSozYwhqYqt0zHsIkmGA"
+};
+const checksumsStructure = {
+  "content": "iqeO2cAQLQJgnaq2MvvDKikyya6cXzeOv30s7rAf6co"
+};
 const tables = {
   "content": "_content_content",
   "info": "_content_info"
@@ -3037,13 +3028,18 @@ const contentManifest = {
       "id": "string",
       "title": "string",
       "body": "json",
+      "category": "json",
+      "cover": "string",
+      "date": "string",
       "description": "string",
       "extension": "string",
       "meta": "json",
       "navigation": "json",
       "path": "string",
+      "readingTime": "number",
       "seo": "json",
-      "stem": "string"
+      "stem": "string",
+      "tags": "json"
     }
   },
   "info": {

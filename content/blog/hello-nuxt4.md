@@ -4,7 +4,7 @@ description: "深入了解 Nuxt 4 的新特性，以及如何使用 Vue 3.6、Nu
 date: "2025-02-10"
 tags: ["Nuxt", "Vue", "Tailwind"]
 category: ["前端开发"]
-cover: "/images/nuxt4-cover.jpg"
+cover: "/images/nuxt4-cover.svg"
 readingTime: 8
 ---
 
