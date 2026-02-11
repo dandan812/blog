@@ -891,14 +891,6 @@ const _inlineRuntimeConfig = {
       "/__nuxt_content/content/sql_dump.txt": {
         "prerender": true
       },
-      "/_fonts/**": {
-        "headers": {
-          "cache-control": "public, max-age=31536000, immutable"
-        },
-        "cache": {
-          "maxAge": 31536000
-        }
-      },
       "/sitemap.xml": {
         "prerender": true
       },
@@ -2496,7 +2488,7 @@ function readAsset (id) {
   return promises.readFile(resolve$1(serverDir, assets[id].path))
 }
 
-const publicAssetBases = {"/_nuxt/builds/meta/":{"maxAge":31536000},"/_nuxt/builds/":{"maxAge":1},"/_fonts/":{"maxAge":31536000}};
+const publicAssetBases = {"/_nuxt/builds/meta/":{"maxAge":31536000},"/_nuxt/builds/":{"maxAge":1}};
 
 function isPublicAssetURL(id = '') {
   if (assets[id]) {
@@ -3472,7 +3464,6 @@ const handlers = [
   { route: '/__nuxt_content/content/query', handler: _ptcOKe, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_content/info/query', handler: _ptcOKe, lazy: false, middleware: false, method: undefined },
   { route: '/_ipx/**', handler: __QWyG1, lazy: false, middleware: false, method: undefined },
-  { route: '/_fonts/**', handler: _lazy_Kti69k, lazy: true, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_Kti69k, lazy: true, middleware: false, method: undefined }
 ];
 

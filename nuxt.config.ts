@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@nuxt/image',
-    '@nuxt/fonts',
+    // '@nuxt/fonts', // 已禁用 - 避免网络超时
     '@nuxt/eslint',
     '@nuxt/icon',
   ],
@@ -67,10 +67,6 @@ export default defineNuxtConfig({
     plugins: {
       '@tailwindcss/postcss': {},
     },
-  },
-
-  fonts: {
-    families: [],
   },
 
   image: {
