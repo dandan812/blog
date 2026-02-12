@@ -210,7 +210,10 @@
         </div>
 
         <!-- 文章列表 -->
-        <div v-if="latestArticles.length > 0" class="space-y-px bg-white/5">
+        <div
+          v-if="latestArticles.length > 0"
+          class="space-y-px bg-white/5"
+        >
           <NuxtLink
             v-for="(article, index) in latestArticles"
             :key="article.path"
@@ -251,16 +254,27 @@
         </div>
 
         <!-- Loading 状态 -->
-        <div v-else-if="articlesPending" class="py-16 text-center">
+        <div
+          v-else-if="articlesPending"
+          class="py-16 text-center"
+        >
           <div class="inline-flex items-center gap-3 text-white/40">
-            <Icon name="lucide:loader-2" class="w-5 h-5 animate-spin" />
+            <Icon
+              name="lucide:loader-2"
+              class="w-5 h-5 animate-spin"
+            />
             <span>加载中...</span>
           </div>
         </div>
 
         <!-- 空状态 -->
-        <div v-else class="py-16 text-center">
-          <p class="text-white/40">暂无文章</p>
+        <div
+          v-else
+          class="py-16 text-center"
+        >
+          <p class="text-white/40">
+            暂无文章
+          </p>
         </div>
 
         <!-- 移动端查看全部 -->
