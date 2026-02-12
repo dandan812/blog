@@ -1,56 +1,48 @@
-<!-- components/ArticleCard.vue -->
 <template>
   <NuxtLink
     :to="articlePath"
-    class="card group hover:shadow-md transition-all duration-300 flex flex-col h-full"
+    class="group relative p-8 bg-[#fafafa] hover:bg-white transition-all duration-500 block"
   >
-    <!-- 封面图 -->
+    <!-- 标签 -->
     <div
-      v-if="article.cover"
-      class="relative aspect-video mb-4 overflow-hidden rounded-lg"
+      v-if="displayTags.length"
+      class="flex flex-wrap gap-2 mb-4"
     >
-      <NuxtImg
-        :src="article.cover"
-        :alt="article.title"
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        loading="lazy"
-        placeholder
-      />
-      <div class="absolute top-2 left-2">
-        <span
-          v-for="tag in displayTags"
-          :key="tag"
-          class="inline-block px-2 py-1 bg-white/90 backdrop-blur text-xs font-medium rounded-md mr-1"
-        >
-          {{ tag }}
-        </span>
-      </div>
+      <span
+        v-for="tag in displayTags"
+        :key="tag"
+        class="px-2 py-1 text-xs text-black/40 border border-black/10"
+      >
+        {{ tag }}
+      </span>
     </div>
 
-    <!-- 内容 -->
-    <div class="flex-1 flex flex-col">
-      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
-        <time :datetime="article.date">
-          {{ formattedDate }}
-        </time>
-        <span v-if="article.readingTime">· {{ article.readingTime }} 分钟阅读</span>
-      </div>
+    <!-- 日期和阅读时间 -->
+    <div class="flex items-center gap-2 text-xs text-black/30 mb-3">
+      <time :datetime="article.date">
+        {{ formattedDate }}
+      </time>
+      <span>·</span>
+      <span v-if="article.readingTime">{{ article.readingTime }} 分钟</span>
+    </div>
 
-      <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
-        {{ article.title }}
-      </h3>
+    <!-- 标题 -->
+    <h3 class="text-xl font-bold text-black group-hover:text-amber-600 transition-colors mb-3 line-clamp-2">
+      {{ article.title }}
+    </h3>
 
-      <p class="text-gray-600 text-sm line-clamp-2 mb-4 flex-1">
-        {{ article.description }}
-      </p>
+    <!-- 描述 -->
+    <p class="text-black/50 text-sm leading-relaxed line-clamp-2 mb-6">
+      {{ article.description }}
+    </p>
 
-      <div class="flex items-center text-primary text-sm font-medium mt-auto">
-        阅读更多
-        <Icon
-          name="lucide:arrow-right"
-          class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-        />
-      </div>
+    <!-- 阅读更多 -->
+    <div class="flex items-center gap-2 text-xs text-black/30 group-hover:text-amber-500 transition-colors">
+      <span>阅读更多</span>
+      <Icon
+        name="lucide:arrow-right"
+        class="w-3 h-3 group-hover:translate-x-1 transition-transform"
+      />
     </div>
   </NuxtLink>
 </template>

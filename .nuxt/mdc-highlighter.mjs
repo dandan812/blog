@@ -186,16 +186,14 @@ const bundledLangs = {
 "js": () => import('@shikijs/langs/javascript').then(r => r.default || r),
 "cjs": () => import('@shikijs/langs/javascript').then(r => r.default || r),
 "mjs": () => import('@shikijs/langs/javascript').then(r => r.default || r),
-"jsx": () => import('@shikijs/langs/jsx').then(r => r.default || r),
-"json": () => import('@shikijs/langs/json').then(r => r.default || r),
 "typescript": () => import('@shikijs/langs/typescript').then(r => r.default || r),
 "ts": () => import('@shikijs/langs/typescript').then(r => r.default || r),
 "cts": () => import('@shikijs/langs/typescript').then(r => r.default || r),
 "mts": () => import('@shikijs/langs/typescript').then(r => r.default || r),
-"tsx": () => import('@shikijs/langs/tsx').then(r => r.default || r),
 "vue": () => import('@shikijs/langs/vue').then(r => r.default || r),
-"css": () => import('@shikijs/langs/css').then(r => r.default || r),
 "html": () => import('@shikijs/langs/html').then(r => r.default || r),
+"css": () => import('@shikijs/langs/css').then(r => r.default || r),
+"json": () => import('@shikijs/langs/json').then(r => r.default || r),
 "shellscript": () => import('@shikijs/langs/shellscript').then(r => r.default || r),
 "bash": () => import('@shikijs/langs/shellscript').then(r => r.default || r),
 "sh": () => import('@shikijs/langs/shellscript').then(r => r.default || r),
@@ -203,15 +201,13 @@ const bundledLangs = {
 "zsh": () => import('@shikijs/langs/shellscript').then(r => r.default || r),
 "markdown": () => import('@shikijs/langs/markdown').then(r => r.default || r),
 "md": () => import('@shikijs/langs/markdown').then(r => r.default || r),
-"mdc": () => import('@shikijs/langs/mdc').then(r => r.default || r),
 "yaml": () => import('@shikijs/langs/yaml').then(r => r.default || r),
 "yml": () => import('@shikijs/langs/yaml').then(r => r.default || r),
 }
 const bundledThemes = {
-"github-light": () => import('@shikijs/themes/github-light').then(r => r.default || r),
 "github-dark": () => import('@shikijs/themes/github-dark').then(r => r.default || r),
 }
-const options = {"theme":{"default":"github-light","dark":"github-dark"}}
+const options = {"theme":"github-dark"}
 const engine = createOnigurumaEngine(() => import('shiki/wasm'))
 const highlighter = createShikiHighlighter({ bundledLangs, bundledThemes, options, getMdcConfigs, engine })
 export default highlighter

@@ -9,4 +9,4 @@ export const rehypePlugins = {
   'highlight': { instance: _Highlight, options: {} },
 }
 
-export const highlight = {"theme":{"default":"github-light","dark":"github-dark"}}
+export const highlight = {"theme":"github-dark"}

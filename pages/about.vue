@@ -1,40 +1,127 @@
-<!-- pages/about.vue -->
 <template>
-  <div class="max-w-3xl mx-auto">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
-      关于
-    </h1>
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <section class="relative py-24 md:py-32 bg-[#0a0a0a]">
+      <!-- 网格线 -->
+      <div class="absolute inset-0">
+        <div
+          class="absolute inset-0"
+          style="background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 80px 80px;"
+        />
+      </div>
 
-    <div class="prose prose-lg">
-      <p>
-        欢迎来到我的博客！这是一个使用 Nuxt 4 + Vue 3.6 + Nuxt Content 3 + Tailwind 4 构建的现代化技术博客。
-      </p>
+      <div class="relative container mx-auto px-6 md:px-12">
+        <!-- 状态标签 -->
+        <div class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase">
+          <span class="w-8 h-px bg-amber-500" />
+          <span>关于</span>
+        </div>
 
-      <h2>关于技术栈</h2>
+        <h1 class="text-5xl md:text-7xl font-bold text-white leading-[0.9] tracking-tight mb-6">
+          关于我
+        </h1>
+        <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed font-light">
+          探索前端开发的边界，记录技术成长的轨迹
+        </p>
+      </div>
+    </section>
 
-      <p>本博客采用最新的前端技术栈：</p>
+    <!-- 内容区域 -->
+    <section class="py-20 bg-[#fafafa]">
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="max-w-3xl">
+          <!-- 介绍 -->
+          <div class="mb-16">
+            <div class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase">
+              <span class="w-8 h-px bg-amber-500" />
+              <span>简介</span>
+            </div>
+            <p class="text-xl text-black/70 leading-relaxed">
+              欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> + <span class="text-black font-medium">Vue 3.6</span> + <span class="text-black font-medium">Nuxt Content 3</span> + <span class="text-black font-medium">Tailwind 4</span> 构建的现代化技术博客。
+            </p>
+          </div>
 
-      <ul>
-        <li><strong>Nuxt 4</strong> - 基于 Vue 3 的全栈框架，支持 SSR/SSG/ISR</li>
-        <li><strong>Vue 3.6</strong> - 渐进式 JavaScript 框架</li>
-        <li><strong>Nuxt Content 3</strong> - 基于 Git 的内容管理系统</li>
-        <li><strong>Tailwind CSS 4</strong> - 原子化 CSS 框架</li>
-      </ul>
+          <!-- 技术栈 -->
+          <div class="mb-16">
+            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+              <span class="w-8 h-px bg-amber-500" />
+              <span>技术栈</span>
+            </div>
 
-      <h2>联系方式</h2>
+            <div class="space-y-px bg-black/5">
+              <div
+                v-for="(tech, index) in techStack"
+                :key="tech.name"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+              >
+                <div class="text-3xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors w-12">
+                  0{{ index + 1 }}
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-bold text-black mb-1">
+                    {{ tech.name }}
+                  </h3>
+                  <p class="text-black/50 text-sm">
+                    {{ tech.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <p>如果你有任何问题或建议，欢迎通过以下方式联系我：</p>
+          <!-- 联系方式 -->
+          <div>
+            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+              <span class="w-8 h-px bg-amber-500" />
+              <span>联系</span>
+            </div>
 
-      <ul>
-        <li>
-          GitHub: <a
-            href="https://github.com/dandan812"
-            target="_blank"
-          >github.com/dandan812</a>
-        </li>
-        <li>Email: <a href="mailto:hu_liang2027@163.com">hu_liang2027@163.com</a></li>
-      </ul>
-    </div>
+            <div class="space-y-px bg-black/5">
+              <a
+                href="https://github.com/dandan812"
+                target="_blank"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+              >
+                <div class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
+                  <Icon
+                    name="lucide:github"
+                    class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="text-sm text-black/40 mb-1">GitHub</div>
+                  <div class="text-black font-medium">github.com/dandan812</div>
+                </div>
+                <Icon
+                  name="lucide:external-link"
+                  class="w-4 h-4 text-black/20 group-hover:text-amber-500 transition-colors"
+                />
+              </a>
+
+              <a
+                href="mailto:hu_liang2027@163.com"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+              >
+                <div class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
+                  <Icon
+                    name="lucide:mail"
+                    class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="text-sm text-black/40 mb-1">Email</div>
+                  <div class="text-black font-medium">hu_liang2027@163.com</div>
+                </div>
+                <Icon
+                  name="lucide:arrow-right"
+                  class="w-4 h-4 text-black/20 group-hover:text-amber-500 group-hover:translate-x-1 transition-all"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -45,4 +132,23 @@ useHead({
     { name: 'description', content: '关于本博客和技术栈的介绍' },
   ],
 })
+
+const techStack = [
+  {
+    name: 'Nuxt 4',
+    description: '基于 Vue 3 的全栈框架，支持 SSR/SSG/ISR',
+  },
+  {
+    name: 'Vue 3.6',
+    description: '渐进式 JavaScript 框架',
+  },
+  {
+    name: 'Nuxt Content 3',
+    description: '基于 Git 的内容管理系统',
+  },
+  {
+    name: 'Tailwind CSS 4',
+    description: '原子化 CSS 框架',
+  },
+]
 </script>

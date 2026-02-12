@@ -1,44 +1,74 @@
-<!-- layouts/default.vue -->
 <template>
-  <div class="min-h-screen flex flex-col font-sans">
+  <div class="min-h-screen flex flex-col font-sans bg-[#fafafa]">
     <!-- 导航栏 -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
-      <nav class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="text-xl font-bold text-gray-900">
-          My Blog
+    <header class="sticky top-0 z-50 bg-[#fafafa]/95 backdrop-blur-sm border-b border-black/5">
+      <nav class="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+        <NuxtLink
+          to="/"
+          class="text-lg font-bold text-black tracking-tight"
+        >
+          Blog<span class="text-amber-500">.</span>
         </NuxtLink>
 
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-8">
           <NuxtLink
             v-for="item in navItems"
             :key="item.path"
             :to="item.path"
-            class="text-gray-600 hover:text-gray-900 transition-colors"
-            active-class="text-primary font-medium"
+            class="text-sm text-black/40 hover:text-black transition-colors tracking-widest uppercase"
+            active-class="text-black"
           >
             {{ item.name }}
           </NuxtLink>
 
           <!-- 搜索按钮 -->
           <button
+            class="p-2 text-black/30 hover:text-black transition-colors"
             @click="isSearchOpen = true"
-            class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <Icon name="lucide:search" class="w-5 h-5" />
+            <Icon
+              name="lucide:search"
+              class="w-4 h-4"
+            />
           </button>
         </div>
       </nav>
     </header>
 
     <!-- 主内容 -->
-    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+    <main class="flex-1">
       <slot />
     </main>
 
     <!-- 页脚 -->
-    <footer class="border-t border-gray-200 py-8 mt-auto">
-      <div class="max-w-4xl mx-auto px-4 text-center text-gray-600">
-        <p>© {{ new Date().getFullYear() }} My Blog. Built with Nuxt 4.</p>
+    <footer class="border-t border-black/5 py-12 mt-auto">
+      <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="text-sm text-black/30">
+            © {{ new Date().getFullYear() }} Blog<span class="text-amber-500">.</span> All rights reserved.
+          </div>
+          <div class="flex items-center gap-6">
+            <a
+              href="https://github.com/dandan812"
+              target="_blank"
+              class="text-black/30 hover:text-black transition-colors"
+            >
+              <Icon
+                name="lucide:github"
+                class="w-4 h-4"
+              />
+            </a>
+            <a
+              href="mailto:hu_liang2027@163.com"
+              class="text-black/30 hover:text-black transition-colors"
+            >
+              <Icon
+                name="lucide:mail"
+                class="w-4 h-4"
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
 
@@ -56,7 +86,6 @@ const navItems = [
   { name: '关于', path: '/about' },
 ]
 
-// 键盘快捷键 Ctrl+K 打开搜索
 onMounted(() => {
   const handleKeydown = (e: KeyboardEvent) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {

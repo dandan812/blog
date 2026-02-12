@@ -4,11 +4,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@nuxt/image',
-    // '@nuxt/fonts', // 已禁用 - 避免网络超时
     '@nuxt/eslint',
     '@nuxt/icon',
   ],
-  devtools: { enabled: true },
+
+  devtools: { enabled: false },
 
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -27,12 +27,21 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   content: {
+    watch: { enabled: false },
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+          langs: ['javascript', 'typescript', 'vue', 'html', 'css', 'json', 'bash', 'markdown', 'yaml'],
+        },
+      },
+    },
   },
 
   routeRules: {
-    '/': { prerender: true },
-    '/blog/**': { isr: 60 },
-    '/about': { prerender: true },
+    '/': { prerender: false },
+    '/blog/**': { isr: false },
+    '/about': { prerender: false },
   },
 
   future: {
@@ -40,7 +49,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true,
+    payloadExtraction: false,
     renderJsonPayloads: true,
   },
 
@@ -48,10 +57,6 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: true,
-    prerender: {
-      crawlLinks: true,
-      routes: ['/sitemap.xml'],
-    },
   },
 
   vite: {
@@ -60,6 +65,10 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: ['vue', 'vue-router', '@nuxt/content'],
+      noDiscovery: true,
+    },
+    esbuild: {
+      legalComments: 'none',
     },
   },
 

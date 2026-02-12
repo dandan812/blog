@@ -876,22 +876,19 @@ const _inlineRuntimeConfig = {
         "cache": false
       },
       "/": {
-        "prerender": true
+        "prerender": false
       },
       "/blog/**": {
-        "isr": 60
+        "isr": false
       },
       "/about": {
-        "prerender": true
+        "prerender": false
       },
       "/__nuxt_content/**": {
         "robots": false,
         "cache": false
       },
       "/__nuxt_content/content/sql_dump.txt": {
-        "prerender": true
-      },
-      "/sitemap.xml": {
         "prerender": true
       },
       "/_nuxt/builds/meta/**": {
@@ -903,18 +900,6 @@ const _inlineRuntimeConfig = {
         "headers": {
           "cache-control": "public, max-age=1, immutable"
         }
-      },
-      "//_payload.json": {
-        "prerender": true
-      },
-      "/about/_payload.json": {
-        "prerender": true
-      },
-      "/__nuxt_content/content/sql_dump.txt/_payload.json": {
-        "prerender": true
-      },
-      "/sitemap.xml/_payload.json": {
-        "prerender": true
       }
     }
   },
@@ -937,26 +922,29 @@ const _inlineRuntimeConfig = {
       },
       "highlight": {
         "noApiRoute": true,
-        "highlighter": "shiki",
-        "theme": {
-          "default": "github-light",
-          "dark": "github-dark"
-        },
-        "shikiEngine": "oniguruma",
+        "theme": "github-dark",
         "langs": [
-          "js",
-          "jsx",
-          "json",
-          "ts",
-          "tsx",
+          "javascript",
+          "typescript",
           "vue",
-          "css",
           "html",
+          "css",
+          "json",
           "bash",
-          "md",
-          "mdc",
+          "markdown",
+          "yaml",
+          "javascript",
+          "typescript",
+          "vue",
+          "html",
+          "css",
+          "json",
+          "bash",
+          "markdown",
           "yaml"
-        ]
+        ],
+        "highlighter": "shiki",
+        "shikiEngine": "oniguruma"
       }
     },
     "content": {
@@ -2357,23 +2345,6 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _nxZFsajSDEQGYlFqU8SnGXmE2at1dyI1FIgAHShKPU = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 const rootDir = "C:/Users/hulian/Desktop/huliang/bolg/blog";
 
 const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"zh-CN"},"charset":"utf-8","viewport":"width=device-width, initial-scale=1"};
@@ -2477,8 +2448,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _nxZFsajSDEQGYlFqU8SnGXmE2at1dyI1FIgAHShKPU,
-_cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI
+  _cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI
 ];
 
 const assets = {};
@@ -2591,6 +2561,8 @@ function vueInstall(head) {
 function resolveUnrefHeadInput(input) {
   return walkResolver(input, VueResolver);
 }
+
+const NUXT_RUNTIME_PAYLOAD_EXTRACTION = false;
 
 // @__NO_SIDE_EFFECTS__
 function createHead(options = {}) {
@@ -3004,10 +2976,10 @@ async function runTask(name, {
 }
 
 const checksums = {
-  "content": "v3.5.0--eedDbeh5h53VyCa1-MYhLL3npQX_ScuDCiOQMkLckRI"
+  "content": "v3.5.0--K1HfTHF5QfjcxjINhee54IF5UYyZu_1s01tWCm38thE"
 };
 const checksumsStructure = {
-  "content": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI"
+  "content": "iqeO2cAQLQJgnaq2MvvDKikyya6cXzeOv30s7rAf6co"
 };
 const tables = {
   "content": "_content_content",
@@ -3020,13 +2992,18 @@ const contentManifest = {
       "id": "string",
       "title": "string",
       "body": "json",
+      "category": "json",
+      "cover": "string",
+      "date": "string",
       "description": "string",
       "extension": "string",
       "meta": "json",
       "navigation": "json",
       "path": "string",
+      "readingTime": "number",
       "seo": "json",
-      "stem": "string"
+      "stem": "string",
+      "tags": "json"
     }
   },
   "info": {
@@ -3809,7 +3786,7 @@ const renderer = defineRenderHandler(async (event) => {
 	// Get route options (for `ssr: false`, `isr`, `cache` and `noScripts`)
 	const routeOptions = getRouteRules(event);
 	// Whether we are prerendering route or using ISR/SWR caching
-	const _PAYLOAD_EXTRACTION = !ssrContext.noSSR && ((routeOptions.isr || routeOptions.cache));
+	const _PAYLOAD_EXTRACTION = !ssrContext.noSSR && (NUXT_RUNTIME_PAYLOAD_EXTRACTION);
 	const isRenderingPayload = (_PAYLOAD_EXTRACTION || routeOptions.prerender) && PAYLOAD_URL_RE.test(ssrContext.url);
 	if (isRenderingPayload) {
 		const url = ssrContext.url.substring(0, ssrContext.url.lastIndexOf("/")) || "/";

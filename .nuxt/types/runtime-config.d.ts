@@ -67,17 +67,13 @@ import { RuntimeConfig as UserRuntimeConfig, PublicRuntimeConfig as UserPublicRu
       highlight: {
          noApiRoute: boolean,
 
-         highlighter: string,
-
-         theme: {
-            default: string,
-
-            dark: string,
-         },
-
-         shikiEngine: string,
+         theme: string,
 
          langs: Array<string>,
+
+         highlighter: string,
+
+         shikiEngine: string,
       },
    },
 
