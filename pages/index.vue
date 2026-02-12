@@ -333,7 +333,7 @@ useHead({
   ],
 })
 
-const { data: articles, pending: articlesPending } = await useAsyncData('home-articles', () =>
+const { data: articles, pending: articlesPending } = await useAsyncData('blog-posts', () =>
   queryCollection('content')
     .all(),
 )
