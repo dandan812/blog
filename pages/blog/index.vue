@@ -31,9 +31,9 @@
       <div class="container mx-auto px-6 md:px-12">
         <div class="flex items-center justify-between py-4">
           <!-- 文章数量 -->
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-1">
             <span class="text-2xl font-bold text-black">{{ totalFilteredCount }}</span>
-            <span class="text-black/40 text-sm tracking-widest uppercase">篇文章</span>
+            <span class="text-black/40 text-2xl tracking-widest uppercase">篇文章</span>
           </div>
 
           <!-- 视图切换 -->
