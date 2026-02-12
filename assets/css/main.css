@@ -73,4 +73,24 @@
   .card {
     @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
   }
+
+  /* 列表视图动画 */
+  .article-list-move {
+    transition: all 0.5s ease;
+  }
+
+  .article-list-enter-active,
+  .article-list-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  .article-list-enter-from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  .article-list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
 }

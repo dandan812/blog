@@ -11,13 +11,6 @@
       </div>
 
       <div class="relative container mx-auto px-4">
-        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/80 mb-6">
-          <Icon
-            name="lucide:book-open"
-            class="w-4 h-4"
-          />
-          技术文章集散地
-        </div>
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
           博客文章
         </h1>
@@ -27,126 +20,8 @@
       </div>
     </div>
 
-    <!-- 筛选和搜索区域 - 玻璃拟态设计 -->
-    <div class="relative bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-6">
-      <!-- 背景装饰 -->
-      <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-2xl pointer-events-none" />
-
-      <div class="relative flex flex-col lg:flex-row gap-6 items-center justify-between">
-        <!-- 分类筛选 - 增强版 -->
-        <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          <span class="text-sm font-medium text-gray-500 mr-2">
-            筛选：
-          </span>
-          <button
-            v-for="(category) in categories"
-            :key="category as PropertyKey"
-            :class="[
-              'group relative px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-300',
-              filterState.category === category
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/25'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            ]"
-            @click="filterState.category = category as string"
-          >
-            <span class="flex items-center gap-2">
-              <Icon
-                :name="category === 'all' ? 'lucide:layout-grid' : `lucide:folder`"
-                class="w-4 h-4"
-              />
-              {{ category === 'all' ? '全部' : category }}
-            </span>
-          </button>
-        </div>
-
-        <!-- 搜索框 - 增强版 -->
-        <div class="relative w-full lg:w-80">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Icon
-              name="lucide:search"
-              class="w-5 h-5 text-gray-400"
-            />
-          </div>
-          <input
-            v-model="filterState.searchQuery"
-            type="text"
-            placeholder="搜索文章..."
-            class="w-full pl-12 pr-4 py-3 bg-gray-100 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:bg-white transition-all duration-300"
-          >
-          <button
-            v-if="filterState.searchQuery"
-            class="absolute inset-y-0 right-0 pr-4 flex items-center"
-            @click="filterState.searchQuery = ''"
-          >
-            <Icon
-              name="lucide:x"
-              class="w-4 h-4 text-gray-400 hover:text-gray-600 transition-colors"
-            />
-          </button>
-        </div>
-      </div>
-
-      <!-- 筛选状态提示 -->
-      <div
-        v-if="filterState.category !== 'all' || filterState.searchQuery"
-        class="relative flex items-center gap-4 mt-6 pt-6 border-t border-gray-100"
-      >
-        <div class="flex items-center gap-2 text-sm text-gray-600">
-          <Icon
-            name="lucide:filter"
-            class="w-4 h-4"
-          />
-          <span>当前筛选：</span>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <span
-            v-if="filterState.category !== 'all'"
-            class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
-          >
-            {{ filterState.category }}
-            <button
-              class="hover:text-purple-900"
-              @click="filterState.category = 'all'"
-            >
-              <Icon
-                name="lucide:x"
-                class="w-3 h-3"
-              />
-            </button>
-          </span>
-          <span
-            v-if="filterState.searchQuery"
-            class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
-          >
-            "{{ filterState.searchQuery }}"
-            <button
-              class="hover:text-blue-900"
-              @click="filterState.searchQuery = ''"
-            >
-              <Icon
-                name="lucide:x"
-                class="w-3 h-3"
-              />
-            </button>
-          </span>
-        </div>
-        <button
-          class="ml-auto text-sm text-gray-500 hover:text-gray-700 transition-colors"
-          @click="resetFilters"
-        >
-          <span class="flex items-center gap-1">
-            <Icon
-              name="lucide:rotate-ccw"
-              class="w-4 h-4"
-            />
-            重置筛选
-          </span>
-        </button>
-      </div>
-    </div>
-
     <!-- 筛选结果统计 -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
           <Icon
@@ -155,21 +30,18 @@
           />
         </div>
         <div>
-          <p class="text-sm text-gray-500">
-            共找到
-          </p>
           <p class="text-xl font-bold text-gray-900">
             {{ totalFilteredCount }} 篇文章
           </p>
         </div>
       </div>
 
-      <!-- 视图切换（可选） -->
-      <div class="hidden md:flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+      <!-- 视图切换 -->
+      <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
         <button
           :class="[
-            'p-2 rounded-lg transition-colors',
-            viewMode === 'grid' ? 'bg-white shadow text-primary' : 'text-gray-500 hover:text-gray-700'
+            'p-2 rounded-lg transition-all duration-300',
+            viewMode === 'grid' ? 'bg-white shadow-lg text-purple-600' : 'text-gray-500 hover:text-gray-700'
           ]"
           @click="viewMode = 'grid'"
         >
@@ -180,8 +52,8 @@
         </button>
         <button
           :class="[
-            'p-2 rounded-lg transition-colors',
-            viewMode === 'list' ? 'bg-white shadow text-primary' : 'text-gray-500 hover:text-gray-700'
+            'p-2 rounded-lg transition-all duration-300',
+            viewMode === 'list' ? 'bg-white shadow-lg text-purple-600' : 'text-gray-500 hover:text-gray-700'
           ]"
           @click="viewMode = 'list'"
         >
@@ -193,20 +65,21 @@
       </div>
     </div>
 
-    <!-- 文章网格 - 增强版 -->
+    <!-- 文章列表 - 根据视图模式切换 -->
     <div
       v-if="filteredArticles?.length"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      :class="viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' : 'flex flex-col gap-4'"
     >
       <TransitionGroup
-        name="article-grid"
+        :name="viewMode === 'grid' ? 'article-grid' : 'article-list'"
         tag="div"
-        class="contents"
+        :class="viewMode === 'grid' ? 'contents' : ''"
       >
         <ArticleCard
           v-for="(article, index) in filteredArticles"
           :key="article.path"
           :article="{ ...article, path: article.path as string, date: (article.meta?.date as string) || '', tags: (article.meta?.tags as string[]) || [], readingTime: (article.meta?.readingTime as number) || 0 }"
+          :class="viewMode === 'list' ? 'w-full' : ''"
           class="transform transition-all duration-500"
           :style="{ animationDelay: `${index * 0.1}s` }"
         />
@@ -354,16 +227,6 @@ const filterState = reactive<FilterState>({
 })
 
 const itemsPerPage = 9
-
-const categories = computed(() => {
-  const cats = new Set(
-    articles.value?.flatMap((a) => {
-      const cat = a.meta?.category
-      return Array.isArray(cat) ? cat : []
-    }) || [],
-  )
-  return ['all', ...Array.from(cats).sort()]
-})
 
 const totalFilteredCount = computed(() => {
   if (!articles.value) return 0

@@ -28,17 +28,11 @@
       <ul>
         <li>
           GitHub: <a
-            href="https://github.com"
+            href="https://github.com/dandan812"
             target="_blank"
-          >github.com/yourusername</a>
+          >github.com/dandan812</a>
         </li>
-        <li>
-          Twitter: <a
-            href="https://twitter.com"
-            target="_blank"
-          >@yourusername</a>
-        </li>
-        <li>Email: <a href="mailto:hello@example.com">hello@example.com</a></li>
+        <li>Email: <a href="mailto:hu_liang2027@163.com">hu_liang2027@163.com</a></li>
       </ul>
     </div>
   </div>
