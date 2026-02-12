@@ -95,7 +95,7 @@
     </section>
 
     <!-- 统计区域 -->
-    <section class="relative py-20 bg-[#0a0a0a] border-t border-white/5">
+    <!-- <section class="relative py-20 bg-[#0a0a0a] border-t border-white/5">
       <div class="container mx-auto px-6 md:px-12">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x divide-white/10">
           <div class="text-center md:px-8">
@@ -132,7 +132,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- 特性展示 - 极简设计 -->
     <section class="relative py-32 bg-[#fafafa]">
