@@ -210,7 +210,7 @@
         </div>
 
         <!-- 文章列表 -->
-        <div class="space-y-px bg-white/5">
+        <div v-if="!articlesPending" class="space-y-px bg-white/5">
           <NuxtLink
             v-for="(article, index) in latestArticles"
             :key="article.path"
@@ -306,7 +306,7 @@ useHead({
   ],
 })
 
-const { data: articles } = await useAsyncData('home-articles', () =>
+const { data: articles, pending: articlesPending } = await useAsyncData('home-articles', () =>
   queryCollection('content')
     .all(),
 )
@@ -320,7 +320,7 @@ const latestArticles = computed(() => {
       const dateB = new Date((b.meta?.date as string) || '1970-01-01')
       return dateB.getTime() - dateA.getTime()
     })
-    .slice(0, 3)
+    .slice(0, 6)
 })
 
 const formatDate = (date: unknown) => {
