@@ -18,10 +18,10 @@
         </div>
 
         <h1 class="text-5xl md:text-7xl font-bold text-white leading-[0.9] tracking-tight mb-6">
-          关于我
+          关于博客
         </h1>
         <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed font-light">
-          探索前端开发的边界，记录技术成长的轨迹
+          基于 Nuxt 4 + Nuxt Content 的个人技术博客
         </p>
       </div>
     </section>
@@ -36,9 +36,44 @@
               <span class="w-8 h-px bg-amber-500" />
               <span>简介</span>
             </div>
-            <p class="text-xl text-black/70 leading-relaxed">
-              欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> + <span class="text-black font-medium">Vue 3.6</span> + <span class="text-black font-medium">Nuxt Content 3</span> + <span class="text-black font-medium">Tailwind 4</span> 构建的现代化技术博客。
-            </p>
+            <div class="space-y-4 text-lg text-black/70 leading-relaxed">
+              <p>
+                欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> + <span class="text-black font-medium">Vue 3</span> + <span class="text-black font-medium">Nuxt Content 3</span> + <span class="text-black font-medium">Tailwind CSS 4</span> 构建的现代化技术博客。
+              </p>
+              <p>
+                本博客支持 Markdown 写作、SSR/SSG 与自动化部署。致力于探索前端开发的边界，记录技术成长的轨迹。
+              </p>
+            </div>
+          </div>
+
+          <!-- 特性 -->
+          <div class="mb-16">
+            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+              <span class="w-8 h-px bg-amber-500" />
+              <span>特性</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-px bg-black/5">
+              <div
+                v-for="(feature, index) in features"
+                :key="feature.title"
+                class="group p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+              >
+                <div class="flex items-start gap-4">
+                  <div class="text-2xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors">
+                    0{{ index + 1 }}
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-black mb-1">
+                      {{ feature.title }}
+                    </h3>
+                    <p class="text-black/50 text-sm">
+                      {{ feature.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- 技术栈 -->
@@ -129,9 +164,28 @@
 useHead({
   title: '关于 - My Blog',
   meta: [
-    { name: 'description', content: '关于本博客和技术栈的介绍' },
+    { name: 'description', content: '基于 Nuxt 4 + Nuxt Content 的个人技术博客，支持 Markdown 写作、SSR/SSG 与自动化部署' },
   ],
 })
+
+const features = [
+  {
+    title: 'Markdown 写作',
+    description: '支持 Markdown 格式，代码高亮',
+  },
+  {
+    title: 'SSR/SSG',
+    description: '服务端渲染与静态生成',
+  },
+  {
+    title: '自动化部署',
+    description: '持续集成与自动部署',
+  },
+  {
+    title: '响应式设计',
+    description: '适配各种设备屏幕',
+  },
+]
 
 const techStack = [
   {
@@ -139,7 +193,7 @@ const techStack = [
     description: '基于 Vue 3 的全栈框架，支持 SSR/SSG/ISR',
   },
   {
-    name: 'Vue 3.6',
+    name: 'Vue 3',
     description: '渐进式 JavaScript 框架',
   },
   {
