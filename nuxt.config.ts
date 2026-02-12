@@ -39,9 +39,9 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: false },
-    '/blog/**': { isr: false },
-    '/about': { prerender: false },
+    '/': { isr: true },
+    '/blog/**': { isr: true },
+    '/about': { isr: true },
   },
 
   future: {
