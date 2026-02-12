@@ -1,79 +1,77 @@
 # blog
 
-这是我的个人技术博客，用 Nuxt 4 和 Nuxt Content 3 搭建。平时写一些前端开发相关的文章，记录学习过程中遇到的问题和解决方案。
+个人技术博客，用 Nuxt 4 + Nuxt Content 3 搭建的。
 
-主要功能：
-- Markdown 写作，支持代码高亮
-- 响应式设计，手机电脑都能看
-- SSR/SSG 渲染，加载速度快
-- 自动部署，提交代码后自动更新
+支持 Markdown 写作、SSR/SSG 和自动化部署。
 
-## 用到的技术
+**在线地址**: https://blog-eight-gamma-66.vercel.app/
 
-- **Nuxt 4** - Vue 的全栈框架
-- **Vue 3** - 前端框架
-- **Nuxt Content 3** - 管理 Markdown 内容
-- **Tailwind CSS 4** - 样式框架
-- **TypeScript** - 类型安全
+## 技术栈
 
-## 本地运行
+- Nuxt 4
+- Vue 3
+- Nuxt Content 3
+- Tailwind CSS 4
+- TypeScript
 
-需要 Node.js 18+ 和 pnpm
+## 本地开发
 
 ```bash
 # 安装依赖
 pnpm install
 
-# 开发模式
+# 启动开发服务器
 pnpm dev
 
-# 打包
+# 构建
 pnpm build
 ```
 
-开发服务器默认在 http://localhost:3000
+## 写文章
 
-## 怎么写文章
-
-在 `content/blog/` 目录下新建 `.md` 文件，开头写上这些信息：
+在 `content/blog/` 目录下新建 `.md` 文件：
 
 ```markdown
 ---
 title: "文章标题"
-description: "简短描述"
+description: "文章描述"
 date: "2025-02-10"
 tags: ["Nuxt", "Vue"]
 ---
 
-正文内容，支持 Markdown 语法
+正文内容...
 ```
 
-## 项目目录说明
+## 项目结构
 
 ```
 blog/
-├── assets/css/     # 全局样式
-├── components/     # 可复用组件
-├── content/blog/   # 博客文章（Markdown）
-├── layouts/        # 页面布局
-├── pages/          # 页面路由
-├── public/         # 静态资源
-└── types/          # TypeScript 类型
+├── assets/        # 样式文件
+├── components/    # 组件
+├── content/       # Markdown 文章
+├── layouts/       # 布局
+├── pages/         # 页面
+└── types/         # 类型定义
 ```
 
-## 一些问题
+## 部署
 
-**为什么选 Nuxt Content？**
+项目已配置自动部署到 Vercel，推送代码到 main 分支会自动更新。
 
-因为想把文章内容放在 Git 里管理，不用连接数据库，部署也方便。Markdown 格式通用，以后想迁移也容易。
+### 手动部署
 
-**样式怎么设计的？**
+```bash
+# 安装 Vercel CLI
+npm i -g vercel
 
-尽量简洁，黑白色调为主， amber 色做点缀。不喜欢那种花里胡哨的渐变和圆角。
+# 登录并部署
+vercel login
+vercel --prod
+```
 
-## 联系我
+详细部署文档见 [DEPLOY.md](./DEPLOY.md)
 
-- GitHub: https://github.com/dandan812
-- 邮箱: hu_liang2027@163.com
+## 联系方式
 
-有问题欢迎提 Issue 或者发邮件。
+- GitHub: [@dandan812](https://github.com/dandan812)
+- Email: hu_liang2027@163.com
