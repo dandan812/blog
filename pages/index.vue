@@ -236,14 +236,14 @@
             </div>
 
             <!-- 日期 -->
-            <div class="hidden md:block text-right">
+            <!-- <div class="hidden md:block text-right">
               <div class="text-white/60 text-sm">
                 {{ formatDate(article.meta?.date) }}
               </div>
               <div class="text-white/30 text-xs mt-1">
                 {{ article.meta?.readingTime || 5 }} 分钟
               </div>
-            </div>
+            </div> -->
 
             <!-- 箭头 -->
             <Icon
@@ -350,14 +350,14 @@ const latestArticles = computed(() => {
     .slice(0, 6)
 })
 
-const formatDate = (date: unknown) => {
-  if (!date) return ''
-  return new Date(date as string).toLocaleDateString('zh-CN', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
+// const formatDate = (date: unknown) => {
+//   if (!date) return ''
+//   return new Date(date as string).toLocaleDateString('zh-CN', {
+//     month: 'short',
+//     day: 'numeric',
+//     year: 'numeric',
+//   })
+// }
 
 const features: Feature[] = [
   {
