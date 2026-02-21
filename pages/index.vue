@@ -336,6 +336,11 @@ useHead({
 const { data: articles, pending: articlesPending } = await useAsyncData('blog-posts', () =>
   queryCollection('content')
     .all(),
+  {
+    server: true,
+    lazy: false,
+    immediate: true,
+  },
 )
 
 const latestArticles = computed(() => {
