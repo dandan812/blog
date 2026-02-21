@@ -344,7 +344,7 @@ const { data: articles, pending: articlesPending } = await useAsyncData('home-ar
 const latestArticles = computed(() => {
   if (!articles.value || articles.value.length === 0) return []
   return [...articles.value]
-    .sort((a: any, b: any) => {
+    .sort((a, b) => {
       const dateA = new Date(a?.meta?.date || '1970-01-01')
       const dateB = new Date(b?.meta?.date || '1970-01-01')
       return dateB.getTime() - dateA.getTime()
