@@ -333,18 +333,19 @@ useHead({
   ],
 })
 
-const { data: articles, pending: articlesPending } = await useAsyncData('home-articles', async () => {
-  return await queryCollection('content').all()
-}, {
-  server: true,
-  lazy: false,
-  default: () => [],
-})
+const { data: articles, pending: articlesPending } = await useAsyncData('blog-posts', () =>
+  queryCollection('content').all(),
+  {
+    server: true,
+    lazy: false,
+    immediate: true,
+  },
+)
 
 const latestArticles = computed(() => {
-  if (!articles.value || articles.value.length === 0) return []
+  if (!articles.value || !Array.isArray(articles.value) || articles.value.length === 0) return []
   return [...articles.value]
-    .sort((a, b) => {
+    .sort((a: any, b: any) => {
       const dateA = new Date(a?.meta?.date || '1970-01-01')
       const dateB = new Date(b?.meta?.date || '1970-01-01')
       return dateB.getTime() - dateA.getTime()
