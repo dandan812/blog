@@ -333,23 +333,20 @@ useHead({
   ],
 })
 
-const { data: articles, pending: articlesPending } = await useAsyncData('blog-posts', () =>
-  queryCollection('content')
-    .all(),
-{
+const { data: articles, pending: articlesPending } = await useAsyncData('home-articles', async () => {
+  return await queryCollection('content').all()
+}, {
   server: true,
   lazy: false,
-  immediate: true,
-},
-)
+  default: () => [],
+})
 
 const latestArticles = computed(() => {
-  if (!articles.value) return []
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  return articles.value
-    .sort((a, b) => {
-      const dateA = new Date((a.meta?.date as string) || '1970-01-01')
-      const dateB = new Date((b.meta?.date as string) || '1970-01-01')
+  if (!articles.value || articles.value.length === 0) return []
+  return [...articles.value]
+    .sort((a: any, b: any) => {
+      const dateA = new Date(a?.meta?.date || '1970-01-01')
+      const dateB = new Date(b?.meta?.date || '1970-01-01')
       return dateB.getTime() - dateA.getTime()
     })
     .slice(0, 6)
