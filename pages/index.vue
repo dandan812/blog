@@ -343,10 +343,12 @@ onMounted(async () => {
     const result = await queryCollection('content').all()
     articles.value = result
     console.log('Client articles loaded:', result.length)
-  } catch (e) {
+  }
+  catch (e) {
     articlesError.value = e as Error
     console.error('Failed to load articles:', e)
-  } finally {
+  }
+  finally {
     articlesPending.value = false
   }
 })
