@@ -333,14 +333,19 @@ useHead({
   ],
 })
 
-const { data: articles, pending: articlesPending } = await useAsyncData('blog-posts', () =>
+const { data: articles, pending: articlesPending, error: articlesError } = await useAsyncData('blog-posts', () =>
   queryCollection('content').all(),
-{
-  server: true,
-  lazy: false,
-  immediate: true,
-},
+  {
+    server: true,
+    lazy: false,
+    immediate: true,
+  },
 )
+
+// Debug info
+console.log('Articles data:', articles.value)
+console.log('Articles pending:', articlesPending.value)
+console.log('Articles error:', articlesError.value)
 
 const latestArticles = computed(() => {
   if (!articles.value || !Array.isArray(articles.value) || articles.value.length === 0) return []
