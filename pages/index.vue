@@ -333,19 +333,23 @@ useHead({
   ],
 })
 
-const { data: articles, pending: articlesPending, error: articlesError } = await useAsyncData('blog-posts', () =>
-  queryCollection('content').all(),
-{
-  server: true,
-  lazy: false,
-  immediate: true,
-},
-)
+const articles = ref<any[]>([])
+const articlesPending = ref(true)
+const articlesError = ref<Error | null>(null)
 
-// Debug info
-console.log('Articles data:', articles.value)
-console.log('Articles pending:', articlesPending.value)
-console.log('Articles error:', articlesError.value)
+onMounted(async () => {
+  try {
+    articlesPending.value = true
+    const result = await queryCollection('content').all()
+    articles.value = result
+    console.log('Client articles loaded:', result.length)
+  } catch (e) {
+    articlesError.value = e as Error
+    console.error('Failed to load articles:', e)
+  } finally {
+    articlesPending.value = false
+  }
+})
 
 const latestArticles = computed(() => {
   if (!articles.value || !Array.isArray(articles.value) || articles.value.length === 0) return []
