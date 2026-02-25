@@ -335,11 +335,11 @@ useHead({
 
 const { data: articles, pending: articlesPending, error: articlesError } = await useAsyncData('blog-posts', () =>
   queryCollection('content').all(),
-  {
-    server: true,
-    lazy: false,
-    immediate: true,
-  },
+{
+  server: true,
+  lazy: false,
+  immediate: true,
+},
 )
 
 // Debug info
