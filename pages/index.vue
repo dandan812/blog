@@ -361,7 +361,7 @@ const latestArticles = computed(() => {
       const dateB = new Date(b?.meta?.date || '1970-01-01')
       return dateB.getTime() - dateA.getTime()
     })
-    .slice(0, 6)
+    .slice(0, 3)
 })
 
 // const formatDate = (date: unknown) => {
