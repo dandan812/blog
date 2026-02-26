@@ -5,7 +5,7 @@
       <nav class="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         <NuxtLink
           to="/"
-          class="text-lg font-bold text-black tracking-tight"
+          class="text-lg font-bold text-black tracking-tight pl-0 md:-ml-2"
         >
           Blog<span class="text-amber-500">.</span>
         </NuxtLink>
