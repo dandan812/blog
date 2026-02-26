@@ -326,6 +326,7 @@
 <script setup lang="ts">
 import type { Feature } from '~/types'
 
+// 页面 SEO 配置
 useHead({
   title: 'My Blog - 思考·创造·分享',
   meta: [
@@ -333,28 +334,17 @@ useHead({
   ],
 })
 
-// 文章数据状态
-const articles = ref<any[]>([]) // 文章列表
-const articlesPending = ref(true) // 加载状态
-const articlesError = ref<Error | null>(null) // 错误信息
+// SSG：构建时获取文章数据
+const { data: articles, pending: articlesPending, error: articlesError } = await useAsyncData(
+  'home-articles',
+  () => queryCollection('content').all(),
+  {
+    server: true,
+    lazy: false,
+  },
+)
 
-// 客户端加载文章数据（避免服务端 500 错误）
-onMounted(async () => {
-  try {
-    articlesPending.value = true
-    const result = await queryCollection('content').all()
-    articles.value = result
-    console.log('Client articles loaded:', result.length)
-  }
-  catch (e) {
-    articlesError.value = e as Error
-    console.error('Failed to load articles:', e)
-  }
-  finally {
-    articlesPending.value = false
-  }
-})
-
+// 计算最新文章（取前3篇）
 const latestArticles = computed(() => {
   if (!articles.value || !Array.isArray(articles.value) || articles.value.length === 0) return []
   return [...articles.value]

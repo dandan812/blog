@@ -38,10 +38,11 @@ export default defineNuxtConfig({
     },
   },
 
+  // SSG 静态生成配置
   routeRules: {
-    '/': { ssr: true },
-    '/blog/**': { ssr: true },
-    '/about': { ssr: true },
+    '/': { prerender: true },
+    '/blog/**': { prerender: true },
+    '/about': { prerender: true },
   },
 
   future: {
@@ -57,6 +58,11 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: true,
+    // 预渲染所有内容页面
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true,
+    },
   },
 
   vite: {
