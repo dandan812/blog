@@ -266,11 +266,11 @@ const viewMode = ref<'grid' | 'list'>('grid')
 const { data: articles } = await useAsyncData('blog-posts', () =>
   queryCollection('content')
     .all(),
-  {
-    server: true,
-    lazy: false,
-    immediate: true,
-  },
+{
+  server: true,
+  lazy: false,
+  immediate: true,
+},
 )
 
 // 筛选状态
