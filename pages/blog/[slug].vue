@@ -230,18 +230,22 @@
 </template>
 
 <script setup lang="ts">
+// 获取当前路由参数
 const route = useRoute()
 const slug = route.params.slug as string
 
+// 获取当前文章详情
 const { data: post } = await useAsyncData(`post-${slug}`, () =>
   queryCollection('content').path(`/blog/${slug}`).first(),
 )
 
+// 获取所有文章（用于上一篇/下一篇导航）
 const { data: allPosts } = await useAsyncData(`all-posts-${slug}`, () =>
   queryCollection('content')
     .all(),
 )
 
+// 获取相关文章
 const { data: relatedPosts } = await useAsyncData(`related-${slug}`, async () => {
   const tags = post.value?.meta?.tags
   if (!tags || !Array.isArray(tags) || tags.length === 0) return []
@@ -251,24 +255,29 @@ const { data: relatedPosts } = await useAsyncData(`related-${slug}`, async () =>
     .all()
 })
 
+// 计算当前文章在所有文章中的索引
 const currentIndex = computed(() => {
   if (!allPosts.value || !post.value?.path) return -1
   return allPosts.value.findIndex(p => p.path === post.value?.path)
 })
 
+// 上一篇文章（按时间顺序）
 const prevPost = computed(() => {
   if (currentIndex.value === -1 || !allPosts.value || currentIndex.value >= allPosts.value.length - 1) return null
   return allPosts.value[currentIndex.value + 1]
 })
 
+// 下一篇文章（按时间顺序）
 const nextPost = computed(() => {
   if (currentIndex.value <= 0 || !allPosts.value) return null
   return allPosts.value[currentIndex.value - 1]
 })
 
+// 分享链接和标题
 const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
 const shareTitle = computed(() => post.value?.title || '')
 
+// 格式化日期
 const formatDate = (date: string) => {
   if (!date) return ''
   return new Date(date).toLocaleDateString('zh-CN', {
@@ -278,6 +287,7 @@ const formatDate = (date: string) => {
   })
 }
 
+// 页面 SEO 配置（动态）
 useHead(() => ({
   title: post.value?.title,
   meta: [
@@ -288,11 +298,13 @@ useHead(() => ({
   ],
 }))
 
+// 分享到 Twitter
 const shareToTwitter = () => {
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle.value)}&url=${encodeURIComponent(shareUrl.value)}`
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
+// 复制链接到剪贴板
 const copyLink = async () => {
   try {
     await navigator.clipboard.writeText(shareUrl.value)

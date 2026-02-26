@@ -251,6 +251,7 @@
 import { computed, ref } from 'vue'
 import type { FilterState } from '~/types'
 
+// 页面 SEO 配置
 useHead({
   title: '博客文章 - My Blog',
   meta: [
@@ -258,8 +259,10 @@ useHead({
   ],
 })
 
+// 视图模式：网格/列表
 const viewMode = ref<'grid' | 'list'>('grid')
 
+// 获取所有文章数据
 const { data: articles } = await useAsyncData('blog-posts', () =>
   queryCollection('content')
     .all(),
@@ -270,18 +273,22 @@ const { data: articles } = await useAsyncData('blog-posts', () =>
   },
 )
 
+// 筛选状态
 const filterState = reactive<FilterState>({
   category: 'all',
   searchQuery: '',
   currentPage: 1,
 })
 
+// 每页显示文章数
 const itemsPerPage = 9
 
+// 计算筛选后的文章总数
 const totalFilteredCount = computed(() => {
   if (!articles.value) return 0
   let result = articles.value
 
+  // 按分类筛选
   if (filterState.category !== 'all') {
     result = result.filter((a) => {
       const cat = a.meta?.category
@@ -289,6 +296,7 @@ const totalFilteredCount = computed(() => {
     })
   }
 
+  // 按搜索关键词筛选
   if (filterState.searchQuery.trim()) {
     const query = filterState.searchQuery.toLowerCase()
     result = result.filter(a =>
@@ -301,11 +309,13 @@ const totalFilteredCount = computed(() => {
   return result.length
 })
 
+// 计算当前页的文章列表
 const filteredArticles = computed(() => {
   if (!articles.value) return []
 
   let result = articles.value
 
+  // 按分类筛选
   if (filterState.category !== 'all') {
     result = result.filter((a) => {
       const cat = a.meta?.category
@@ -313,6 +323,7 @@ const filteredArticles = computed(() => {
     })
   }
 
+  // 按搜索关键词筛选
   if (filterState.searchQuery.trim()) {
     const query = filterState.searchQuery.toLowerCase()
     result = result.filter(a =>
@@ -322,14 +333,17 @@ const filteredArticles = computed(() => {
     )
   }
 
+  // 分页
   const start = (filterState.currentPage - 1) * itemsPerPage
   return result.slice(start, start + itemsPerPage)
 })
 
+// 计算总页数
 const totalPages = computed(() => {
   return Math.ceil(totalFilteredCount.value / itemsPerPage) || 1
 })
 
+// 计算分页按钮显示（带省略号）
 const displayedPages = computed(() => {
   const current = filterState.currentPage
   const total = totalPages.value
@@ -360,11 +374,13 @@ const displayedPages = computed(() => {
   return rangeWithDots
 })
 
+// 跳转到指定页
 const goToPage = (page: number) => {
   filterState.currentPage = Math.max(1, Math.min(page, totalPages.value))
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// 重置筛选条件
 const resetFilters = () => {
   filterState.category = 'all'
   filterState.searchQuery = ''

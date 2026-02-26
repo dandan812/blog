@@ -161,6 +161,7 @@
 </template>
 
 <script setup lang="ts">
+// 页面 SEO 配置
 useHead({
   title: '关于 - My Blog',
   meta: [
@@ -168,6 +169,7 @@ useHead({
   ],
 })
 
+// 博客特性列表
 const features = [
   {
     title: 'Markdown 写作',
@@ -187,6 +189,7 @@ const features = [
   },
 ]
 
+// 技术栈列表
 const techStack = [
   {
     name: 'Nuxt 4',
