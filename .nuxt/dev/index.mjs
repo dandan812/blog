@@ -876,13 +876,13 @@ const _inlineRuntimeConfig = {
         "cache": false
       },
       "/": {
-        "isr": true
+        "prerender": true
       },
       "/blog/**": {
-        "isr": true
+        "prerender": true
       },
       "/about": {
-        "isr": true
+        "prerender": true
       },
       "/__nuxt_content/**": {
         "robots": false,
@@ -2562,6 +2562,8 @@ function resolveUnrefHeadInput(input) {
   return walkResolver(input, VueResolver);
 }
 
+const NUXT_RUNTIME_PAYLOAD_EXTRACTION = false;
+
 // @__NO_SIDE_EFFECTS__
 function createHead(options = {}) {
   const head = createHead$1({
@@ -2974,7 +2976,7 @@ async function runTask(name, {
 }
 
 const checksums = {
-  "content": "v3.5.0--7ue83FFIHAf7kq37K05mM2rlIxLAL3q3uzSgT-I5lYE"
+  "content": "v3.5.0--vjy9yB4_nlJG7KVBQne4TWpFRiikWdaZcv2LdKDhZU0"
 };
 const checksumsStructure = {
   "content": "iqeO2cAQLQJgnaq2MvvDKikyya6cXzeOv30s7rAf6co"
@@ -3784,7 +3786,7 @@ const renderer = defineRenderHandler(async (event) => {
 	// Get route options (for `ssr: false`, `isr`, `cache` and `noScripts`)
 	const routeOptions = getRouteRules(event);
 	// Whether we are prerendering route or using ISR/SWR caching
-	const _PAYLOAD_EXTRACTION = !ssrContext.noSSR && ((routeOptions.isr || routeOptions.cache));
+	const _PAYLOAD_EXTRACTION = !ssrContext.noSSR && (NUXT_RUNTIME_PAYLOAD_EXTRACTION);
 	const isRenderingPayload = (_PAYLOAD_EXTRACTION || routeOptions.prerender) && PAYLOAD_URL_RE.test(ssrContext.url);
 	if (isRenderingPayload) {
 		const url = ssrContext.url.substring(0, ssrContext.url.lastIndexOf("/")) || "/";
