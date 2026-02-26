@@ -333,10 +333,12 @@ useHead({
   ],
 })
 
-const articles = ref<any[]>([])
-const articlesPending = ref(true)
-const articlesError = ref<Error | null>(null)
+// 文章数据状态
+const articles = ref<any[]>([])           // 文章列表
+const articlesPending = ref(true)         // 加载状态
+const articlesError = ref<Error | null>(null)  // 错误信息
 
+// 客户端加载文章数据（避免服务端 500 错误）
 onMounted(async () => {
   try {
     articlesPending.value = true
