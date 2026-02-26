@@ -335,7 +335,7 @@ useHead({
 })
 
 // SSG：构建时获取文章数据
-const { data: articles, pending: articlesPending, error: articlesError } = await useAsyncData(
+const { data: articles, pending: articlesPending } = await useAsyncData(
   'home-articles',
   () => queryCollection('content').all(),
   {
