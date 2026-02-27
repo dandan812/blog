@@ -1,1 +1,1 @@
-export { default } from "C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/@nuxt+image@2.0.0_db0@0.3.4_ccf096e3309a11a84b9895f1b3d36e77/node_modules/@nuxt/image/dist/runtime/components/NuxtImg.vue"
+export { default } from "C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/@nuxt+image@2.0.0_db0@0.3.4_better-sqlite3@12.6.2__ioredis@5.9.2_magicast@0.5.2/node_modules/@nuxt/image/dist/runtime/components/NuxtImg.vue"

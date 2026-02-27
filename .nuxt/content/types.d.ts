@@ -9,6 +9,9 @@ declare module '@nuxt/content' {
     category?: (string | string[])
     cover?: string
     readingTime?: number
+    excerpt?: string
+    author?: string
+    toc?: boolean
   }
   
 

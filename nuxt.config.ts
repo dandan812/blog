@@ -1,12 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
-  modules: [
-    '@nuxt/content',
-    '@nuxt/image',
-    '@nuxt/eslint',
-    '@nuxt/icon',
-  ],
+  modules: ['@nuxt/content', '@nuxt/image', '@nuxt/eslint', '@nuxt/icon', '@nuxtjs/color-mode'],
 
   devtools: { enabled: false },
 
@@ -18,9 +12,7 @@ export default defineNuxtConfig({
       },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      ],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     },
   },
 
@@ -32,10 +24,26 @@ export default defineNuxtConfig({
       markdown: {
         highlight: {
           theme: 'github-dark',
-          langs: ['javascript', 'typescript', 'vue', 'html', 'css', 'json', 'bash', 'markdown', 'yaml'],
+          langs: [
+            'javascript',
+            'typescript',
+            'vue',
+            'html',
+            'css',
+            'json',
+            'bash',
+            'markdown',
+            'yaml',
+          ],
         },
       },
     },
+  },
+
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
   },
 
   // SSG 静态生成配置

@@ -6,13 +6,20 @@
       <div class="absolute inset-0">
         <div
           class="absolute inset-0"
-          style="background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 80px 80px;"
+          style="
+            background-image:
+              linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+          "
         />
       </div>
 
       <div class="relative container mx-auto px-6 md:px-12">
         <!-- 状态标签 -->
-        <div class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase">
+        <div
+          class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase"
+        >
           <span class="w-8 h-px bg-amber-500" />
           <span>博客文章</span>
         </div>
@@ -41,7 +48,9 @@
             <button
               :class="[
                 'p-2 transition-all duration-300',
-                viewMode === 'grid' ? 'bg-white text-black shadow-sm' : 'text-black/40 hover:text-black',
+                viewMode === 'grid'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'text-black/40 hover:text-black',
               ]"
               @click="viewMode = 'grid'"
             >
@@ -53,7 +62,9 @@
             <button
               :class="[
                 'p-2 transition-all duration-300',
-                viewMode === 'list' ? 'bg-white text-black shadow-sm' : 'text-black/40 hover:text-black',
+                viewMode === 'list'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'text-black/40 hover:text-black',
               ]"
               @click="viewMode = 'list'"
             >
@@ -82,8 +93,12 @@
             class="group relative p-8 bg-[#fafafa] hover:bg-white transition-all duration-500"
           >
             <!-- 序号 -->
-            <div class="text-5xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6">
-              {{ String(index + 1 + (filterState.currentPage - 1) * itemsPerPage).padStart(2, '0') }}
+            <div
+              class="text-5xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6"
+            >
+              {{
+                String(index + 1 + (filterState.currentPage - 1) * itemsPerPage).padStart(2, '0')
+              }}
             </div>
 
             <!-- 标签 -->
@@ -101,7 +116,9 @@
             </div>
 
             <!-- 标题 -->
-            <h3 class="text-xl font-bold text-black group-hover:text-amber-600 transition-colors mb-3 line-clamp-2">
+            <h3
+              class="text-xl font-bold text-black group-hover:text-amber-600 transition-colors mb-3 line-clamp-2"
+            >
               {{ article.title }}
             </h3>
 
@@ -130,13 +147,19 @@
             class="group flex items-center gap-8 p-6 md:p-8 bg-[#fafafa] hover:bg-white transition-all duration-300"
           >
             <!-- 序号 -->
-            <div class="hidden md:block text-4xl font-bold text-black/5 group-hover:text-amber-500/30 transition-colors w-16">
-              {{ String(index + 1 + (filterState.currentPage - 1) * itemsPerPage).padStart(2, '0') }}
+            <div
+              class="hidden md:block text-4xl font-bold text-black/5 group-hover:text-amber-500/30 transition-colors w-16"
+            >
+              {{
+                String(index + 1 + (filterState.currentPage - 1) * itemsPerPage).padStart(2, '0')
+              }}
             </div>
 
             <!-- 内容 -->
             <div class="flex-1">
-              <h3 class="text-xl md:text-2xl font-bold text-black group-hover:text-amber-600 transition-colors mb-2">
+              <h3
+                class="text-xl md:text-2xl font-bold text-black group-hover:text-amber-600 transition-colors mb-2"
+              >
                 {{ article.title }}
               </h3>
               <p class="text-black/40 line-clamp-1">
@@ -248,30 +271,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import type { FilterState } from '~/types'
 
 // 页面 SEO 配置
 useHead({
   title: '博客文章 - My Blog',
-  meta: [
-    { name: 'description', content: '探索关于前端开发、Vue 生态和软件工程的技术文章' },
-  ],
+  meta: [{ name: 'description', content: '探索关于前端开发、Vue 生态和软件工程的技术文章' }],
 })
 
 // 视图模式：网格/列表
 const viewMode = ref<'grid' | 'list'>('grid')
-
-// 获取所有文章数据
-const { data: articles } = await useAsyncData('blog-posts', () =>
-  queryCollection('content')
-    .all(),
-{
-  server: true,
-  lazy: false,
-  immediate: true,
-},
-)
 
 // 筛选状态
 const filterState = reactive<FilterState>({
@@ -283,59 +292,78 @@ const filterState = reactive<FilterState>({
 // 每页显示文章数
 const itemsPerPage = 9
 
-// 计算筛选后的文章总数
-const totalFilteredCount = computed(() => {
-  if (!articles.value) return 0
-  let result = articles.value
+// 获取所有文章数据
+const { data: allArticles } = await useAsyncData(
+  'blog-posts-all',
+  () => queryCollection('content').all(),
+  {
+    server: true,
+    lazy: false,
+    immediate: true,
+  },
+)
 
-  // 按分类筛选
-  if (filterState.category !== 'all') {
-    result = result.filter((a) => {
-      const cat = a.meta?.category
-      return Array.isArray(cat) ? cat.includes(filterState.category) : cat === filterState.category
-    })
-  }
-
-  // 按搜索关键词筛选
-  if (filterState.searchQuery.trim()) {
-    const query = filterState.searchQuery.toLowerCase()
-    result = result.filter(a =>
-      a.title?.toLowerCase().includes(query)
-      || a.description?.toLowerCase().includes(query)
-      || (Array.isArray(a.meta?.tags) && a.meta.tags.some((t: string) => t.toLowerCase().includes(query))),
-    )
-  }
-
-  return result.length
-})
-
-// 计算当前页的文章列表
+// 计算筛选后的文章列表
 const filteredArticles = computed(() => {
-  if (!articles.value) return []
+  if (!allArticles.value) return []
 
-  let result = articles.value
+  let result = [...allArticles.value]
+
+  // 按搜索关键词筛选
+  if (filterState.searchQuery.trim()) {
+    const query = filterState.searchQuery.toLowerCase()
+    result = result.filter(
+      a =>
+        a.title?.toLowerCase().includes(query)
+        || a.description?.toLowerCase().includes(query)
+        || (Array.isArray(a.meta?.tags)
+          && a.meta.tags.some((t: string) => t.toLowerCase().includes(query))),
+    )
+  }
 
   // 按分类筛选
   if (filterState.category !== 'all') {
     result = result.filter((a) => {
       const cat = a.meta?.category
-      return Array.isArray(cat) ? cat.includes(filterState.category) : cat === filterState.category
+      return Array.isArray(cat)
+        ? cat.includes(filterState.category)
+        : cat === filterState.category
     })
-  }
-
-  // 按搜索关键词筛选
-  if (filterState.searchQuery.trim()) {
-    const query = filterState.searchQuery.toLowerCase()
-    result = result.filter(a =>
-      a.title?.toLowerCase().includes(query)
-      || a.description?.toLowerCase().includes(query)
-      || (Array.isArray(a.meta?.tags) && a.meta.tags.some((t: string) => t.toLowerCase().includes(query))),
-    )
   }
 
   // 分页
   const start = (filterState.currentPage - 1) * itemsPerPage
   return result.slice(start, start + itemsPerPage)
+})
+
+// 计算筛选后的文章总数
+const totalFilteredCount = computed(() => {
+  if (!allArticles.value) return 0
+  let result = [...allArticles.value]
+
+  // 按搜索关键词筛选
+  if (filterState.searchQuery.trim()) {
+    const query = filterState.searchQuery.toLowerCase()
+    result = result.filter(
+      a =>
+        a.title?.toLowerCase().includes(query)
+        || a.description?.toLowerCase().includes(query)
+        || (Array.isArray(a.meta?.tags)
+          && a.meta.tags.some((t: string) => t.toLowerCase().includes(query))),
+    )
+  }
+
+  // 按分类筛选
+  if (filterState.category !== 'all') {
+    result = result.filter((a) => {
+      const cat = a.meta?.category
+      return Array.isArray(cat)
+        ? cat.includes(filterState.category)
+        : cat === filterState.category
+    })
+  }
+
+  return result.length
 })
 
 // 计算总页数
@@ -345,6 +373,8 @@ const totalPages = computed(() => {
 
 // 计算分页按钮显示（带省略号）
 const displayedPages = computed(() => {
+  if (totalPages.value <= 1) return []
+
   const current = filterState.currentPage
   const total = totalPages.value
   const delta = 2
@@ -376,7 +406,8 @@ const displayedPages = computed(() => {
 
 // 跳转到指定页
 const goToPage = (page: number) => {
-  filterState.currentPage = Math.max(1, Math.min(page, totalPages.value))
+  if (page < 1 || page > totalPages.value) return
+  filterState.currentPage = page
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 

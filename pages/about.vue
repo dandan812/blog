@@ -6,13 +6,20 @@
       <div class="absolute inset-0">
         <div
           class="absolute inset-0"
-          style="background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 80px 80px;"
+          style="
+            background-image:
+              linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+          "
         />
       </div>
 
       <div class="relative container mx-auto px-6 md:px-12">
         <!-- 状态标签 -->
-        <div class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase">
+        <div
+          class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase"
+        >
           <span class="w-8 h-px bg-amber-500" />
           <span>关于</span>
         </div>
@@ -32,23 +39,31 @@
         <div class="max-w-3xl">
           <!-- 介绍 -->
           <div class="mb-16">
-            <div class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase">
+            <div
+              class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase"
+            >
               <span class="w-8 h-px bg-amber-500" />
               <span>简介</span>
             </div>
             <div class="space-y-4 text-lg text-black/70 leading-relaxed">
               <p>
-                欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> + <span class="text-black font-medium">Vue 3</span> + <span class="text-black font-medium">Nuxt Content 3</span> + <span class="text-black font-medium">Tailwind CSS 4</span> 构建的现代化技术博客。
+                欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> +
+                <span class="text-black font-medium">Vue 3</span> +
+                <span class="text-black font-medium">Nuxt Content 3</span> +
+                <span class="text-black font-medium">Tailwind CSS 4</span> 构建的现代化技术博客。
               </p>
               <p>
-                本博客支持 Markdown 写作、SSR/SSG 与自动化部署。致力于探索前端开发的边界，记录技术成长的轨迹。
+                本博客支持 Markdown 写作、SSR/SSG
+                与自动化部署。致力于探索前端开发的边界，记录技术成长的轨迹。
               </p>
             </div>
           </div>
 
           <!-- 特性 -->
           <div class="mb-16">
-            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+            <div
+              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+            >
               <span class="w-8 h-px bg-amber-500" />
               <span>特性</span>
             </div>
@@ -60,7 +75,9 @@
                 class="group p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
               >
                 <div class="flex items-start gap-4">
-                  <div class="text-2xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors">
+                  <div
+                    class="text-2xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors"
+                  >
                     0{{ index + 1 }}
                   </div>
                   <div>
@@ -78,7 +95,9 @@
 
           <!-- 技术栈 -->
           <div class="mb-16">
-            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+            <div
+              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+            >
               <span class="w-8 h-px bg-amber-500" />
               <span>技术栈</span>
             </div>
@@ -89,7 +108,9 @@
                 :key="tech.name"
                 class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
               >
-                <div class="text-3xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors w-12">
+                <div
+                  class="text-3xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors w-12"
+                >
                   0{{ index + 1 }}
                 </div>
                 <div class="flex-1">
@@ -106,7 +127,9 @@
 
           <!-- 联系方式 -->
           <div>
-            <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+            <div
+              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+            >
               <span class="w-8 h-px bg-amber-500" />
               <span>联系</span>
             </div>
@@ -117,7 +140,9 @@
                 target="_blank"
                 class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
               >
-                <div class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
+                <div
+                  class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
+                >
                   <Icon
                     name="lucide:github"
                     class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
@@ -137,7 +162,9 @@
                 href="mailto:hu_liang2027@163.com"
                 class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
               >
-                <div class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
+                <div
+                  class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
+                >
                   <Icon
                     name="lucide:mail"
                     class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
@@ -165,8 +192,29 @@
 useHead({
   title: '关于 - My Blog',
   meta: [
-    { name: 'description', content: '基于 Nuxt 4 + Nuxt Content 的个人技术博客，支持 Markdown 写作、SSR/SSG 与自动化部署' },
+    {
+      name: 'description',
+      content:
+          '关于这个基于 Nuxt 4 + Nuxt Content 的个人技术博客，支持 Markdown 写作、SSR/SSG 与自动化部署',
+    },
+    { name: 'keywords', content: '关于博客, 博客技术栈, nuxt, vue, 开发者信息' },
+    { property: 'og:title', content: '关于 - My Blog' },
+    {
+      property: 'og:description',
+      content:
+          '关于这个基于 Nuxt 4 + Nuxt Content 的个人技术博客，支持 Markdown 写作、SSR/SSG 与自动化部署',
+    },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://blog-eight-gamma-66.vercel.app/about' },
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: '关于 - My Blog' },
+    {
+      name: 'twitter:description',
+      content:
+          '关于这个基于 Nuxt 4 + Nuxt Content 的个人技术博客，支持 Markdown 写作、SSR/SSG 与自动化部署',
+    },
   ],
+  link: [{ rel: 'canonical', href: 'https://blog-eight-gamma-66.vercel.app/about' }],
 })
 
 // 博客特性列表

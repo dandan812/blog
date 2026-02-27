@@ -5,14 +5,21 @@
       <!-- 噪点纹理 -->
       <div
         class="absolute inset-0 opacity-[0.03]"
-        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');
+        "
       />
 
       <!-- 网格线 -->
       <div class="absolute inset-0">
         <div
           class="absolute inset-0"
-          style="background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 80px 80px;"
+          style="
+            background-image:
+              linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+          "
         />
       </div>
 
@@ -26,13 +33,17 @@
       <div class="relative container mx-auto px-6 md:px-12">
         <div class="max-w-4xl">
           <!-- 状态标签 -->
-          <div class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase">
+          <div
+            class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase"
+          >
             <span class="w-8 h-px bg-amber-500" />
             <span>技术博客</span>
           </div>
 
           <!-- 主标题 -->
-          <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.9] tracking-tight mb-8">
+          <h1
+            class="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.9] tracking-tight mb-8"
+          >
             <span class="block">思考</span>
             <span class="block text-white/20">·</span>
             <span class="block">创造</span>
@@ -88,7 +99,9 @@
       </div>
 
       <!-- 底部滚动提示 -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
+      <div
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
+      >
         <span class="text-xs tracking-widest uppercase">Scroll</span>
         <div class="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
       </div>
@@ -139,7 +152,9 @@
       <div class="container mx-auto px-6 md:px-12">
         <!-- 标题 -->
         <div class="max-w-2xl mb-20">
-          <div class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase">
+          <div
+            class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase"
+          >
             <span class="w-8 h-px bg-amber-500" />
             <span>技术特性</span>
           </div>
@@ -157,12 +172,16 @@
             class="group relative p-10 bg-[#fafafa] hover:bg-white transition-all duration-500"
           >
             <!-- 序号 -->
-            <div class="text-6xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6">
+            <div
+              class="text-6xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6"
+            >
               0{{ index + 1 }}
             </div>
 
             <!-- 图标 -->
-            <div class="w-12 h-12 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-300 mb-6">
+            <div
+              class="w-12 h-12 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-300 mb-6"
+            >
               <Icon
                 :name="feature.icon"
                 class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
@@ -189,7 +208,9 @@
         <!-- 标题 -->
         <div class="flex items-end justify-between mb-16">
           <div>
-            <div class="inline-flex items-center gap-3 mb-6 text-white/40 text-sm tracking-widest uppercase">
+            <div
+              class="inline-flex items-center gap-3 mb-6 text-white/40 text-sm tracking-widest uppercase"
+            >
               <span class="w-8 h-px bg-amber-500" />
               <span>最新文章</span>
             </div>
@@ -221,13 +242,17 @@
             class="group flex items-center gap-8 p-6 md:p-8 bg-[#0a0a0a] hover:bg-white/[0.02] transition-all duration-300"
           >
             <!-- 序号 -->
-            <div class="hidden md:block text-4xl font-bold text-white/10 group-hover:text-amber-500/30 transition-colors w-16">
+            <div
+              class="hidden md:block text-4xl font-bold text-white/10 group-hover:text-amber-500/30 transition-colors w-16"
+            >
               0{{ index + 1 }}
             </div>
 
             <!-- 内容 -->
             <div class="flex-1">
-              <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-amber-500 transition-colors mb-2">
+              <h3
+                class="text-xl md:text-2xl font-bold text-white group-hover:text-amber-500 transition-colors mb-2"
+              >
                 {{ article.title }}
               </h3>
               <p class="text-white/40 line-clamp-1">
@@ -298,7 +323,9 @@
       <!-- 纹理 -->
       <div
         class="absolute inset-0 opacity-10"
-        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');
+        "
       />
 
       <div class="relative container mx-auto px-6 md:px-12 text-center">
@@ -330,8 +357,29 @@ import type { Feature } from '~/types'
 useHead({
   title: 'My Blog - 思考·创造·分享',
   meta: [
-    { name: 'description', content: '探索前端开发的边界，记录技术成长的轨迹' },
+    {
+      name: 'description',
+      content:
+          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+    },
+    { name: 'keywords', content: '前端开发, Vue, Nuxt, JavaScript, 技术博客, Web开发' },
+    { property: 'og:title', content: 'My Blog - 思考·创造·分享' },
+    {
+      property: 'og:description',
+      content:
+          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+    },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://blog-eight-gamma-66.vercel.app/' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'My Blog - 思考·创造·分享' },
+    {
+      name: 'twitter:description',
+      content:
+          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+    },
   ],
+  link: [{ rel: 'canonical', href: 'https://blog-eight-gamma-66.vercel.app/' }],
 })
 
 // SSG：构建时获取文章数据

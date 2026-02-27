@@ -18,8 +18,8 @@ import { isVNode, isRef, toValue } from 'file://C:/Users/hulian/Desktop/huliang/
 import { createHooks } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/hookable@5.5.3/node_modules/hookable/dist/index.mjs';
 import { createFetch, Headers as Headers$1 } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/ofetch@1.5.1/node_modules/ofetch/dist/node.mjs';
 import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/node-mock-http@1.0.4/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/unstorage@1.17.4_db0@0.3.4__0ba8e1e42d7904aded0dac519710669d/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/unstorage@1.17.4_db0@0.3.4__0ba8e1e42d7904aded0dac519710669d/node_modules/unstorage/drivers/fs.mjs';
+import { createStorage, prefixStorage } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/unstorage@1.17.4_db0@0.3.4_better-sqlite3@12.6.2__ioredis@5.9.2/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/unstorage@1.17.4_db0@0.3.4_better-sqlite3@12.6.2__ioredis@5.9.2/node_modules/unstorage/drivers/fs.mjs';
 import { digest, hash as hash$1 } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/ohash@2.0.11/node_modules/ohash/dist/index.mjs';
 import { toRouteMatcher, createRouter } from 'file://C:/Users/hulian/Desktop/huliang/bolg/blog/node_modules/.pnpm/radix3@1.1.2/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
@@ -2374,7 +2374,7 @@ const asyncContext = getContext("nuxt-dev", {
 	asyncContext: true,
 	AsyncLocalStorage
 });
-const _cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI = (nitroApp) => {
+const _t44LWIkaM_bNww0_g0Tq0G41uGX9w1KyjAnLNiBZZio = (nitroApp) => {
 	const handler = nitroApp.h3App.handler;
 	nitroApp.h3App.handler = (event) => {
 		return asyncContext.callAsync({
@@ -2447,11 +2447,35 @@ function onConsoleLog(callback) {
 	consola$1.wrapConsole();
 }
 
+const script = "\"use strict\";(()=>{const t=window,e=document.documentElement,c=[\"dark\",\"light\"],n=getStorageValue(\"localStorage\",\"nuxt-color-mode\")||\"system\";let i=n===\"system\"?u():n;const r=e.getAttribute(\"data-color-mode-forced\");r&&(i=r),l(i),t[\"__NUXT_COLOR_MODE__\"]={preference:n,value:i,getColorScheme:u,addColorScheme:l,removeColorScheme:d};function l(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.add(s):e.className+=\" \"+s,a&&e.setAttribute(\"data-\"+a,o)}function d(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.remove(s):e.className=e.className.replace(new RegExp(s,\"g\"),\"\"),a&&e.removeAttribute(\"data-\"+a)}function f(o){return t.matchMedia(\"(prefers-color-scheme\"+o+\")\")}function u(){if(t.matchMedia&&f(\"\").media!==\"not all\"){for(const o of c)if(f(\":\"+o).matches)return o}return\"light\"}})();function getStorageValue(t,e){switch(t){case\"localStorage\":return window.localStorage.getItem(e);case\"sessionStorage\":return window.sessionStorage.getItem(e);case\"cookie\":return getCookie(e);default:return null}}function getCookie(t){const c=(\"; \"+window.document.cookie).split(\"; \"+t+\"=\");if(c.length===2)return c.pop()?.split(\";\").shift()}";
+
+const _DTYYFvnETPCtE0Qq9nYpp3X3OMesnfR1d9HxS5PqBs = (function(nitro) {
+  nitro.hooks.hook("render:html", (htmlContext) => {
+    htmlContext.head.push(`<script>${script}<\/script>`);
+  });
+});
+
 const plugins = [
-  _cy0N_WaFPNIUAcJ5vTB5OghIxxDry8HMCNJn10RrvI
+  _t44LWIkaM_bNww0_g0Tq0G41uGX9w1KyjAnLNiBZZio,
+_DTYYFvnETPCtE0Qq9nYpp3X3OMesnfR1d9HxS5PqBs
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"205bc-VO7+MUP19Ztc9DZ9MkzBg6TZEVo\"",
+    "mtime": "2026-02-27T09:32:24.320Z",
+    "size": 132540,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"7d7aa-Y+tLdQVD1Tp+rk8RxgnF+Uoe/zg\"",
+    "mtime": "2026-02-27T09:32:24.351Z",
+    "size": 513962,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -2976,10 +3000,10 @@ async function runTask(name, {
 }
 
 const checksums = {
-  "content": "v3.5.0--vjy9yB4_nlJG7KVBQne4TWpFRiikWdaZcv2LdKDhZU0"
+  "content": "v3.5.0--OnU8c0X5GELNXoG6GwJn6qva6pl4zshZarGSwuBxkGQ"
 };
 const checksumsStructure = {
-  "content": "iqeO2cAQLQJgnaq2MvvDKikyya6cXzeOv30s7rAf6co"
+  "content": "tyRP2liZLdl4YQ5vwXQ3HxrO_78wssE4Yztokuw3H9s"
 };
 const tables = {
   "content": "_content_content",
@@ -2991,11 +3015,13 @@ const contentManifest = {
     "fields": {
       "id": "string",
       "title": "string",
+      "author": "string",
       "body": "json",
       "category": "json",
       "cover": "string",
       "date": "string",
       "description": "string",
+      "excerpt": "string",
       "extension": "string",
       "meta": "json",
       "navigation": "json",
@@ -3003,7 +3029,8 @@ const contentManifest = {
       "readingTime": "number",
       "seo": "json",
       "stem": "string",
-      "tags": "json"
+      "tags": "json",
+      "toc": "boolean"
     }
   },
   "info": {
@@ -3036,7 +3063,7 @@ async function fetchDatabase(event, collection) {
 
 const warnOnceSet = /* @__PURE__ */ new Set();
 const DEFAULT_ENDPOINT = "https://api.iconify.design";
-const _LEI3qI = defineCachedEventHandler(async (event) => {
+const _s0tYFh = defineCachedEventHandler(async (event) => {
   const url = getRequestURL(event);
   if (!url)
     return createError({ status: 400, message: "Invalid icon request" });
@@ -3406,7 +3433,7 @@ const _ptcOKe = eventHandler(async (event) => {
   return loadDatabaseAdapter(conf).all(sql);
 });
 
-const __QWyG1 = lazyEventHandler(() => {
+const _GymsD6 = lazyEventHandler(() => {
   const opts = useRuntimeConfig().ipx || {};
   const fsDir = opts?.fs?.dir ? (Array.isArray(opts.fs.dir) ? opts.fs.dir : [opts.fs.dir]).map((dir) => isAbsolute(dir) ? dir : fileURLToPath(new URL(dir, globalThis._importMeta_.url))) : void 0;
   const fsStorage = opts.fs?.dir ? ipxFSStorage({ ...opts.fs, dir: fsDir }) : void 0;
@@ -3424,19 +3451,19 @@ const __QWyG1 = lazyEventHandler(() => {
   return useBase(opts.baseURL, ipxHandler);
 });
 
-const _lazy_Kti69k = () => Promise.resolve().then(function () { return renderer$1; });
+const _lazy_VVY3Ak = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _CAqykO, lazy: false, middleware: true, method: undefined },
-  { route: '/__nuxt_error', handler: _lazy_Kti69k, lazy: true, middleware: false, method: undefined },
+  { route: '/__nuxt_error', handler: _lazy_VVY3Ak, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
-  { route: '/api/_nuxt_icon/:collection', handler: _LEI3qI, lazy: false, middleware: false, method: undefined },
+  { route: '/api/_nuxt_icon/:collection', handler: _s0tYFh, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_content/content/sql_dump.txt', handler: _oRjwNg, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_content/info/sql_dump.txt', handler: _oRjwNg, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_content/content/query', handler: _ptcOKe, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_content/info/query', handler: _ptcOKe, lazy: false, middleware: false, method: undefined },
-  { route: '/_ipx/**', handler: __QWyG1, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_Kti69k, lazy: true, middleware: false, method: undefined }
+  { route: '/_ipx/**', handler: _GymsD6, lazy: false, middleware: false, method: undefined },
+  { route: '/**', handler: _lazy_VVY3Ak, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {

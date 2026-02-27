@@ -1,8 +1,8 @@
 export const checksums = {
-  "content": "v3.5.0--vjy9yB4_nlJG7KVBQne4TWpFRiikWdaZcv2LdKDhZU0"
+  "content": "v3.5.0--OnU8c0X5GELNXoG6GwJn6qva6pl4zshZarGSwuBxkGQ"
 }
 export const checksumsStructure = {
-  "content": "iqeO2cAQLQJgnaq2MvvDKikyya6cXzeOv30s7rAf6co"
+  "content": "tyRP2liZLdl4YQ5vwXQ3HxrO_78wssE4Yztokuw3H9s"
 }
 
 export const tables = {
@@ -16,11 +16,13 @@ export default {
     "fields": {
       "id": "string",
       "title": "string",
+      "author": "string",
       "body": "json",
       "category": "json",
       "cover": "string",
       "date": "string",
       "description": "string",
+      "excerpt": "string",
       "extension": "string",
       "meta": "json",
       "navigation": "json",
@@ -28,7 +30,8 @@ export default {
       "readingTime": "number",
       "seo": "json",
       "stem": "string",
-      "tags": "json"
+      "tags": "json",
+      "toc": "boolean"
     }
   },
   "info": {
