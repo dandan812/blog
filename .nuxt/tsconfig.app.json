@@ -122,7 +122,7 @@
         "./mdc-imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/dev"
+        "./manifest/meta/828db67a-16bc-44a8-8178-3a3a013714fb.json"
       ],
       "#components": [
         "./components"
@@ -217,7 +217,7 @@
     "../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/dist/runtime/server",
     "../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/*.*",
     "../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/dist/*.*",
-    "dev",
+    "../.output",
     "../server"
   ]
 }

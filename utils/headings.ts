@@ -1,7 +1,7 @@
-export const extractHeadings = (html: string): { id: string; text: string; level: number }[] => {
+export const extractHeadings = (html: string): { id: string, text: string, level: number }[] => {
   // 使用正则表达式查找h2到h4标签
   const headingsRegex = /<(h[2-4])\s+id=["']([^"']*)["'][^>]*>(.*?)<\/\1>/gi
-  const headings: { id: string; text: string; level: number }[] = []
+  const headings: { id: string, text: string, level: number }[] = []
 
   let match
   while ((match = headingsRegex.exec(html)) !== null) {
@@ -18,11 +18,11 @@ export const extractHeadings = (html: string): { id: string; text: string; level
 
 // 解析markdown内容获取标题
 export const parseMarkdownHeadings = (
-  content: string
-): { id: string; text: string; level: number }[] => {
+  content: string,
+): { id: string, text: string, level: number }[] => {
   // 匹配markdown格式的标题
   const markdownHeadingRegex = /^(#{2,4})\s+(.+)$/gm
-  const headings: { id: string; text: string; level: number }[] = []
+  const headings: { id: string, text: string, level: number }[] = []
 
   let match
   while ((match = markdownHeadingRegex.exec(content)) !== null) {

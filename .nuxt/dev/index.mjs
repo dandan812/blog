@@ -2463,16 +2463,16 @@ _DTYYFvnETPCtE0Qq9nYpp3X3OMesnfR1d9HxS5PqBs
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"205bc-VO7+MUP19Ztc9DZ9MkzBg6TZEVo\"",
-    "mtime": "2026-02-27T09:32:24.320Z",
-    "size": 132540,
+    "etag": "\"206d4-heTj21+NhK+AmlyZm0Xu12vEq4o\"",
+    "mtime": "2026-02-27T12:00:13.545Z",
+    "size": 132820,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"7d7aa-Y+tLdQVD1Tp+rk8RxgnF+Uoe/zg\"",
-    "mtime": "2026-02-27T09:32:24.351Z",
-    "size": 513962,
+    "etag": "\"7d5fb-w+fyTU4FA5sfItabR2De2LpavkU\"",
+    "mtime": "2026-02-27T12:00:13.545Z",
+    "size": 513531,
     "path": "index.mjs.map"
   }
 };
@@ -2999,12 +2999,8 @@ async function runTask(name, {
   }
 }
 
-const checksums = {
-  "content": "v3.5.0--OnU8c0X5GELNXoG6GwJn6qva6pl4zshZarGSwuBxkGQ"
-};
-const checksumsStructure = {
-  "content": "tyRP2liZLdl4YQ5vwXQ3HxrO_78wssE4Yztokuw3H9s"
-};
+const checksums = {};
+const checksumsStructure = {};
 const tables = {
   "content": "_content_content",
   "info": "_content_info"

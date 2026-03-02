@@ -1,11 +1,11 @@
 <template>
   <ClientOnly>
     <button
-      class="p-2 text-black/30 hover:text-black transition-colors"
-      :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`"
+      class="p-2 text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors"
+      :aria-label="`Switch to ${colorMode.value === 'dark' ? 'light' : 'dark'} mode`"
       @click="toggleDark"
     >
-      <Icon :name="isDark ? 'lucide:sun' : 'lucide:moon'" class="w-4 h-4" />
+      <Icon :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'" class="w-4 h-4" />
     </button>
 
     <template #fallback>
@@ -17,16 +17,7 @@
 <script setup lang="ts">
   const colorMode = useColorMode()
 
-  const isDark = computed({
-    get() {
-      return colorMode.preference === 'dark'
-    },
-    set() {
-      colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-    },
-  })
-
   function toggleDark() {
-    isDark.value = !isDark.value
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
   }
 </script>
