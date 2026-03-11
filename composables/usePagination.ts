@@ -19,7 +19,8 @@ export const usePagination = (total: number, current: number, pageSize: number) 
       if (prev) {
         if (i - prev === 2) {
           rangeWithDots.push(prev + 1)
-        } else if (i - prev !== 1) {
+        }
+        else if (i - prev !== 1) {
           rangeWithDots.push(-1)
         }
       }

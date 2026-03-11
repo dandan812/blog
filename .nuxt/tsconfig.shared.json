@@ -122,7 +122,7 @@
         "./mdc-imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/828db67a-16bc-44a8-8178-3a3a013714fb.json"
+        "./manifest/meta/4cf916da-b176-40b1-997a-95e54190f68f.json"
       ],
       "#build": [
         "."

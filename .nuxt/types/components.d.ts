@@ -14,13 +14,8 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
-  ArticleCard: typeof import("../../components/ArticleCard.vue")['default']
   ColorModeToggle: typeof import("../../components/ColorModeToggle.vue")['default']
   EnhancedSearchModal: typeof import("../../components/EnhancedSearchModal.vue")['default']
-  ImageWithFallback: typeof import("../../components/ImageWithFallback.vue")['default']
-  SEOHead: typeof import("../../components/SEOHead.vue")['default']
-  SearchModal: typeof import("../../components/SearchModal.vue")['default']
-  ShareDialog: typeof import("../../components/ShareDialog.vue")['default']
   TableOfContents: typeof import("../../components/TableOfContents.vue")['default']
   ProseA: typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/prose/ProseA.vue")['default']
   ProseBlockquote: typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/prose/ProseBlockquote.vue")['default']
@@ -77,13 +72,8 @@ interface _GlobalComponents {
   MDCRenderer: typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/MDCRenderer.vue")['default']
   MDCSlot: typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/MDCSlot.vue")['default']
   NuxtIsland: typeof import("../../node_modules/.pnpm/nuxt@4.3.1_@parcel+watcher@2.5.6_@types+node@25.2.2_@vue+compiler-sfc@3.5.28_better-sqlite3@1_p2ptjemxhmvdvjvo5c66djrkpa/node_modules/nuxt/dist/app/components/nuxt-island")['default']
-  LazyArticleCard: LazyComponent<typeof import("../../components/ArticleCard.vue")['default']>
   LazyColorModeToggle: LazyComponent<typeof import("../../components/ColorModeToggle.vue")['default']>
   LazyEnhancedSearchModal: LazyComponent<typeof import("../../components/EnhancedSearchModal.vue")['default']>
-  LazyImageWithFallback: LazyComponent<typeof import("../../components/ImageWithFallback.vue")['default']>
-  LazySEOHead: LazyComponent<typeof import("../../components/SEOHead.vue")['default']>
-  LazySearchModal: LazyComponent<typeof import("../../components/SearchModal.vue")['default']>
-  LazyShareDialog: LazyComponent<typeof import("../../components/ShareDialog.vue")['default']>
   LazyTableOfContents: LazyComponent<typeof import("../../components/TableOfContents.vue")['default']>
   LazyProseA: LazyComponent<typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/prose/ProseA.vue")['default']>
   LazyProseBlockquote: LazyComponent<typeof import("../../node_modules/.pnpm/@nuxtjs+mdc@0.20.1_magicast@0.5.2/node_modules/@nuxtjs/mdc/dist/runtime/components/prose/ProseBlockquote.vue")['default']>

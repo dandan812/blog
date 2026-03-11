@@ -1,8 +1,5 @@
 <template>
-  <article
-    v-if="post"
-    class="min-h-screen"
-  >
+  <article v-if="post" class="min-h-screen">
     <!-- Hero 头部 -->
     <header class="relative py-24 md:py-32 bg-[#0a0a0a] dark:bg-gray-900">
       <!-- 网格线 -->
@@ -25,19 +22,13 @@
             to="/blog"
             class="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm tracking-widest uppercase"
           >
-            <Icon
-              name="lucide:arrow-left"
-              class="w-4 h-4"
-            />
+            <Icon name="lucide:arrow-left" class="w-4 h-4" />
             返回
           </NuxtLink>
         </div>
 
         <!-- 标签 -->
-        <div
-          v-if="(post.meta?.tags as string[])?.length"
-          class="flex flex-wrap gap-2 mb-6"
-        >
+        <div v-if="(post.meta?.tags as string[])?.length" class="flex flex-wrap gap-2 mb-6">
           <span
             v-for="tag in post.meta?.tags as string[]"
             :key="tag"
@@ -64,22 +55,13 @@
         <!-- 元信息 -->
         <div class="flex items-center gap-6 text-sm text-white/30 dark:text-gray-400">
           <div class="flex items-center gap-2">
-            <Icon
-              name="lucide:calendar"
-              class="w-4 h-4"
-            />
+            <Icon name="lucide:calendar" class="w-4 h-4" />
             <time :datetime="post.meta?.date as string">
               {{ formatDate((post.meta?.date as string) || '') }}
             </time>
           </div>
-          <span
-            v-if="post.meta?.readingTime"
-            class="flex items-center gap-2"
-          >
-            <Icon
-              name="lucide:clock"
-              class="w-4 h-4"
-            />
+          <span v-if="post.meta?.readingTime" class="flex items-center gap-2">
+            <Icon name="lucide:clock" class="w-4 h-4" />
             {{ post.meta?.readingTime }} 分钟
           </span>
         </div>
@@ -112,19 +94,13 @@
                   class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-gray-600 hover:border-black dark:hover:border-gray-400 hover:bg-black hover:text-white dark:hover:bg-gray-700 transition-all"
                   @click="shareToTwitter"
                 >
-                  <Icon
-                    name="lucide:twitter"
-                    class="w-4 h-4"
-                  />
+                  <Icon name="lucide:twitter" class="w-4 h-4" />
                 </button>
                 <button
                   class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-gray-600 hover:border-black dark:hover:border-gray-400 hover:bg-black hover:text-white dark:hover:bg-gray-700 transition-all"
                   @click="copyLink"
                 >
-                  <Icon
-                    name="lucide:link"
-                    class="w-4 h-4"
-                  />
+                  <Icon name="lucide:link" class="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -154,10 +130,7 @@
                   </span>
                 </div>
               </NuxtLink>
-              <div
-                v-else
-                class="p-6 bg-[#fafafa] dark:bg-gray-800"
-              />
+              <div v-else class="p-6 bg-[#fafafa] dark:bg-gray-800" />
 
               <!-- 下一篇 -->
               <NuxtLink
@@ -182,10 +155,7 @@
                   />
                 </div>
               </NuxtLink>
-              <div
-                v-else
-                class="p-6 bg-[#fafafa] dark:bg-gray-800"
-              />
+              <div v-else class="p-6 bg-[#fafafa] dark:bg-gray-800" />
             </div>
           </footer>
 
@@ -231,28 +201,16 @@
   </article>
 
   <!-- 404 状态 -->
-  <div
-    v-else
-    class="min-h-[60vh] flex items-center justify-center bg-[#fafafa] dark:bg-gray-900"
-  >
+  <div v-else class="min-h-[60vh] flex items-center justify-center bg-[#fafafa] dark:bg-gray-900">
     <div class="text-center">
-      <div class="text-8xl font-bold text-black/10 dark:text-white/10 mb-6">
-        404
-      </div>
-      <h1 class="text-2xl font-bold text-black dark:text-white mb-4">
-        文章未找到
-      </h1>
-      <p class="text-black/40 dark:text-gray-400 mb-8">
-        这篇文章可能已被删除或移动
-      </p>
+      <div class="text-8xl font-bold text-black/10 dark:text-white/10 mb-6">404</div>
+      <h1 class="text-2xl font-bold text-black dark:text-white mb-4">文章未找到</h1>
+      <p class="text-black/40 dark:text-gray-400 mb-8">这篇文章可能已被删除或移动</p>
       <NuxtLink
         to="/blog"
         class="inline-flex items-center gap-2 px-6 py-3 bg-black dark:bg-gray-700 text-white hover:bg-black/80 dark:hover:bg-gray-600 transition-colors"
       >
-        <Icon
-          name="lucide:arrow-left"
-          class="w-4 h-4"
-        />
+        <Icon name="lucide:arrow-left" class="w-4 h-4" />
         返回博客
       </NuxtLink>
     </div>
@@ -260,140 +218,98 @@
 </template>
 
 <script setup lang="ts">
-// 获取当前路由参数
-const route = useRoute()
-const slug = route.params.slug as string
+  import { formatDate } from '~/types'
 
-// 获取当前文章详情
-const { data: post } = await useAsyncData(`post-${slug}`, () =>
-  queryCollection('content').path(`/blog/${slug}`).first(),
-)
+  const route = useRoute()
+  const slug = route.params.slug as string
 
-// 获取所有文章（用于上一篇/下一篇导航）
-const { data: allPosts } = await useAsyncData(`all-posts-${slug}`, () =>
-  queryCollection('content').all(),
-)
-
-// 获取相关文章
-const { data: relatedPosts } = await useAsyncData(`related-${slug}`, async () => {
-  const tags = post.value?.meta?.tags
-  if (!tags || !Array.isArray(tags) || tags.length === 0) return []
-  return queryCollection('content').where('path', '<>', `/blog/${slug}`).limit(4).all()
-})
-
-// 计算当前文章在所有文章中的索引
-const currentIndex = computed(() => {
-  if (!allPosts.value || !post.value?.path) return -1
-  return allPosts.value.findIndex(p => p.path === post.value?.path)
-})
-
-// 上一篇文章（按时间顺序）
-const prevPost = computed(() => {
-  if (
-    currentIndex.value === -1
-    || !allPosts.value
-    || currentIndex.value >= allPosts.value.length - 1
+  const { data: post } = await useAsyncData(`post-${slug}`, () =>
+    queryCollection('content').path(`/blog/${slug}`).first()
   )
-    return null
-  return allPosts.value[currentIndex.value + 1]
-})
 
-// 下一篇文章（按时间顺序）
-const nextPost = computed(() => {
-  if (currentIndex.value <= 0 || !allPosts.value) return null
-  return allPosts.value[currentIndex.value - 1]
-})
+  const { data: allPosts } = await useAsyncData('all-posts', () => queryCollection('content').all())
 
-// 分享链接和标题
-const shareUrl = computed(() => (typeof window !== 'undefined' ? window.location.href : ''))
-const shareTitle = computed(() => post.value?.title || '')
-
-// 提取文章标题
-// 注意：目前 content 模块不会直接暴露 markdown 内容给客户端，因此我们需要使用其他方法
-const headings = computed(() => {
-  // 在构建时预处理的内容里提取标题
-  if ((post.value as any)?.excerpt) {
-    // 这里简化了提取逻辑，实际场景中可能需要使用 Nuxt Content 提供的摘要处理
-    return []
-  }
-  // 退回到空数组，TOC 将不显示
-  return []
-})
-
-// 格式化日期
-const formatDate = (date: string) => {
-  if (!date) return ''
-  return new Date(date).toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const { data: relatedPosts } = await useAsyncData(`related-${slug}`, async () => {
+    if (!post.value) return []
+    return queryCollection('content').where('path', '<>', `/blog/${slug}`).limit(3).all()
   })
-}
 
-// 优化元数据以提升 SEO
-useHead(() => ({
-  title: post.value?.title,
-  meta: [
-    { name: 'description', content: post.value?.description },
-    { property: 'og:title', content: post.value?.title },
-    { property: 'og:description', content: post.value?.description || '' },
-    { property: 'og:type', content: 'article' },
-    { property: 'og:url', content: shareUrl.value },
-    { property: 'article:published_time', content: post.value?.date },
-    ...(Array.isArray((post.value as any)?.meta?.tags)
-      ? (post.value as any).meta.tags.map((tag: string) => ({
-          property: 'article:tag',
-          content: tag,
-        }))
-      : []),
-    { name: 'twitter:card', content: 'summary_large_image' },
-  ],
-  script: [
-    // Schema.org 结构化数据
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        'headline': post.value?.title,
-        'description': post.value?.description,
-        'datePublished': post.value?.date,
-        'author': {
-          '@type': 'Person',
-          'name': 'Author Name', // 这里应该从具体文章或配置中读取
+  const currentIndex = computed(
+    () => allPosts.value?.findIndex((p) => p.path === post.value?.path) ?? -1
+  )
+
+  const prevPost = computed(() =>
+    currentIndex.value >= 0 && currentIndex.value < (allPosts.value?.length || 0) - 1
+      ? allPosts.value?.[currentIndex.value + 1]
+      : null
+  )
+
+  const nextPost = computed(() =>
+    currentIndex.value > 0 ? allPosts.value?.[currentIndex.value - 1] : null
+  )
+
+  const shareUrl = computed(() => (typeof window === 'undefined' ? '' : window.location.href))
+
+  const headings = computed(() => [])
+
+  useHead(() => {
+    const meta = post.value?.meta as Record<string, unknown> | undefined
+    const datePublished = (meta?.date as string) || new Date().toISOString()
+    const tags = Array.isArray(meta?.tags) ? (meta.tags as string[]) : []
+
+    return {
+      title: post.value?.title,
+      meta: [
+        { name: 'description', content: post.value?.description },
+        { property: 'og:title', content: post.value?.title },
+        { property: 'og:description', content: post.value?.description || '' },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:url', content: shareUrl.value },
+        { property: 'article:published_time', content: datePublished },
+        ...tags.map((tag) => ({ property: 'article:tag', content: tag })),
+        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.value?.title,
+            description: post.value?.description,
+            datePublished,
+            dateModified: datePublished,
+            author: { '@type': 'Person', name: 'My Blog Author' },
+            publisher: {
+              '@type': 'Organization',
+              name: 'My Blog',
+              logo: { '@type': 'ImageObject', url: '/logo.png' },
+            },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': shareUrl.value },
+          }),
         },
-        'publisher': {
-          '@type': 'Organization',
-          'name': 'My Blog',
-          'logo': {
-            '@type': 'ImageObject',
-            'url': '/logo.png',
-          },
-        },
-      }),
-    },
-  ],
-}))
+      ],
+    }
+  })
 
-// 分享到 Twitter
-const shareToTwitter = () => {
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle.value)}&url=${encodeURIComponent(shareUrl.value)}`
-  window.open(url, '_blank', 'noopener,noreferrer')
-}
+  const shareToTwitter = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.value?.title || '')}&url=${encodeURIComponent(shareUrl.value)}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
 
-// 复制链接到剪贴板
-const copyLink = async () => {
-  try {
-    await navigator.clipboard.writeText(shareUrl.value)
-    // 可以在这里添加 UI 反馈，比如 Toast 提示
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl.value)
+    } catch {
+      const textarea = document.createElement('textarea')
+      textarea.value = shareUrl.value
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+    }
   }
-  catch {
-    const textarea = document.createElement('textarea')
-    textarea.value = shareUrl.value
-    document.body.appendChild(textarea)
-    textarea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textarea)
-  }
-}
 </script>

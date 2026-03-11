@@ -115,6 +115,8 @@
 </template>
 
 <script setup lang="ts">
+  import { formatDate } from '~/types'
+
   interface SearchResult {
     id: string
     title: string
@@ -125,137 +127,87 @@
     readingTime?: number
   }
 
-  interface IndexedSearchResult extends SearchResult {
-    originalIndex: number
-  }
-
-  const props = defineProps<{
-    open: boolean
-  }>()
-
-  const emit = defineEmits<{
-    'update:open': [value: boolean]
-  }>()
+  const props = defineProps<{ open: boolean }>()
+  const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
   const searchQuery = ref('')
   const inputRef = ref<HTMLInputElement>()
-  const displayLimit = ref(5) // 每次增量显示的数量
-  const MAX_DISPLAY_RESULTS = 20 // 最大显示结果数
+  const displayLimit = ref(5)
+  const MAX_DISPLAY = 20
 
-  // 搜索逻辑
   const { data: allResults, pending } = await useAsyncData(
     'enhanced-search',
     async () => {
-      // 获取所有内容进行搜索
       const allContents = await queryCollection('content').all()
-
-      // 将结果转换为SearchResult格式
-      return allContents.map((item) => {
-        // 提取路径，优先使用 _path
-        const path = (item as any)._path || (item as any).path || ''
+      return allContents.map((item): SearchResult => {
+        const c = item as unknown as Record<string, unknown>
+        const path = String(c._path || c.path || '')
         return {
           id: path,
-          title: (item as any).title || '',
-          description: (item as any).description || (item as any).excerpt || '',
-          path: path,
+          title: String(c.title || ''),
+          description: String(c.description || c.excerpt || ''),
+          path,
           type: path.startsWith('/blog') ? 'blog' : 'page',
-          date: (item as any).date || (item as any).createdAt || '',
-          readingTime: (item as any).readingTime || 0,
+          date: String(c.date || c.createdAt || ''),
+          readingTime: Number(c.readingTime) || 0,
         }
       })
     },
-    {
-      server: false,
-      default: () => [],
-    }
+    { server: false, default: () => [] }
   )
 
-  // 搜索结果过滤和排序
   const results = computed(() => {
     if (!searchQuery.value || !allResults.value) return []
-
-    const query = searchQuery.value.toLowerCase()
-
+    const q = searchQuery.value.toLowerCase()
     return allResults.value
       .filter(
         (item) =>
-          item.title?.toLowerCase().includes(query) ||
-          item.description?.toLowerCase().includes(query) ||
-          item.path?.toLowerCase().includes(query)
+          item.title?.toLowerCase().includes(q) ||
+          item.description?.toLowerCase().includes(q) ||
+          item.path?.toLowerCase().includes(q)
       )
       .sort((a, b) => {
-        const aTitle = a.title?.toLowerCase() || ''
-        const bTitle = b.title?.toLowerCase() || ''
-
-        // 对标题精确匹配给予更高权重
-        const aMatchesInTitle = aTitle.split(query).length - 1
-        const bMatchesInTitle = bTitle.split(query).length - 1
-
-        if (aMatchesInTitle !== bMatchesInTitle) {
-          return bMatchesInTitle - aMatchesInTitle
-        }
-
-        // 对标题模糊匹配给予较高权重
-        if (aTitle.includes(query) && !bTitle.includes(query)) return -1
-        if (!aTitle.includes(query) && bTitle.includes(query)) return 1
-
-        // 按原始时间反序排列（最新的排在前面）
-        return new Date(b.date).getTime() - new Date(a.date).getTime()
+        const aInTitle = a.title.toLowerCase().includes(q) ? 1 : 0
+        const bInTitle = b.title.toLowerCase().includes(q) ? 1 : 0
+        if (aInTitle !== bInTitle) return bInTitle - aInTitle
+        return +new Date(b.date) - +new Date(a.date)
       })
   })
 
-  // 计算当前显示的结果
-  const displayedResults = computed(() => {
-    if (!results.value) return []
+  const displayedResults = computed(() =>
+    results.value.slice(0, Math.min(displayLimit.value, results.value.length))
+  )
 
-    // 如果请求显示超过结果总数, 则只显示实际数量
-    return results.value.slice(0, Math.min(displayLimit.value, results.value.length))
-  })
-
-  // 是否还有更多结果可显示
-  const hasMoreResults = computed(() => {
-    if (!results.value) return false
-
-    return (
+  const hasMoreResults = computed(
+    () =>
       displayedResults.value.length < results.value.length &&
-      displayedResults.value.length < MAX_DISPLAY_RESULTS
-    )
-  })
+      displayedResults.value.length < MAX_DISPLAY
+  )
 
-  // 剩余结果数量
-  const remainingResultsCount = computed(() => {
-    if (!results.value) return 0
-
-    return Math.min(
+  const remainingResultsCount = computed(() =>
+    Math.min(
       results.value.length - displayedResults.value.length,
-      MAX_DISPLAY_RESULTS - displayedResults.value.length
+      MAX_DISPLAY - displayedResults.value.length
     )
-  })
+  )
 
-  // 显示更多结果
   const showMoreResults = () => {
-    if (hasMoreResults.value) {
+    if (hasMoreResults.value)
       displayLimit.value = Math.min(
         displayLimit.value + 5,
-        Math.min(results.value.length, MAX_DISPLAY_RESULTS)
+        Math.min(results.value.length, MAX_DISPLAY)
       )
-    }
   }
 
-  // 清空输入时也清空显示限制
-  watch(searchQuery, () => {
-    if (!searchQuery.value) {
-      displayLimit.value = 5
-    }
+  watch(searchQuery, (v) => {
+    if (!v) displayLimit.value = 5
   })
 
-  // 自动聚焦
   watch(
     () => props.open,
     (val) => {
-      if (val) {
-        nextTick(() => inputRef.value?.focus())
-      } else {
+      if (val) nextTick(() => inputRef.value?.focus())
+      else {
         searchQuery.value = ''
         displayLimit.value = 5
       }
@@ -267,22 +219,8 @@
     emit('update:open', false)
   }
 
-  const formatDate = (date: string) => {
-    if (!date) return ''
-
-    return new Date(date).toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
-
-  // 高亮匹配的文本
-  const highlightMatch = (text: string, query: string) => {
-    if (!query || !text) return text
-
-    // 简单的高亮匹配，实际应用中可以用更复杂的方式
-    const regex = new RegExp(`(${query})`, 'gi')
-    return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>')
-  }
+  const highlightMatch = (text: string, query: string) =>
+    !query || !text
+      ? text
+      : text.replace(new RegExp(`(${query})`, 'gi'), '<mark class="bg-yellow-200">$1</mark>')
 </script>

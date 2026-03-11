@@ -1,54 +1,82 @@
-// plugins/performance.client.ts
-export default defineNuxtPlugin({
-  name: 'performance-client',
-  setup() {
-    if (import.meta.client) {
-      // 页面加载完成后的性能测量
-      onNuxtReady(() => {
-        setTimeout(() => {
-          // 记录页面加载完成时间
-          if ((window as any).__PAGE_LOAD_START__) {
-            const loadTime = performance.now() - (window as any).__PAGE_LOAD_START__
-            console.log(`Page loaded in ${Math.round(loadTime)}ms`)
+interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput: boolean
+  value: number
+}
 
-            // 可选：发送性能数据到分析工具（如果有的话）
-            // useTrackPerformance('page_load_time', loadTime)
-          }
+interface PerfPlugin {
+  start: () => string | null
+  end: (id: string | null, label: string) => void
+}
 
-          // 清除标记
-          delete (window as any).__PAGE_LOAD_START__
-        }, 100)
-      })
+interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput: boolean
+  value: number
+}
 
-      // 注册滚动优化，实现真正的懒加载
-      const lazyLoadImages = () => {
-        if ('IntersectionObserver' in window) {
-          const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                const img = entry.target as HTMLImageElement
-                if (img.dataset.src) {
-                  img.src = img.dataset.src!
-                  img.removeAttribute('data-src')
-                  imageObserver.unobserve(img)
-                }
-              }
-            })
-          })
+export default defineNuxtPlugin(() => {
+  const emptyPerf: PerfPlugin = {
+    start: () => null,
+    end: () => {},
+  }
 
-          // 观察所有带有data-src属性的图片
-          document.querySelectorAll('img[data-src]').forEach((img) => {
-            imageObserver.observe(img)
-          })
+  if (typeof window === 'undefined' || typeof performance === 'undefined') {
+    return { provide: { perf: emptyPerf } }
+  }
+
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      if (entry.entryType === 'largest-contentful-paint') {
+        console.log('[Performance] LCP:', Math.round(entry.startTime), 'ms')
+      }
+      if (entry.entryType === 'first-input') {
+        console.log('[Performance] FID:', Math.round(entry.processingStart - entry.startTime), 'ms')
+      }
+      if (entry.entryType === 'layout-shift') {
+        const layoutEntry = entry as LayoutShiftEntry
+        if (!layoutEntry.hadRecentInput) {
+          console.log('[Performance] CLS:', layoutEntry.value.toFixed(4))
         }
       }
-
-      // 页面完全加载后执行懒加载初始化
-      onNuxtReady(() => {
-        nextTick(() => {
-          lazyLoadImages()
-        })
-      })
     }
-  },
+  })
+
+  try {
+    observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] })
+  }
+  catch {
+    console.warn('[Performance] Observer not supported')
+  }
+
+  onNuxtReady(() => {
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+    if (navigation) {
+      console.log(
+        '[Performance] DOM Content Loaded:',
+        Math.round(navigation.domContentLoadedEventEnd),
+        'ms',
+      )
+      console.log('[Performance] Load Complete:', Math.round(navigation.loadEventEnd), 'ms')
+    }
+  })
+
+  const perf: PerfPlugin = {
+    start() {
+      if (typeof performance === 'undefined' || !performance.mark) return null
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+      performance.mark(`start-${id}`)
+      return id
+    },
+    end(id, label) {
+      if (!id || typeof performance === 'undefined' || !performance.mark || !performance.measure)
+        return
+      performance.mark(`end-${id}`)
+      performance.measure(label, `start-${id}`, `end-${id}`)
+      const measure = performance.getEntriesByName(label)[0]
+      if (measure) {
+        console.log(`[Performance] ${label}:`, Math.round(measure.duration), 'ms')
+      }
+    },
+  }
+
+  return { provide: { perf } }
 })

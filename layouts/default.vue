@@ -28,7 +28,10 @@
             class="p-2 text-black/30 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
             @click="isSearchOpen = true"
           >
-            <Icon name="lucide:search" class="w-4 h-4" />
+            <Icon
+              name="lucide:search"
+              class="w-4 h-4"
+            />
           </button>
 
           <!-- 深色模式切换 -->
@@ -61,13 +64,19 @@
               target="_blank"
               class="text-black/30 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
             >
-              <Icon name="lucide:github" class="w-4 h-4" />
+              <Icon
+                name="lucide:github"
+                class="w-4 h-4"
+              />
             </a>
             <a
               href="mailto:hu_liang2027@163.com"
               class="text-black/30 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
             >
-              <Icon name="lucide:mail" class="w-4 h-4" />
+              <Icon
+                name="lucide:mail"
+                class="w-4 h-4"
+              />
             </a>
           </div>
         </div>
@@ -79,22 +88,29 @@
 </template>
 
 <script setup lang="ts">
-  const isSearchOpen = ref(false)
+const isSearchOpen = ref(false)
 
-  const navItems = [
-    { name: '首页', path: '/' },
-    { name: '博客', path: '/blog' },
-    { name: '关于', path: '/about' },
-  ]
+const navItems = [
+  { name: '首页', path: '/' },
+  { name: '博客', path: '/blog' },
+  { name: '关于', path: '/about' },
+]
 
-  onMounted(() => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        isSearchOpen.value = true
-      }
+useHead({
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'dns-prefetch', href: 'https://fonts.googleapis.com' },
+  ],
+})
+
+onMounted(() => {
+  const handleKeydown = (e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault()
+      isSearchOpen.value = true
     }
-    window.addEventListener('keydown', handleKeydown)
-    onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
-  })
+  }
+  window.addEventListener('keydown', handleKeydown)
+  onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
+})
 </script>

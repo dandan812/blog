@@ -53,7 +53,7 @@
 
           <!-- 副标题 -->
           <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-12 font-light">
-            探索前端开发的边界，记录技术成长的轨迹。<br>
+            探索前端开发的边界，记录技术成长的轨迹。<br />
             用代码构建有温度的数字世界。
           </p>
 
@@ -76,10 +76,7 @@
               rel="noopener noreferrer"
               class="group inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white font-medium hover:bg-white/5 transition-all duration-300"
             >
-              <Icon
-                name="lucide:github"
-                class="w-4 h-4"
-              />
+              <Icon name="lucide:github" class="w-4 h-4" />
               <span>源码</span>
             </a>
           </div>
@@ -88,12 +85,8 @@
         <!-- 右侧装饰 -->
         <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
           <div class="text-right">
-            <div class="text-white/10 text-[120px] font-bold leading-none select-none">
-              01
-            </div>
-            <div class="text-white/30 text-sm tracking-widest mt-4">
-              NUXR 4
-            </div>
+            <div class="text-white/10 text-[120px] font-bold leading-none select-none">01</div>
+            <div class="text-white/30 text-sm tracking-widest mt-4">NUXR 4</div>
           </div>
         </div>
       </div>
@@ -107,47 +100,7 @@
       </div>
     </section>
 
-    <!-- 统计区域 -->
-    <!-- <section class="relative py-20 bg-[#0a0a0a] border-t border-white/5">
-      <div class="container mx-auto px-6 md:px-12">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x divide-white/10">
-          <div class="text-center md:px-8">
-            <div class="text-4xl md:text-5xl font-bold text-white mb-2">
-              10+
-            </div>
-            <div class="text-white/40 text-sm tracking-widest uppercase">
-              文章
-            </div>
-          </div>
-          <div class="text-center md:px-8">
-            <div class="text-4xl md:text-5xl font-bold text-white mb-2">
-              500+
-            </div>
-            <div class="text-white/40 text-sm tracking-widest uppercase">
-              阅读
-            </div>
-          </div>
-          <div class="text-center md:px-8">
-            <div class="text-4xl md:text-5xl font-bold text-white mb-2">
-              3
-            </div>
-            <div class="text-white/40 text-sm tracking-widest uppercase">
-              技术栈
-            </div>
-          </div>
-          <div class="text-center md:px-8">
-            <div class="text-4xl md:text-5xl font-bold text-amber-500 mb-2">
-              ∞
-            </div>
-            <div class="text-white/40 text-sm tracking-widest uppercase">
-              可能性
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
-
-    <!-- 特性展示 - 极简设计 -->
+    <!-- 特性展示 -->
     <section class="relative py-32 bg-[#fafafa]">
       <div class="container mx-auto px-6 md:px-12">
         <!-- 标题 -->
@@ -159,7 +112,7 @@
             <span>技术特性</span>
           </div>
           <h2 class="text-4xl md:text-5xl font-bold text-black leading-tight">
-            现代化的<br>
+            现代化的<br />
             <span class="text-black/30">技术架构</span>
           </h2>
         </div>
@@ -214,27 +167,19 @@
               <span class="w-8 h-px bg-amber-500" />
               <span>最新文章</span>
             </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white">
-              思考与记录
-            </h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-white">思考与记录</h2>
           </div>
           <NuxtLink
             to="/blog"
             class="hidden md:inline-flex items-center gap-2 text-white/40 hover:text-amber-500 transition-colors"
           >
             <span class="text-sm tracking-widest uppercase">查看全部</span>
-            <Icon
-              name="lucide:arrow-right"
-              class="w-4 h-4"
-            />
+            <Icon name="lucide:arrow-right" class="w-4 h-4" />
           </NuxtLink>
         </div>
 
         <!-- 文章列表 -->
-        <div
-          v-if="latestArticles.length > 0"
-          class="space-y-px bg-white/5"
-        >
+        <div v-if="latestArticles.length > 0" class="space-y-px bg-white/5">
           <NuxtLink
             v-for="(article, index) in latestArticles"
             :key="article.path"
@@ -260,16 +205,6 @@
               </p>
             </div>
 
-            <!-- 日期 -->
-            <!-- <div class="hidden md:block text-right">
-              <div class="text-white/60 text-sm">
-                {{ formatDate(article.meta?.date) }}
-              </div>
-              <div class="text-white/30 text-xs mt-1">
-                {{ article.meta?.readingTime || 5 }} 分钟
-              </div>
-            </div> -->
-
             <!-- 箭头 -->
             <Icon
               name="lucide:arrow-right"
@@ -279,40 +214,23 @@
         </div>
 
         <!-- Loading 状态 -->
-        <div
-          v-else-if="articlesPending"
-          class="py-16 text-center"
-        >
+        <div v-else-if="articlesPending" class="py-16 text-center">
           <div class="inline-flex items-center gap-3 text-white/40">
-            <Icon
-              name="lucide:loader-2"
-              class="w-5 h-5 animate-spin"
-            />
+            <Icon name="lucide:loader-2" class="w-5 h-5 animate-spin" />
             <span>加载中...</span>
           </div>
         </div>
 
         <!-- 空状态 -->
-        <div
-          v-else
-          class="py-16 text-center"
-        >
-          <p class="text-white/40">
-            暂无文章
-          </p>
+        <div v-else class="py-16 text-center">
+          <p class="text-white/40">暂无文章</p>
         </div>
 
         <!-- 移动端查看全部 -->
         <div class="md:hidden mt-8">
-          <NuxtLink
-            to="/blog"
-            class="inline-flex items-center gap-2 text-amber-500"
-          >
+          <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-amber-500">
             <span class="text-sm tracking-widest uppercase">查看全部文章</span>
-            <Icon
-              name="lucide:arrow-right"
-              class="w-4 h-4"
-            />
+            <Icon name="lucide:arrow-right" class="w-4 h-4" />
           </NuxtLink>
         </div>
       </div>
@@ -329,9 +247,7 @@
       />
 
       <div class="relative container mx-auto px-6 md:px-12 text-center">
-        <h2 class="text-4xl md:text-6xl font-bold text-black mb-6">
-          开始探索
-        </h2>
+        <h2 class="text-4xl md:text-6xl font-bold text-black mb-6">开始探索</h2>
         <p class="text-xl text-black/60 mb-12 max-w-xl mx-auto">
           在代码的世界里，每一行都是一个故事
         </p>
@@ -340,10 +256,7 @@
           class="inline-flex items-center gap-3 px-10 py-5 bg-black text-white font-medium hover:bg-black/80 transition-all duration-300"
         >
           <span>浏览全部文章</span>
-          <Icon
-            name="lucide:arrow-right"
-            class="w-4 h-4"
-          />
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
         </NuxtLink>
       </div>
     </section>
@@ -351,83 +264,54 @@
 </template>
 
 <script setup lang="ts">
-import type { Feature } from '~/types'
+  import type { Feature } from '~/types'
 
-// 页面 SEO 配置
-useHead({
-  title: 'My Blog - 思考·创造·分享',
-  meta: [
+  const SITE_URL = 'https://blog-eight-gamma-66.vercel.app/'
+  const SITE_DESC =
+    '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。'
+
+  useHead({
+    title: 'My Blog - 思考·创造·分享',
+    meta: [
+      { name: 'description', content: SITE_DESC },
+      { name: 'keywords', content: '前端开发, Vue, Nuxt, JavaScript, 技术博客, Web开发' },
+      { property: 'og:title', content: 'My Blog - 思考·创造·分享' },
+      { property: 'og:description', content: SITE_DESC },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: SITE_URL },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'My Blog - 思考·创造·分享' },
+      { name: 'twitter:description', content: SITE_DESC },
+    ],
+    link: [{ rel: 'canonical', href: SITE_URL }],
+  })
+
+  const { data: articles, pending: articlesPending } = await useAsyncData('home-articles', () =>
+    queryCollection('content').all()
+  )
+
+  const latestArticles = computed(() => {
+    if (!articles.value?.length) return []
+    return [...articles.value]
+      .sort((a, b) => +new Date(String(b?.meta?.date || 0)) - +new Date(String(a?.meta?.date || 0)))
+      .slice(0, 3)
+  })
+
+  const features: Feature[] = [
     {
-      name: 'description',
-      content:
-          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+      icon: 'lucide:zap',
+      title: '极速性能',
+      description: 'Nitro 引擎驱动，支持 SSR/SSG/ISR 多种渲染模式',
     },
-    { name: 'keywords', content: '前端开发, Vue, Nuxt, JavaScript, 技术博客, Web开发' },
-    { property: 'og:title', content: 'My Blog - 思考·创造·分享' },
     {
-      property: 'og:description',
-      content:
-          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+      icon: 'lucide:file-text',
+      title: '内容驱动',
+      description: 'Nuxt Content 3 提供强大的 Markdown 内容管理',
     },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://blog-eight-gamma-66.vercel.app/' },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'My Blog - 思考·创造·分享' },
     {
-      name: 'twitter:description',
-      content:
-          '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。',
+      icon: 'lucide:search',
+      title: '全文搜索',
+      description: '内置内容搜索，支持模糊匹配和实时预览',
     },
-  ],
-  link: [{ rel: 'canonical', href: 'https://blog-eight-gamma-66.vercel.app/' }],
-})
-
-// SSG：构建时获取文章数据
-const { data: articles, pending: articlesPending } = await useAsyncData(
-  'home-articles',
-  () => queryCollection('content').all(),
-  {
-    server: true,
-    lazy: false,
-  },
-)
-
-// 计算最新文章（取前3篇）
-const latestArticles = computed(() => {
-  if (!articles.value || !Array.isArray(articles.value) || articles.value.length === 0) return []
-  return [...articles.value]
-    .sort((a: any, b: any) => {
-      const dateA = new Date(a?.meta?.date || '1970-01-01')
-      const dateB = new Date(b?.meta?.date || '1970-01-01')
-      return dateB.getTime() - dateA.getTime()
-    })
-    .slice(0, 3)
-})
-
-// const formatDate = (date: unknown) => {
-//   if (!date) return ''
-//   return new Date(date as string).toLocaleDateString('zh-CN', {
-//     month: 'short',
-//     day: 'numeric',
-//     year: 'numeric',
-//   })
-// }
-
-const features: Feature[] = [
-  {
-    icon: 'lucide:zap',
-    title: '极速性能',
-    description: 'Nitro 引擎驱动，支持 SSR/SSG/ISR 多种渲染模式',
-  },
-  {
-    icon: 'lucide:file-text',
-    title: '内容驱动',
-    description: 'Nuxt Content 3 提供强大的 Markdown 内容管理',
-  },
-  {
-    icon: 'lucide:search',
-    title: '全文搜索',
-    description: '内置内容搜索，支持模糊匹配和实时预览',
-  },
-]
+  ]
 </script>

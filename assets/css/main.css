@@ -1,5 +1,7 @@
 /* assets/css/main.css */
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* 基础样式 */
 @layer base {
@@ -7,15 +9,27 @@
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-mono: 'Fira Code', 'JetBrains Mono', 'SF Mono', Consolas, monospace;
     --color-primary: #000000;
-    --color-primary-dark: #000000;
+    --color-primary-dark: #ffffff;
     --color-accent: #f59e0b;
+    --bg-color: #fafafa;
+    --text-color: #000000;
+  }
+
+  .dark {
+    --bg-color: #0a0a0a;
+    --text-color: #ffffff;
   }
 
   body {
-    background-color: #fafafa;
-    color: #000000;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .dark body {
+    background-color: #0a0a0a;
+    color: #ffffff;
   }
 
   h1 {
@@ -106,6 +120,107 @@
   .prose h1 {
     font-size: 1.875rem;
     font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose p {
+    line-height: 1.625;
+    margin-bottom: 1rem;
+  }
+
+  .prose a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .prose pre {
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .dark .prose pre {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .prose pre::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 12px;
+    height: 12px;
+    background: #ff5f56;
+    border-radius: 50%;
+    box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27ca40;
+  }
+
+  .prose pre code {
+    display: block;
+    padding-top: 2.5rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: transparent;
+    border: 0;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e1e4e8;
+  }
+
+  .prose pre code .line {
+    min-height: 1.6em;
+  }
+
+  .prose img {
+    border-radius: 0;
+  }
+
+  .prose hr {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose th {
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .prose td {
+    padding: 0.5rem 1rem;
+  }
+}
+
+  .prose h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
     color: #000000;
     margin-bottom: 1.5rem;
   }
@@ -155,7 +270,9 @@
     margin-bottom: 1.5rem;
     overflow: hidden;
     border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .prose pre::before {
@@ -167,7 +284,9 @@
     height: 12px;
     background: #ff5f56;
     border-radius: 50%;
-    box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27ca40;
+    box-shadow:
+      20px 0 0 #ffbd2e,
+      40px 0 0 #27ca40;
   }
 
   .prose pre code {

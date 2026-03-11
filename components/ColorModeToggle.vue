@@ -5,7 +5,10 @@
       :aria-label="`Switch to ${colorMode.value === 'dark' ? 'light' : 'dark'} mode`"
       @click="toggleDark"
     >
-      <Icon :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'" class="w-4 h-4" />
+      <Icon
+        :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
+        class="w-4 h-4"
+      />
     </button>
 
     <template #fallback>
@@ -15,9 +18,9 @@
 </template>
 
 <script setup lang="ts">
-  const colorMode = useColorMode()
+const colorMode = useColorMode()
 
-  function toggleDark() {
-    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-  }
+function toggleDark() {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
 </script>
