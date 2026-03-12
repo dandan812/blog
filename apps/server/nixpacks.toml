@@ -1,0 +1,14 @@
+# 后端服务 - Railway 部署配置
+# 参考: https://docs.railway.app/guides/services
+
+[phases.setup]
+nixPkgs = ["nodejs_20", "openssl"]
+
+[phases.install]
+cmds = ["npm install -g pnpm", "pnpm install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["pnpm prisma generate", "pnpm build"]
+
+[start]
+cmd = "npx prisma migrate deploy && node dist/app.js"

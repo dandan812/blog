@@ -1,0 +1,101 @@
+export default defineNuxtConfig({
+  modules: ['@nuxt/content', '@nuxt/image', '@nuxt/eslint', '@nuxt/icon', '@nuxtjs/color-mode'],
+
+  devtools: { enabled: false },
+
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3001',
+    },
+  },
+
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+    head: {
+      htmlAttrs: { lang: 'zh-CN' },
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    },
+  },
+
+  css: ['~/assets/css/main.css'],
+
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
+  },
+
+  content: {
+    watch: { enabled: false },
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+          langs: [
+            'javascript',
+            'typescript',
+            'vue',
+            'html',
+            'css',
+            'json',
+            'bash',
+            'markdown',
+            'yaml',
+          ],
+        },
+      },
+    },
+  },
+
+  routeRules: {
+    '/': { prerender: true },
+    '/blog/**': { prerender: true },
+    '/about': { prerender: true },
+  },
+
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: true,
+  },
+
+  compatibilityDate: '2025-02-10',
+
+  nitro: {
+    compressPublicAssets: true,
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true,
+    },
+  },
+
+  vite: {
+    build: {
+      target: 'esnext',
+    },
+  },
+
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+    },
+  },
+
+  image: {
+    quality: 80,
+    format: ['webp', 'avif'],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+  },
+})

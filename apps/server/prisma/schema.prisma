@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+  comments  Comment[]
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String    @db.Text
+  excerpt     String?   @db.Text
+  coverImage  String?
+  published   Boolean   @default(false)
+  viewCount   Int       @default(0)
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  comments    Comment[]
+  tags        Tag[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([published])
+  @@index([createdAt])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  author    String
+  email     String
+  website   String?
+  status    String   @default("pending")
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  parentId  String?
+  replies   Comment[] @relation("Replies")
+  parent    Comment? @relation("Replies", fields: [parentId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([status])
+}
+
+model Tag {
+  id     String  @id @default(cuid())
+  name   String  @unique
+  slug   String  @unique
+  posts  Post[]
+}
+
+model ViewLog {
+  id        String   @id @default(cuid())
+  postId    String
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+  @@index([createdAt])
+}

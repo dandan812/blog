@@ -30,6 +30,7 @@
 - [x] 性能监控插件
 - [x] 代码分割和预加载
 - [x] 类型检查通过
+- [x] 代码简化优化
 
 ### 修复的问题
 
@@ -43,151 +44,234 @@
 
 ## 待办事项 📝
 
-### 高优先级
+### 阶段 1：项目初始化 (Day 1) ✅
 
-- [ ] 搭建 Node.js + MySQL 后端 API
-- [ ] 开发 Vue3 + Element Plus 管理后台
-- [ ] 实现文章编辑器（Markdown）
-- [ ] 实现 JWT 认证
+- [x] 1.1 创建 Monorepo 结构 (pnpm workspace)
+- [x] 1.2 初始化后端项目 (Express + TypeScript)
+- [x] 1.3 配置 Prisma
+- [x] 1.4 创建 Supabase 数据库（替代 PlanetScale）
+- [x] 1.5 执行数据库迁移
 
-### 中优先级
+### 阶段 2：后端核心功能 (Day 2-3) ✅
 
-- [ ] 评论系统
-- [ ] 统计分析（访问量、热门文章）
-- [ ] 多语言支持（i18n）
-- [ ] RSS 订阅
-- [ ] 邮件订阅
+- [x] 2.1 用户认证模块
+  - [x] 注册接口
+  - [x] 登录接口
+  - [x] JWT 中间件
+  - [x] 密码加密
+- [x] 2.2 文章管理模块
+  - [x] CRUD 接口
+  - [x] Slug 自动生成
+  - [x] 草稿/发布状态
+- [x] 2.3 评论系统模块
+  - [x] 发表评论（支持游客）
+  - [x] 评论审核
+  - [x] 嵌套回复
+- [x] 2.4 统计功能模块
+  - [x] 浏览记录
+  - [x] 热门文章
+  - [x] 仪表盘数据
 
-### 低优先级
+### 阶段 3：管理后台 (Day 4-5) ✅
 
-- [ ] PWA 支持
-- [ ] 文章导出 PDF
-- [ ] 自动备份功能
+- [x] 3.1 项目搭建 (Vue 3 + Vite + Element Plus)
+- [x] 3.2 登录模块
+  - [x] 登录页面
+  - [x] Token 持久化
+  - [x] 路由守卫
+- [x] 3.3 文章管理
+  - [x] 文章列表
+  - [x] Markdown 编辑器 (ByteMD)
+  - [x] 发布/草稿切换
+- [x] 3.4 评论管理
+  - [x] 评论列表
+  - [x] 审核/删除
+- [x] 3.5 统计看板
+  - [x] 访问趋势图
+  - [x] 热门文章
+
+### 阶段 4：前端改造 (Day 6) ✅
+
+- [x] 4.1 创建 API 服务层
+  - [x] 创建 `types/api.ts` 定义 API 类型
+  - [x] 创建 `composables/useApi.ts` 封装 API 调用
+  - [x] 支持 usePosts、usePost、useComments、usePopularPosts
+- [x] 4.2 替换 Nuxt Content 查询
+  - [x] 首页改为调用 `/api/posts` 接口
+  - [x] 博客列表页改为调用 `/api/posts` 接口
+  - [x] 文章详情页改为调用 `/api/posts/:slug` 接口
+- [x] 4.3 添加加载状态
+  - [x] 首页添加加载中状态
+  - [x] 列表页添加加载中状态
+  - [x] 详情页添加加载中状态
+- [x] 4.4 错误处理
+  - [x] API 请求错误捕获
+  - [x] 错误状态展示
+  - [x] 重试机制
+
+### 阶段 5：部署上线 (Day 7) ✅
+
+- [x] 5.1 Railway 部署配置
+  - [x] 创建 `railway.json` 配置文件
+  - [x] 创建 `nixpacks.toml` 构建配置
+  - [x] 更新 `package.json` 部署脚本
+- [x] 5.2 数据迁移脚本
+  - [x] 创建 `src/seed.ts` 种子脚本
+  - [x] 支持 Markdown 文章迁移到数据库
+  - [x] 创建默认管理员账号
+- [x] 5.3 部署文档
+  - [x] 更新 `DEPLOY.md` 完整部署指南
+  - [x] 包含 Supabase + Railway + Vercel 部署流程
+- [x] 5.4 测试验证
+  - [x] 后端健康检查接口
+  - [x] API 接口验证
 
 ---
 
 ## 技术栈
 
-### 前端
+### 前端（已完成）
 
 - **框架**: Nuxt 4 + Vue 3 + TypeScript
 - **样式**: Tailwind CSS 4 + PostCSS
-- **UI 组件**: 自定义组件 + Element Plus (后台)
+- **UI 组件**: 自定义组件
 - **图标**: Lucide Icons
-- **内容**: Nuxt Content 3
-- **图片**: @nuxt/image
+- **数据**: API 调用（已从 Nuxt Content 迁移）
 
-### 后端（计划使用）
+### 后端（已完成）
 
 - **运行时**: Node.js
-- **框架**: Express.js / Fastify / NestJS (待确定)
-- **数据库**: MySQL
-- **ORM**: Prisma / Sequelize (待确定)
-- **认证**: JWT
-- **存储**: 本地/七牛云 OSS
+- **框架**: Express.js
+- **语言**: TypeScript
+- **数据库**: Supabase (PostgreSQL)
+- **ORM**: Prisma
+- **认证**: JWT + bcryptjs
+- **验证**: Zod
 
-### 部署
+### 管理后台（已完成）
+
+- **框架**: Vue 3 + Vite
+- **UI**: Element Plus
+- **状态**: Pinia
+- **路由**: Vue Router
+- **编辑器**: ByteMD
+
+### 部署（已完成）
 
 - **前端**: Vercel
-- **后端**: Railway / Render / 阿里云 ECS (待确定)
-- **数据库**: PlanetScale (免费版) / 阿里云 RDS (待确定)
+- **后端**: Railway
+- **数据库**: Supabase
 
 ---
 
-## 重要配置
-
-### 环境变量
-
-```
-# 数据库
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=blog
-DB_USER=root
-DB_PASSWORD=your_password
-
-# JWT
-JWT_SECRET=your_secret_key
-JWT_EXPIRES_IN=7d
-
-# API
-API_PORT=3001
-API_URL=http://localhost:3001
-
-# 前端
-NUXT_PUBLIC_API_URL=http://localhost:3001
-```
-
-### 构建命令
-
-```bash
-# 开发
-pnpm dev
-
-# 构建
-pnpm build
-
-# 生成静态站点
-pnpm generate
-
-# 类型检查
-pnpm typecheck
-
-# 测试
-pnpm test
-```
-
----
-
-## 项目结构
+## 项目结构（目标）
 
 ```
 blog/
-├── components/          # Vue 组件
-├── composables/         # 组合式函数
-├── content/blog/        # Markdown 文章
-├── layouts/             # 布局
-├── pages/               # 页面
-├── plugins/             # 插件
-├── types/               # 类型定义
-├── utils/               # 工具函数
-└── AGENTS.md            # 本文件
+├── apps/
+│   ├── web/                    # Nuxt 4 前端 (现有)
+│   ├── admin/                  # Vue 3 管理后台 (新增)
+│   └── server/                 # Express 后端 (新增)
+│       ├── src/
+│       │   ├── controllers/    # 控制器
+│       │   ├── middlewares/    # 中间件
+│       │   ├── services/       # 业务逻辑
+│       │   ├── routes/         # 路由
+│       │   ├── prisma/         # 数据库模型
+│       │   ├── utils/          # 工具函数
+│       │   └── app.ts          # 应用入口
+│       └── package.json
+├── packages/
+│   └── shared/                 # 共享类型 (新增)
+├── pnpm-workspace.yaml         # Monorepo 配置
+└── AGENTS.md                   # 本文件
 ```
 
 ---
 
-## 部署方案选择
+## 环境变量
 
-### 方案 1：免费版（当前）
+### 前端 `.env` (apps/web)
 
-- **前端**: Vercel（免费）
-- **后端**: 无（使用 Nuxt Content）
-- **数据库**: SQLite（本地文件）
-- **成本**: 0 元/月
+```env
+# API Base URL - 后端服务地址
+NUXT_PUBLIC_API_URL=http://localhost:3001
+```
 
-### 方案 2：低成本版（推荐）
+### 后端 `.env` (apps/server)
 
-- **前端**: Vercel（免费）
-- **后端**: Railway / Render（免费额度）
-- **数据库**: PlanetScale（免费版）
-- **成本**: 0-30 元/月
+```env
+# 数据库 (Supabase PostgreSQL)
+DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres"
+DIRECT_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres"
 
-### 方案 3：稳定版
+# JWT
+JWT_SECRET="your-super-secret-key"
+JWT_EXPIRES_IN="7d"
 
-- **前端**: Vercel Pro（20 美元/月）
-- **后端**: 阿里云 ECS（35 元/月）
-- **数据库**: 阿里云 RDS（25 元/月）
-- **成本**: 约 60-80 元/月
+# 应用
+PORT=3001
+NODE_ENV=development
+
+# 前端地址 (CORS)
+FRONTEND_URL="http://localhost:3000"
+ADMIN_URL="http://localhost:5173"
+```
 
 ---
 
-## 下一步行动
+## API 设计
 
-1. 确定后端技术栈（Express vs Fastify vs NestJS）
-2. 选择数据库部署方案
-3. 初始化后端项目
-4. 开发管理后台
-5. 改造 Nuxt 前端调用 API
+### 认证模块 `/api/auth`
+
+| 方法 | 路径      | 说明         | 认证 |
+| ---- | --------- | ------------ | ---- |
+| POST | /register | 注册管理员   | 否   |
+| POST | /login    | 登录         | 否   |
+| GET  | /me       | 获取当前用户 | 是   |
+
+### 文章模块 `/api/posts`
+
+| 方法   | 路径   | 说明     | 认证 |
+| ------ | ------ | -------- | ---- |
+| GET    | /      | 文章列表 | 否   |
+| GET    | /:slug | 文章详情 | 否   |
+| POST   | /      | 创建文章 | 是   |
+| PUT    | /:id   | 更新文章 | 是   |
+| DELETE | /:id   | 删除文章 | 是   |
+
+### 评论模块 `/api/comments`
+
+| 方法   | 路径          | 说明     | 认证 |
+| ------ | ------------- | -------- | ---- |
+| GET    | /post/:postId | 获取评论 | 否   |
+| POST   | /             | 发表评论 | 否   |
+| DELETE | /:id          | 删除评论 | 是   |
+
+### 统计模块 `/api/stats`
+
+| 方法 | 路径          | 说明     | 认证 |
+| ---- | ------------- | -------- | ---- |
+| POST | /view/:postId | 记录浏览 | 否   |
+| GET  | /popular      | 热门文章 | 否   |
+| GET  | /dashboard    | 仪表盘   | 是   |
+
+---
+
+## 成本估算
+
+| 服务        | 免费额度   | 预计使用 | 成本        |
+| ----------- | ---------- | -------- | ----------- |
+| Vercel      | 100GB带宽  | ~5GB     | 0 元        |
+| Railway     | 500小时/月 | ~300小时 | 0 元        |
+| PlanetScale | 1亿行读取  | ~10万行  | 0 元        |
+| **总计**    | -          | -        | **0 元/月** |
+
+---
+
+## 详细计划文档
+
+完整实施计划见：`.opencode/plans/backend-plan.md`
 
 ---
 
