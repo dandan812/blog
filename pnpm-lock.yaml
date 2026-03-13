@@ -78,6 +78,9 @@ importers:
       '@prisma/client':
         specifier: 6.4.1
         version: 6.4.1(prisma@6.4.1(typescript@5.9.3))(typescript@5.9.3)
+      '@types/node':
+        specifier: ^22.13.4
+        version: 22.19.15
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -118,9 +121,6 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.8
         version: 9.0.10
-      '@types/node':
-        specifier: ^22.13.4
-        version: 22.19.15
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.24.1
         version: 8.57.0(@typescript-eslint/parser@8.57.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)
