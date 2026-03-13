@@ -52,7 +52,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id])
   parentId  String?
   replies   Comment[] @relation("Replies")
-  parent    Comment? @relation("Replies", fields: [parentId], references: [id])
+  parent    Comment? @relation("Replies", fields: [parentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
