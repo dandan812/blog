@@ -18,6 +18,7 @@
   "main": "dist/app.js",
   "dependencies": {
     "@prisma/client": "6.4.1",
+    "prisma": "6.4.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -36,7 +37,6 @@
     "eslint": "^8.57.1",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
-    "prisma": "6.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5.9.3"
   }
