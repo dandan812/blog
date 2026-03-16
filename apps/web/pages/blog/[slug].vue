@@ -199,7 +199,13 @@
 </template>
 
 <script setup lang="ts">
+import { marked } from 'marked'
 import type { Post } from '~/composables/usePosts'
+
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+})
 
 const route = useRoute()
 const slug = route.params.slug as string
@@ -264,7 +270,7 @@ const shareUrl = computed(() => (typeof window === 'undefined' ? '' : window.loc
 
 const renderedContent = computed(() => {
   if (!post.value?.content) return ''
-  return post.value.content
+  return marked.parse(post.value.content) as string
 })
 
 useHead(() => ({
