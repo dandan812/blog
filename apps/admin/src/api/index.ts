@@ -2,8 +2,10 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
+const API_BASE_URL = 'https://blog-tf6l.onrender.com/api'
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: API_BASE_URL,
   timeout: 10000,
 })
 
