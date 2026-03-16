@@ -102,7 +102,7 @@
               <span>浏览文章</span>
               <Icon
                 name="lucide:arrow-right"
-                class="w-4 h-4 group-hover:translate-x-1 transition-transform"  <!-- 悬停时右移动画 -->
+                class="w-4 h-4 group-hover:translate-x-1 transition-transform"
               />
             </NuxtLink>
 
