@@ -75,7 +75,7 @@
   const filter = reactive({ status: '' })
   const pagination = reactive({ page: 1, pageSize: 20, total: 0 })
 
-  const statusMap: Record<string, { type: string; text: string }> = {
+  const statusMap: Record<string, { type: 'success' | 'primary' | 'warning' | 'info' | 'danger'; text: string }> = {
     pending: { type: 'warning', text: '待审核' },
     approved: { type: 'success', text: '已通过' },
     rejected: { type: 'danger', text: '已拒绝' },

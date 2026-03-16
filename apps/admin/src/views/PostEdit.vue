@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="内容" prop="content">
         <div class="w-full border rounded overflow-hidden">
-          <Editor :value="form.content" :plugins="plugins" @change="handleChange" />
+          <ByteMdEditor :value="form.content" :plugins="plugins" @change="handleChange" />
         </div>
       </el-form-item>
       <el-form-item label="封面图">
@@ -32,7 +32,7 @@
   import { ref, reactive, computed, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-  import { Editor } from '@bytemd/vue-next'
+  import { Editor as ByteMdEditor } from '@bytemd/vue-next'
   import gfm from '@bytemd/plugin-gfm'
   import highlight from '@bytemd/plugin-highlight'
   import 'bytemd/dist/index.css'
