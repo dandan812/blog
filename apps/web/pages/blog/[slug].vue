@@ -1,13 +1,13 @@
 <template>
   <div class="min-h-screen">
-    <div v-if="pending" class="min-h-[60vh] flex items-center justify-center bg-[#fafafa]">
+    <div v-if="pending" class="min-h-[60vh] flex items-center justify-center bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="text-center">
         <Icon name="lucide:loader-2" class="w-12 h-12 animate-spin text-black/40 mx-auto" />
         <p class="text-black/40 mt-4">加载中...</p>
       </div>
     </div>
 
-    <div v-else-if="error" class="min-h-[60vh] flex items-center justify-center bg-[#fafafa]">
+    <div v-else-if="error" class="min-h-[60vh] flex items-center justify-center bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="text-center">
         <Icon name="luc:alert-circle" class="w-12 h-12 text-red-500 mx-auto" />
         <h1 class="text-2xl font-bold text-black mt-4 mb-2">加载失败</h1>
@@ -82,14 +82,14 @@
         </div>
       </header>
 
-      <div class="py-16 bg-[#fafafa]">
+      <div class="py-16 bg-[#fafafa] dark:bg-[#0a0a0a]">
         <div class="container mx-auto px-6 md:px-12">
           <div class="max-w-3xl mx-auto">
             <div class="prose prose-lg max-w-none dark:prose-invert" v-html="renderedContent" />
 
-            <footer class="mt-16 pt-12 border-t border-black/5">
+            <footer class="mt-16 pt-12 border-t border-black/5 dark:border-white/5">
               <div class="flex items-center justify-between mb-12">
-                <div class="text-sm text-black/40 tracking-widest uppercase">分享</div>
+                <div class="text-sm text-black/40 dark:text-white/40 tracking-widest uppercase">分享</div>
                 <div class="flex items-center gap-2">
                   <button
                     class="w-10 h-10 flex items-center justify-center border border-black/10 hover:border-black hover:bg-black hover:text-white transition-all"
@@ -106,11 +106,11 @@
                 </div>
               </div>
 
-              <div class="grid md:grid-cols-2 gap-px bg-black/5">
+              <div class="grid md:grid-cols-2 gap-px bg-black/5 dark:bg-white/5">
                 <NuxtLink
                   v-if="prevPost"
                   :to="`/blog/${prevPost.slug}`"
-                  class="group p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                  class="group p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
                 >
                   <div class="text-xs text-black/30 mb-2 tracking-widest uppercase">上一篇</div>
                   <div class="flex items-center gap-3">
@@ -123,12 +123,12 @@
                     </span>
                   </div>
                 </NuxtLink>
-                <div v-else class="p-6 bg-[#fafafa]" />
+                <div v-else class="p-6 bg-[#fafafa] dark:bg-[#0a0a0a]" />
 
                 <NuxtLink
                   v-if="nextPost"
                   :to="`/blog/${nextPost.slug}`"
-                  class="group p-6 bg-[#fafafa] hover:bg-white transition-all duration-300 text-right"
+                  class="group p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300 text-right"
                 >
                   <div class="text-xs text-black/30 mb-2 tracking-widest uppercase">下一篇</div>
                   <div class="flex items-center justify-end gap-3">
@@ -141,25 +141,25 @@
                     />
                   </div>
                 </NuxtLink>
-                <div v-else class="p-6 bg-[#fafafa]" />
+                <div v-else class="p-6 bg-[#fafafa] dark:bg-[#0a0a0a]" />
               </div>
             </footer>
 
             <section
               v-if="relatedPosts?.length"
-              class="mt-16 pt-12 border-t border-black/5"
+              class="mt-16 pt-12 border-t border-black/5 dark:border-white/5"
             >
-              <div class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase">
+              <div class="inline-flex items-center gap-3 mb-8 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase">
                 <span class="w-8 h-px bg-amber-500" />
                 <span>相关文章</span>
               </div>
 
-              <div class="space-y-px bg-black/5">
+              <div class="space-y-px bg-black/5 dark:bg-white/5">
                 <NuxtLink
                   v-for="article in relatedPosts"
                   :key="article.id"
                   :to="`/blog/${article.slug}`"
-                  class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                  class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
                 >
                   <div class="flex-1">
                     <h3 class="font-bold text-black group-hover:text-amber-600 transition-colors mb-1">
@@ -181,7 +181,7 @@
       </div>
     </article>
 
-    <div v-else class="min-h-[60vh] flex items-center justify-center bg-[#fafafa]">
+    <div v-else class="min-h-[60vh] flex items-center justify-center bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="text-center">
         <div class="text-8xl font-bold text-black/10 mb-6">404</div>
         <h1 class="text-2xl font-bold text-black mb-4">文章未找到</h1>
