@@ -13,11 +13,13 @@
     --color-accent: #f59e0b;
     --bg-color: #fafafa;
     --text-color: #000000;
+    --content-bg: #fafafa;
   }
 
   .dark {
     --bg-color: #0a0a0a;
     --text-color: #ffffff;
+    --content-bg: #0a0a0a;
   }
 
   body {
@@ -30,6 +32,13 @@
   .dark body {
     background-color: #0a0a0a;
     color: #ffffff;
+  }
+
+  /* 深色模式下文章内容背景 */
+  .dark article section,
+  .dark .prose-container,
+  .dark [class*="bg-\\[\\#fafafa\\]"] {
+    background-color: #0a0a0a !important;
   }
 
   h1 {
@@ -71,6 +80,12 @@
     border: 1px solid #fef3c7;
   }
 
+  .dark code {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f59e0b;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
   pre {
     overflow-x: auto;
     margin-top: 1.5rem;
@@ -103,6 +118,10 @@
     color: rgba(0, 0, 0, 0.6);
     margin-top: 1rem;
     margin-bottom: 1rem;
+  }
+
+  .dark blockquote {
+    color: rgba(255, 255, 255, 0.6);
   }
 
   ::selection {
@@ -366,4 +385,34 @@
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* 深色模式文章页背景 */
+.dark article > div {
+  background-color: #0a0a0a !important;
+}
+
+.dark article section {
+  background-color: #0a0a0a !important;
+}
+
+.dark article footer {
+  background-color: #0a0a0a !important;
+}
+
+.dark article .grid > div,
+.dark article .grid > a {
+  background-color: #0a0a0a !important;
+}
+
+.dark article .space-y-px > a {
+  background-color: #0a0a0a !important;
+}
+
+.dark article .space-y-px > a:hover {
+  background-color: #1a1a1a !important;
+}
+
+.dark article .grid > a:hover {
+  background-color: #1a1a1a !important;
 }
