@@ -48,7 +48,10 @@
               ]"
               @click="viewMode = 'grid'"
             >
-              <Icon name="lucide:grid" class="w-4 h-4" />
+              <Icon
+                name="lucide:grid"
+                class="w-4 h-4"
+              />
             </button>
             <button
               :class="[
@@ -59,7 +62,10 @@
               ]"
               @click="viewMode = 'list'"
             >
-              <Icon name="lucide:list" class="w-4 h-4" />
+              <Icon
+                name="lucide:list"
+                class="w-4 h-4"
+              />
             </button>
           </div>
         </div>
@@ -68,14 +74,30 @@
 
     <section class="py-16 bg-[#fafafa]">
       <div class="container mx-auto px-6 md:px-12">
-        <div v-if="pending" class="py-16 text-center">
-          <Icon name="lucide:loader-2" class="w-8 h-8 animate-spin text-black/40 mx-auto" />
-          <p class="text-black/40 mt-4">加载中...</p>
+        <div
+          v-if="pending"
+          class="py-16 text-center"
+        >
+          <Icon
+            name="lucide:loader-2"
+            class="w-8 h-8 animate-spin text-black/40 mx-auto"
+          />
+          <p class="text-black/40 mt-4">
+            加载中...
+          </p>
         </div>
 
-        <div v-else-if="error" class="py-16 text-center">
-          <Icon name="lucide:alert-circle" class="w-12 h-12 text-red-500 mx-auto" />
-          <p class="text-black/60 mt-4">{{ error }}</p>
+        <div
+          v-else-if="error"
+          class="py-16 text-center"
+        >
+          <Icon
+            name="lucide:alert-circle"
+            class="w-12 h-12 text-red-500 mx-auto"
+          />
+          <p class="text-black/60 mt-4">
+            {{ error }}
+          </p>
           <button
             class="mt-4 px-6 py-2 bg-black text-white hover:bg-black/80 transition-colors"
             @click="loadPosts"
@@ -101,7 +123,10 @@
                 {{ String(index + 1 + (currentPage - 1) * pageSize).padStart(2, '0') }}
               </div>
 
-              <div v-if="article.tags?.length" class="flex flex-wrap gap-2 mb-4">
+              <div
+                v-if="article.tags?.length"
+                class="flex flex-wrap gap-2 mb-4"
+              >
                 <span
                   v-for="tag in article.tags.slice(0, 2)"
                   :key="tag.id"
@@ -171,10 +196,17 @@
             </NuxtLink>
           </div>
 
-          <div v-if="!posts.length" class="py-32 text-center">
-            <div class="text-6xl font-bold text-black/10 mb-6">00</div>
-            <h3 class="text-2xl font-bold text-black mb-3">没有找到文章</h3>
-            <p class="text-black/40">暂无发布的文章</p>
+          <div
+            v-if="!posts.length"
+            class="py-32 text-center"
+          >
+            <!-- <div class="text-6xl font-bold text-black/10 mb-6">00</div> -->
+            <h3 class="text-2xl font-bold text-black mb-3">
+              没有找到文章
+            </h3>
+            <p class="text-black/40">
+              暂无发布的文章
+            </p>
           </div>
         </template>
       </div>
@@ -191,7 +223,10 @@
             class="p-3 border border-black/10 text-black/40 hover:text-black hover:border-black/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             @click="goToPage(currentPage - 1)"
           >
-            <Icon name="lucide:chevron-left" class="w-4 h-4" />
+            <Icon
+              name="lucide:chevron-left"
+              class="w-4 h-4"
+            />
           </button>
 
           <div class="flex items-center gap-1">
@@ -217,7 +252,10 @@
             class="p-3 border border-black/10 text-black/40 hover:text-black hover:border-black/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             @click="goToPage(currentPage + 1)"
           >
-            <Icon name="lucide:chevron-right" class="w-4 h-4" />
+            <Icon
+              name="lucide:chevron-right"
+              class="w-4 h-4"
+            />
           </button>
         </div>
 
@@ -230,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Post, PostsResponse } from '~/composables/usePosts'
+import type { Post } from '~/composables/usePosts'
 
 useHead({
   title: '博客文章 - My Blog',
@@ -257,9 +295,11 @@ const loadPosts = async () => {
       total.value = res.total
       totalPages.value = res.totalPages
     }
-  } catch (e) {
+  }
+  catch (e) {
     error.value = e instanceof Error ? e.message : '加载失败'
-  } finally {
+  }
+  finally {
     pending.value = false
   }
 }
@@ -286,7 +326,8 @@ const displayedPages = computed(() => {
     if (prev) {
       if (i - prev === 2) {
         rangeWithDots.push(prev + 1)
-      } else if (i - prev !== 1) {
+      }
+      else if (i - prev !== 1) {
         rangeWithDots.push(-1)
       }
     }
