@@ -230,12 +230,12 @@
               </div>
             </section>
             <GiscusComments
-              :repo="(config.public.giscus as { repo?: string }).repo"
-              :repo-id="(config.public.giscus as { repoId?: string }).repoId"
-              :category="(config.public.giscus as { category?: string }).category"
-              :category-id="(config.public.giscus as { categoryId?: string }).categoryId"
+              :repo="giscusConfig.repo"
+              :repo-id="giscusConfig.repoId"
+              :category="giscusConfig.category"
+              :category-id="giscusConfig.categoryId"
               :mapping="giscusMapping"
-              :lang="(config.public.giscus as { lang?: string }).lang"
+              :lang="giscusConfig.lang"
             />
           </div>
         </div>
@@ -385,6 +385,14 @@ const copyLink = async () => {
 }
 
 const giscusMapping = computed(() => (config.public.giscus as { mapping?: 'pathname' | 'url' | 'title' | 'og:title' }).mapping || 'pathname')
+
+const giscusConfig = computed(() => config.public.giscus as {
+  repo?: string
+  repoId?: string
+  category?: string
+  categoryId?: string
+  lang?: string
+})
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('zh-CN', {

@@ -1,34 +1,8 @@
 <template>
   <div class="min-h-screen">
-    <section class="relative py-24 md:py-32 bg-[#0a0a0a]">
-      <div class="absolute inset-0">
-        <div
-          class="absolute inset-0"
-          style="
-            background-image:
-              linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 80px 80px;
-          "
-        />
-      </div>
-
-      <div class="relative container mx-auto px-6 md:px-12">
-        <div
-          class="inline-flex items-center gap-3 mb-8 text-white/40 text-sm tracking-widest uppercase"
-        >
-          <span class="w-8 h-px bg-amber-500" />
-          <span>博客文章</span>
-        </div>
-
-        <h1 class="text-5xl md:text-7xl font-bold text-white leading-[0.9] tracking-tight mb-6">
-          思考与记录
-        </h1>
-        <!-- <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed font-light">
-          探索前端开发的边界，记录技术成长的轨迹
-        </p> -->
-      </div>
-    </section>
+    <UiHero label="博客文章">
+      思考与记录
+    </UiHero>
 
     <section class="sticky top-0 z-10 bg-[#fafafa] dark:bg-[#111] border-b border-black/5 dark:border-white/10">
       <div class="container mx-auto px-6 md:px-12">
@@ -72,144 +46,110 @@
       </div>
     </section>
 
-    <section class="py-16 bg-[#fafafa] dark:bg-[#111]">
-      <div class="container mx-auto px-6 md:px-12">
-        <div
-          v-if="pending"
-          class="py-16 text-center"
-        >
-          <Icon
-            name="lucide:loader-2"
-            class="w-8 h-8 animate-spin text-black/40 dark:text-white/40 mx-auto"
-          />
-          <p class="text-black/40 dark:text-white/40 mt-4">
-            加载中...
-          </p>
-        </div>
+    <UiContentSection>
+      <UiLoadingState v-if="pending" />
 
-        <div
-          v-else-if="error"
-          class="py-16 text-center"
+      <div
+        v-else-if="error"
+        class="py-16 text-center"
+      >
+        <Icon
+          name="lucide:alert-circle"
+          class="w-12 h-12 text-red-500 mx-auto"
+        />
+        <p class="text-black/60 dark:text-white/60 mt-4">
+          {{ error }}
+        </p>
+        <button
+          class="mt-4 px-6 py-2 bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
+          @click="loadPosts"
         >
-          <Icon
-            name="lucide:alert-circle"
-            class="w-12 h-12 text-red-500 mx-auto"
-          />
-          <p class="text-black/60 dark:text-white/60 mt-4">
-            {{ error }}
-          </p>
-          <button
-            class="mt-4 px-6 py-2 bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
-            @click="loadPosts"
-          >
-            重试
-          </button>
-        </div>
+          重试
+        </button>
+      </div>
 
-        <template v-else>
-          <div
-            v-if="posts.length && viewMode === 'grid'"
-            class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-black/5 dark:bg-white/10"
+      <template v-else>
+        <UiCardGrid v-if="posts.length && viewMode === 'grid'">
+          <NuxtLink
+            v-for="(article, index) in posts"
+            :key="article.id"
+            :to="`/blog/${article.slug}`"
+            class="group relative p-8 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-500"
           >
-            <NuxtLink
-              v-for="(article, index) in posts"
-              :key="article.id"
-              :to="`/blog/${article.slug}`"
-              class="group relative p-8 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-500"
+            <div class="text-5xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors mb-6">
+              {{ String(index + 1 + (currentPage - 1) * pageSize).padStart(2, '0') }}
+            </div>
+
+            <div
+              v-if="article.tags?.length"
+              class="flex flex-wrap gap-2 mb-4"
             >
-              <div
-                class="text-5xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors mb-6"
+              <span
+                v-for="tag in article.tags.slice(0, 2)"
+                :key="tag.id"
+                class="px-2 py-1 text-xs text-black/40 dark:text-white/40 border border-black/10 dark:border-white/10"
               >
-                {{ String(index + 1 + (currentPage - 1) * pageSize).padStart(2, '0') }}
-              </div>
+                {{ tag.name }}
+              </span>
+            </div>
 
-              <div
-                v-if="article.tags?.length"
-                class="flex flex-wrap gap-2 mb-4"
-              >
-                <span
-                  v-for="tag in article.tags.slice(0, 2)"
-                  :key="tag.id"
-                  class="px-2 py-1 text-xs text-black/40 dark:text-white/40 border border-black/10 dark:border-white/10"
-                >
-                  {{ tag.name }}
-                </span>
-              </div>
+            <h3 class="text-xl font-bold text-black dark:text-white group-hover:text-amber-500 transition-colors mb-3 line-clamp-2">
+              {{ article.title }}
+            </h3>
 
-              <h3
-                class="text-xl font-bold text-black dark:text-white group-hover:text-amber-500 transition-colors mb-3 line-clamp-2"
-              >
+            <p class="text-black/50 dark:text-white/50 text-sm leading-relaxed line-clamp-2 mb-6">
+              {{ article.excerpt || article.content?.slice(0, 100) }}
+            </p>
+
+            <div class="flex items-center justify-between text-xs text-black/30 dark:text-white/30">
+              <span>{{ formatDate(article.createdAt) }}</span>
+              <span>{{ article.viewCount }} 次阅读</span>
+            </div>
+          </NuxtLink>
+        </UiCardGrid>
+
+        <div
+          v-if="posts.length && viewMode === 'list'"
+          class="space-y-px bg-black/5 dark:bg-white/10"
+        >
+          <NuxtLink
+            v-for="(article, index) in posts"
+            :key="article.id"
+            :to="`/blog/${article.slug}`"
+            class="group flex items-center gap-8 p-6 md:p-8 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
+          >
+            <div class="hidden md:block text-4xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors w-16">
+              {{ String(index + 1 + (currentPage - 1) * pageSize).padStart(2, '0') }}
+            </div>
+
+            <div class="flex-1">
+              <h3 class="text-xl md:text-2xl font-bold text-black dark:text-white group-hover:text-amber-500 transition-colors mb-2">
                 {{ article.title }}
               </h3>
-
-              <p class="text-black/50 dark:text-white/50 text-sm leading-relaxed line-clamp-2 mb-6">
+              <p class="text-black/40 dark:text-white/40 line-clamp-1">
                 {{ article.excerpt || article.content?.slice(0, 100) }}
               </p>
+            </div>
 
-              <div class="flex items-center justify-between text-xs text-black/30 dark:text-white/30">
-                <span>{{ formatDate(article.createdAt) }}</span>
-                <span>{{ article.viewCount }} 次阅读</span>
-              </div>
-            </NuxtLink>
-          </div>
+            <div class="hidden md:block text-right">
+              <div class="text-black/60 dark:text-white/60 text-sm">{{ formatDate(article.createdAt) }}</div>
+              <div class="text-black/30 dark:text-white/30 text-xs mt-1">{{ article.viewCount }} 次阅读</div>
+            </div>
 
-          <div
-            v-if="posts.length && viewMode === 'list'"
-            class="space-y-px bg-black/5 dark:bg-white/10"
-          >
-            <NuxtLink
-              v-for="(article, index) in posts"
-              :key="article.id"
-              :to="`/blog/${article.slug}`"
-              class="group flex items-center gap-8 p-6 md:p-8 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
-            >
-              <div
-                class="hidden md:block text-4xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors w-16"
-              >
-                {{ String(index + 1 + (currentPage - 1) * pageSize).padStart(2, '0') }}
-              </div>
+            <Icon
+              name="lucide:arrow-right"
+              class="w-5 h-5 text-black/20 dark:text-white/20 group-hover:text-amber-500 group-hover:translate-x-2 transition-all"
+            />
+          </NuxtLink>
+        </div>
 
-              <div class="flex-1">
-                <h3
-                  class="text-xl md:text-2xl font-bold text-black dark:text-white group-hover:text-amber-500 transition-colors mb-2"
-                >
-                  {{ article.title }}
-                </h3>
-                <p class="text-black/40 dark:text-white/40 line-clamp-1">
-                  {{ article.excerpt || article.content?.slice(0, 100) }}
-                </p>
-              </div>
-
-              <div class="hidden md:block text-right">
-                <div class="text-black/60 dark:text-white/60 text-sm">
-                  {{ formatDate(article.createdAt) }}
-                </div>
-                <div class="text-black/30 dark:text-white/30 text-xs mt-1">
-                  {{ article.viewCount }} 次阅读
-                </div>
-              </div>
-
-              <Icon
-                name="lucide:arrow-right"
-                class="w-5 h-5 text-black/20 dark:text-white/20 group-hover:text-amber-500 group-hover:translate-x-2 transition-all"
-              />
-            </NuxtLink>
-          </div>
-
-          <div
-            v-if="!posts.length"
-            class="py-32 text-center"
-          >
-            <h3 class="text-2xl font-bold text-black dark:text-white mb-3">
-              没有找到文章
-            </h3>
-            <p class="text-black/40 dark:text-white/40">
-              暂无发布的文章
-            </p>
-          </div>
-        </template>
-      </div>
-    </section>
+        <UiEmptyState
+          v-if="!posts.length"
+          title="没有找到文章"
+          description="暂无发布的文章"
+        />
+      </template>
+    </UiContentSection>
 
     <section
       v-if="totalPages > 1"
