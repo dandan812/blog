@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4">
-    <el-radio-group v-model="filter.status" @change="fetchComments">
+    <el-radio-group v-model="statusFilter" @change="handleFilterChange">
       <el-radio-button label="">全部</el-radio-button>
       <el-radio-button label="pending">待审核</el-radio-button>
       <el-radio-button label="approved">已通过</el-radio-button>
@@ -18,14 +18,14 @@
       </el-table-column>
       <el-table-column label="状态" width="100">
         <template #default="{ row }">
-          <el-tag :type="statusMap[row.status].type">
-            {{ statusMap[row.status].text }}
+          <el-tag :type="getStatusInfo(row.status).type">
+            {{ getStatusInfo(row.status).text }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="createdAt" label="时间" width="160">
         <template #default="{ row }">
-          {{ new Date(row.createdAt).toLocaleString() }}
+          {{ formatDate(row.createdAt) }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="180" fixed="right">
@@ -56,9 +56,9 @@
     </el-table>
 
     <el-pagination
-      v-model:current-page="pagination.page"
-      :page-size="pagination.pageSize"
-      :total="pagination.total"
+      v-model:current-page="page"
+      :page-size="pageSize"
+      :total="total"
       layout="prev, pager, next"
       @current-change="fetchComments"
     />
@@ -66,47 +66,60 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted } from 'vue'
-  import { ElMessage } from 'element-plus'
-  import { commentApi, type Comment } from '@/api/comment'
+import { ref, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import { commentApi } from '@/api/comment'
+import type { Comment } from '@/types'
+import { formatDate } from '@/composables'
 
-  const loading = ref(false)
-  const comments = ref<Comment[]>([])
-  const filter = reactive({ status: '' })
-  const pagination = reactive({ page: 1, pageSize: 20, total: 0 })
+const loading = ref(false)
+const comments = ref<Comment[]>([])
+const statusFilter = ref<Comment['status'] | ''>('')
+const page = ref(1)
+const pageSize = 20
+const total = ref(0)
 
-  const statusMap: Record<string, { type: 'success' | 'primary' | 'warning' | 'info' | 'danger'; text: string }> = {
-    pending: { type: 'warning', text: '待审核' },
-    approved: { type: 'success', text: '已通过' },
-    rejected: { type: 'danger', text: '已拒绝' },
+const statusMap: Record<Comment['status'], { type: 'success' | 'warning' | 'danger'; text: string }> = {
+  pending: { type: 'warning', text: '待审核' },
+  approved: { type: 'success', text: '已通过' },
+  rejected: { type: 'danger', text: '已拒绝' },
+}
+
+function getStatusInfo(status: Comment['status']) {
+  return statusMap[status]
+}
+
+onMounted(fetchComments)
+
+async function fetchComments() {
+  loading.value = true
+  try {
+    const res = await commentApi.getList({
+      page: page.value,
+      pageSize,
+      status: statusFilter.value as Comment['status'] | undefined || undefined,
+    })
+    comments.value = res.data
+    total.value = res.total
+  } finally {
+    loading.value = false
   }
+}
 
-  onMounted(fetchComments)
+function handleFilterChange() {
+  page.value = 1
+  fetchComments()
+}
 
-  async function fetchComments() {
-    loading.value = true
-    try {
-      const res = await commentApi.getList({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-        status: filter.status || undefined,
-      })
-      comments.value = res.data
-      pagination.total = res.total
-    } finally {
-      loading.value = false
-    }
-  }
+async function handleStatus(id: string, status: Comment['status']) {
+  await commentApi.updateStatus(id, status)
+  ElMessage.success('状态已更新')
+  fetchComments()
+}
 
-  async function handleStatus(id: string, status: string) {
-    await commentApi.updateStatus(id, status)
-    ElMessage.success('状态已更新')
-    fetchComments()
-  }
-
-  async function handleDelete(id: string) {
-    await commentApi.delete(id)
-    ElMessage.success('删除成功')
-    fetchComments()
-  }
+async function handleDelete(id: string) {
+  await commentApi.delete(id)
+  ElMessage.success('删除成功')
+  fetchComments()
+}
 </script>

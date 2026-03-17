@@ -1,12 +1,15 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import prisma from '../utils/db.js'
+import { config } from '../utils/config.js'
+import { success, error, serverError, notFound } from '../utils/response.js'
+import type { AuthRequest } from '../middlewares/auth.js'
 
 const createPostSchema = z.object({
-  title: z.string().min(1),
-  content: z.string().min(1),
+  title: z.string().min(1, '标题不能为空'),
+  content: z.string().min(1, '内容不能为空'),
   excerpt: z.string().optional(),
-  coverImage: z.string().optional(),
+  coverImage: z.string().url('封面图片URL格式不正确').optional().or(z.literal('')),
   published: z.boolean().optional(),
   tagIds: z.array(z.string()).optional(),
 })
@@ -15,7 +18,7 @@ const updatePostSchema = z.object({
   title: z.string().min(1).optional(),
   content: z.string().min(1).optional(),
   excerpt: z.string().optional(),
-  coverImage: z.string().optional(),
+  coverImage: z.string().url().optional().or(z.literal('')),
   published: z.boolean().optional(),
   tagIds: z.array(z.string()).optional(),
 })
@@ -28,12 +31,24 @@ function generateSlug(title: string): string {
     .substring(0, 100)
 }
 
-export async function getPosts(req: Request, res: Response) {
-  const page = parseInt(req.query.page as string) || 1
-  const pageSize = parseInt(req.query.pageSize as string) || 10
+function parseQueryParams(req: Request) {
+  const page = Math.max(1, parseInt(req.query.page as string) || 1)
+  const pageSize = Math.min(
+    config.pagination.maxPageSize,
+    parseInt(req.query.pageSize as string) || config.pagination.defaultPageSize
+  )
   const published =
-    req.query.published === 'true' ? true : req.query.published === 'false' ? false : undefined
+    req.query.published === 'true'
+      ? true
+      : req.query.published === 'false'
+        ? false
+        : undefined
 
+  return { page, pageSize, published }
+}
+
+export async function getPosts(req: Request, res: Response): Promise<void> {
+  const { page, pageSize, published } = parseQueryParams(req)
   const where = published !== undefined ? { published } : {}
 
   const [posts, total] = await Promise.all([
@@ -51,7 +66,7 @@ export async function getPosts(req: Request, res: Response) {
     prisma.post.count({ where }),
   ])
 
-  res.json({
+  success(res, {
     data: posts,
     total,
     page,
@@ -60,7 +75,7 @@ export async function getPosts(req: Request, res: Response) {
   })
 }
 
-export async function getPostBySlug(req: Request, res: Response) {
+export async function getPostBySlug(req: Request, res: Response): Promise<void> {
   const { slug } = req.params
 
   const post = await prisma.post.findUnique({
@@ -69,14 +84,14 @@ export async function getPostBySlug(req: Request, res: Response) {
       author: { select: { id: true, name: true, email: true } },
       tags: true,
       comments: {
-        where: { status: 'approved' },
-        include: { replies: true },
+        where: { status: 'approved', parentId: null },
+        include: { replies: { where: { status: 'approved' } } },
       },
     },
   })
 
   if (!post) {
-    return res.status(404).json({ error: '文章不存在' })
+    return notFound(res, '文章不存在')
   }
 
   await prisma.post.update({
@@ -84,13 +99,17 @@ export async function getPostBySlug(req: Request, res: Response) {
     data: { viewCount: { increment: 1 } },
   })
 
-  res.json(post)
+  success(res, post)
 }
 
-export async function createPost(req: Request, res: Response) {
+export async function createPost(req: Request, res: Response): Promise<void> {
   try {
     const data = createPostSchema.parse(req.body)
-    const user = (req as any).user
+    const authReq = req as AuthRequest
+
+    if (!authReq.user) {
+      return error(res, '未授权', 401)
+    }
 
     let slug = generateSlug(data.title)
     const existing = await prisma.post.findUnique({ where: { slug } })
@@ -104,49 +123,66 @@ export async function createPost(req: Request, res: Response) {
         slug,
         content: data.content,
         excerpt: data.excerpt,
-        coverImage: data.coverImage,
+        coverImage: data.coverImage || null,
         published: data.published ?? false,
-        authorId: user.userId,
-        tags: data.tagIds ? { connect: data.tagIds.map((id) => ({ id })) } : undefined,
+        authorId: authReq.user.userId,
+        tags: data.tagIds ? { connect: data.tagIds.map(id => ({ id })) } : undefined,
       },
       include: { tags: true },
     })
 
-    res.status(201).json(post)
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: '输入数据格式错误', details: error.errors })
+    success(res, post, 201)
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return error(res, '输入数据格式错误', 400, err.errors)
     }
-    res.status(500).json({ error: '服务器错误' })
+    serverError(res)
   }
 }
 
-export async function updatePost(req: Request, res: Response) {
+export async function updatePost(req: Request, res: Response): Promise<void> {
   try {
     const { id } = req.params
     const data = updatePostSchema.parse(req.body)
 
+    const existing = await prisma.post.findUnique({ where: { id } })
+    if (!existing) {
+      return notFound(res, '文章不存在')
+    }
+
+    const updateData: Record<string, unknown> = {}
+    if (data.title !== undefined) updateData.title = data.title
+    if (data.content !== undefined) updateData.content = data.content
+    if (data.excerpt !== undefined) updateData.excerpt = data.excerpt
+    if (data.coverImage !== undefined) updateData.coverImage = data.coverImage || null
+    if (data.published !== undefined) updateData.published = data.published
+    if (data.tagIds !== undefined) {
+      updateData.tags = { set: data.tagIds.map(id => ({ id })) }
+    }
+
     const post = await prisma.post.update({
       where: { id },
-      data: {
-        ...data,
-        tags: data.tagIds ? { set: data.tagIds.map((id) => ({ id })) } : undefined,
-      },
+      data: updateData,
       include: { tags: true },
     })
 
-    res.json(post)
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: '输入数据格式错误', details: error.errors })
+    success(res, post)
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return error(res, '输入数据格式错误', 400, err.errors)
     }
-    res.status(500).json({ error: '服务器错误' })
+    serverError(res)
   }
 }
 
-export async function deletePost(req: Request, res: Response) {
+export async function deletePost(req: Request, res: Response): Promise<void> {
   const { id } = req.params
 
+  const existing = await prisma.post.findUnique({ where: { id } })
+  if (!existing) {
+    return notFound(res, '文章不存在')
+  }
+
   await prisma.post.delete({ where: { id } })
-  res.json({ message: '删除成功' })
+  success(res, { message: '删除成功' })
 }

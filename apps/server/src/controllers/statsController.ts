@@ -1,10 +1,17 @@
 import { Request, Response } from 'express'
 import prisma from '../utils/db.js'
+import { success, notFound } from '../utils/response.js'
 
-export async function recordView(req: Request, res: Response) {
+export async function recordView(req: Request, res: Response): Promise<void> {
   const { postId } = req.params
-  const ip = req.ip || req.socket.remoteAddress
-  const userAgent = req.headers['user-agent']
+
+  const post = await prisma.post.findUnique({ where: { id: postId } })
+  if (!post) {
+    return notFound(res, '文章不存在')
+  }
+
+  const ip = req.ip || req.socket.remoteAddress || null
+  const userAgent = req.headers['user-agent'] || null
 
   await Promise.all([
     prisma.viewLog.create({
@@ -16,11 +23,11 @@ export async function recordView(req: Request, res: Response) {
     }),
   ])
 
-  res.json({ message: '记录成功' })
+  success(res, { message: '记录成功' })
 }
 
-export async function getPopularPosts(req: Request, res: Response) {
-  const limit = parseInt(req.query.limit as string) || 10
+export async function getPopularPosts(req: Request, res: Response): Promise<void> {
+  const limit = Math.min(50, Math.max(1, parseInt(req.query.limit as string) || 10))
 
   const posts = await prisma.post.findMany({
     where: { published: true },
@@ -32,14 +39,15 @@ export async function getPopularPosts(req: Request, res: Response) {
       slug: true,
       viewCount: true,
       coverImage: true,
+      excerpt: true,
       createdAt: true,
     },
   })
 
-  res.json(posts)
+  success(res, posts)
 }
 
-export async function getDashboardStats(req: Request, res: Response) {
+export async function getDashboardStats(_req: Request, res: Response): Promise<void> {
   const [
     totalPosts,
     publishedPosts,
@@ -47,7 +55,7 @@ export async function getDashboardStats(req: Request, res: Response) {
     pendingComments,
     totalViews,
     recentPosts,
-    recentViews,
+    viewsTrend,
   ] = await Promise.all([
     prisma.post.count(),
     prisma.post.count({ where: { published: true } }),
@@ -56,9 +64,15 @@ export async function getDashboardStats(req: Request, res: Response) {
     prisma.viewLog.count(),
     prisma.post.findMany({
       where: { published: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { viewCount: 'desc' },
       take: 5,
-      select: { id: true, title: true, slug: true, viewCount: true, createdAt: true },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        viewCount: true,
+        createdAt: true,
+      },
     }),
     prisma.viewLog.groupBy({
       by: ['createdAt'],
@@ -68,7 +82,7 @@ export async function getDashboardStats(req: Request, res: Response) {
     }),
   ])
 
-  res.json({
+  success(res, {
     totalPosts,
     publishedPosts,
     draftPosts: totalPosts - publishedPosts,
@@ -76,6 +90,6 @@ export async function getDashboardStats(req: Request, res: Response) {
     pendingComments,
     totalViews,
     recentPosts,
-    viewsTrend: recentViews,
+    viewsTrend,
   })
 }

@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <el-card class="w-96">
+  <div class="login-page">
+    <el-card class="login-card">
       <template #header>
         <h2 class="text-xl text-center">博客管理后台</h2>
       </template>
-      <el-form :model="form" :rules="rules" ref="formRef" @submit.prevent="handleLogin">
+      <el-form ref="formRef" :model="form" :rules="rules" @submit.prevent="handleLogin">
         <el-form-item prop="email">
           <el-input v-model="form.email" placeholder="邮箱" prefix-icon="User" size="large" />
         </el-form-item>
@@ -35,43 +35,57 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-  import { useAuthStore } from '@/stores/auth'
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { useAuthStore } from '@/stores/auth'
 
-  const router = useRouter()
-  const authStore = useAuthStore()
-  const formRef = ref<FormInstance>()
-  const loading = ref(false)
+const router = useRouter()
+const authStore = useAuthStore()
 
-  const form = reactive({
-    email: '',
-    password: '',
-  })
+const formRef = ref<FormInstance>()
+const loading = ref(false)
 
-  const rules: FormRules = {
-    email: [
-      { required: true, message: '请输入邮箱', trigger: 'blur' },
-      { type: 'email', message: '邮箱格式不正确', trigger: 'blur' },
-    ],
-    password: [
-      { required: true, message: '请输入密码', trigger: 'blur' },
-      { min: 6, message: '密码至少6位', trigger: 'blur' },
-    ],
+const form = reactive({
+  email: '',
+  password: '',
+})
+
+const rules: FormRules = {
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '邮箱格式不正确', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, message: '密码至少6位', trigger: 'blur' },
+  ],
+}
+
+async function handleLogin() {
+  const valid = await formRef.value?.validate()
+  if (!valid) return
+
+  loading.value = true
+  try {
+    await authStore.login(form.email, form.password)
+    ElMessage.success('登录成功')
+    router.push('/dashboard')
+  } finally {
+    loading.value = false
   }
-
-  async function handleLogin() {
-    const valid = await formRef.value?.validate()
-    if (!valid) return
-
-    loading.value = true
-    try {
-      await authStore.login(form.email, form.password)
-      ElMessage.success('登录成功')
-      router.push('/dashboard')
-    } finally {
-      loading.value = false
-    }
-  }
+}
 </script>
+
+<style scoped>
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+}
+.login-card {
+  width: 24rem;
+}
+</style>

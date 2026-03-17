@@ -32,4 +32,20 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: 'esnext',
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'element-plus': ['element-plus'],
+          'echarts': ['echarts'],
+          'vue-vendor': ['vue', 'vue-router', 'pinia'],
+        },
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['element-plus/es', 'element-plus/es/components/message/style/css'],
+  },
 })

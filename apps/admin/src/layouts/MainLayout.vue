@@ -1,9 +1,7 @@
 <template>
   <el-container class="h-full">
-    <el-aside width="200px" class="bg-gray-800">
-      <div
-        class="h-14 flex items-center justify-center text-white text-lg font-bold border-b border-gray-700"
-      >
+    <el-aside width="200px" class="sidebar">
+      <div class="sidebar-header">
         博客管理
       </div>
       <el-menu
@@ -28,7 +26,7 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="flex items-center justify-between border-b bg-white">
+      <el-header class="header">
         <span class="text-lg">{{ pageTitle }}</span>
         <div class="flex items-center gap-4">
           <span class="text-gray-500">{{ authStore.user?.email }}</span>
@@ -38,7 +36,7 @@
           </el-button>
         </div>
       </el-header>
-      <el-main class="bg-gray-50">
+      <el-main class="main-content">
         <router-view />
       </el-main>
     </el-container>
@@ -46,20 +44,46 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-  const route = useRoute()
-  const authStore = useAuthStore()
+const route = useRoute()
+const authStore = useAuthStore()
 
-  const pageTitle = computed(() => {
-    const titles: Record<string, string> = {
-      '/dashboard': '数据看板',
-      '/posts': '文章管理',
-      '/posts/create': '新建文章',
-      '/comments': '评论管理',
-    }
-    return titles[route.path] || '博客管理'
-  })
+const pageTitle = computed(() => {
+  const titles: Record<string, string> = {
+    '/dashboard': '数据看板',
+    '/posts': '文章管理',
+    '/posts/create': '新建文章',
+    '/comments': '评论管理',
+  }
+  return titles[route.path] || '博客管理'
+})
 </script>
+
+<style scoped>
+.sidebar {
+  background-color: #1f2937;
+}
+.sidebar-header {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: bold;
+  border-bottom: 1px solid #374151;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: white;
+}
+.main-content {
+  background-color: #f9fafb;
+}
+</style>

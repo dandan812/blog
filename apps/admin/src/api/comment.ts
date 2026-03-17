@@ -1,21 +1,19 @@
 import api from './index'
+import type { Comment, PaginatedResponse } from '@/types'
 
-export interface Comment {
-  id: string
-  content: string
-  author: string
-  email: string
-  website: string | null
-  status: 'pending' | 'approved' | 'rejected'
-  postId: string
-  post?: { id: string; title: string }
-  createdAt: string
+export interface CommentListParams {
+  page?: number
+  pageSize?: number
+  status?: 'pending' | 'approved' | 'rejected'
 }
 
 export const commentApi = {
-  getList: (params?: { page?: number; pageSize?: number; status?: string }) =>
-    api.get<any, { data: Comment[]; total: number }>('/comments', { params }),
-  updateStatus: (id: string, status: string) =>
+  getList: (params?: CommentListParams) =>
+    api.get<any, PaginatedResponse<Comment>>('/comments', { params }),
+
+  updateStatus: (id: string, status: Comment['status']) =>
     api.patch<any, Comment>(`/comments/${id}/status`, { status }),
-  delete: (id: string) => api.delete(`/comments/${id}`),
+
+  delete: (id: string) =>
+    api.delete(`/comments/${id}`),
 }

@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="内容" prop="content">
         <div class="w-full border rounded overflow-hidden">
-          <ByteMdEditor :value="form.content" :plugins="plugins" @change="handleChange" />
+          <ByteMdEditor :value="form.content" :plugins="plugins" @change="handleContentChange" />
         </div>
       </el-form-item>
       <el-form-item label="封面图">
@@ -19,82 +19,88 @@
         <el-switch v-model="form.published" active-text="发布" inactive-text="草稿" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit" :loading="loading">
+        <el-button type="primary" :loading="loading" @click="handleSubmit">
           {{ isEdit ? '更新' : '创建' }}
         </el-button>
-        <el-button @click="$router.back()">取消</el-button>
+        <el-button @click="router.back()">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed, onMounted } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-  import { Editor as ByteMdEditor } from '@bytemd/vue-next'
-  import gfm from '@bytemd/plugin-gfm'
-  import highlight from '@bytemd/plugin-highlight'
-  import 'bytemd/dist/index.css'
-  import 'highlight.js/styles/github.css'
-  import { postApi } from '@/api/post'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+// @ts-expect-error ByteMdEditor is used in template
+import { Editor as ByteMdEditor } from '@bytemd/vue-next'
+import gfm from '@bytemd/plugin-gfm'
+import highlight from '@bytemd/plugin-highlight'
+import 'bytemd/dist/index.css'
+import 'highlight.js/styles/github.css'
+import { postApi, type CreatePostParams } from '@/api/post'
 
-  const route = useRoute()
-  const router = useRouter()
-  const formRef = ref<FormInstance>()
-  const loading = ref(false)
-  const isEdit = computed(() => !!route.params.slug)
+const route = useRoute()
+const router = useRouter()
 
-  const plugins = [gfm(), highlight()]
+const formRef = ref<FormInstance>()
+const loading = ref(false)
+const isEdit = computed(() => !!route.params.slug)
+const postId = ref('')
 
-  const form = reactive({
-    title: '',
-    content: '',
-    excerpt: '',
-    coverImage: '',
-    published: false,
-  })
+const plugins = [gfm(), highlight()]
 
-  const rules: FormRules = {
-    title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-    content: [{ required: true, message: '请输入内容', trigger: 'blur' }],
-  }
+const form = reactive<CreatePostParams>({
+  title: '',
+  content: '',
+  excerpt: '',
+  coverImage: '',
+  published: false,
+})
 
-  function handleChange(v: string) {
-    form.content = v
-  }
+const rules: FormRules = {
+  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+  content: [{ required: true, message: '请输入内容', trigger: 'blur' }],
+}
 
-  let postId = ''
+function handleContentChange(value: string) {
+  form.content = value
+}
 
-  onMounted(async () => {
-    if (isEdit.value) {
+onMounted(async () => {
+  if (isEdit.value) {
+    try {
       const slug = route.params.slug as string
       const post = await postApi.getBySlug(slug)
-      postId = post.id
+      postId.value = post.id
       form.title = post.title
       form.content = post.content
       form.excerpt = post.excerpt || ''
       form.coverImage = post.coverImage || ''
       form.published = post.published
-    }
-  })
-
-  async function handleSubmit() {
-    const valid = await formRef.value?.validate()
-    if (!valid) return
-
-    loading.value = true
-    try {
-      if (isEdit.value) {
-        await postApi.update(postId, form)
-        ElMessage.success('更新成功')
-      } else {
-        await postApi.create(form)
-        ElMessage.success('创建成功')
-      }
+    } catch (error) {
+      ElMessage.error('加载文章失败')
       router.push('/posts')
-    } finally {
-      loading.value = false
     }
   }
+})
+
+async function handleSubmit() {
+  const valid = await formRef.value?.validate()
+  if (!valid) return
+
+  loading.value = true
+  try {
+    if (isEdit.value) {
+      await postApi.update(postId.value, form)
+      ElMessage.success('更新成功')
+    } else {
+      await postApi.create(form)
+      ElMessage.success('创建成功')
+    }
+    router.push('/posts')
+  } finally {
+    loading.value = false
+  }
+}
 </script>

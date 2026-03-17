@@ -1,12 +1,12 @@
 <template>
   <div class="space-y-4">
     <div class="flex justify-between items-center">
-      <el-radio-group v-model="filter.status" @change="fetchPosts">
+      <el-radio-group v-model="statusFilter" @change="handleFilterChange">
         <el-radio-button label="">全部</el-radio-button>
         <el-radio-button label="true">已发布</el-radio-button>
         <el-radio-button label="false">草稿</el-radio-button>
       </el-radio-group>
-      <el-button type="primary" @click="$router.push('/posts/create')">
+      <el-button type="primary" @click="router.push('/posts/create')">
         <el-icon><Plus /></el-icon>
         新建文章
       </el-button>
@@ -24,12 +24,12 @@
       </el-table-column>
       <el-table-column prop="createdAt" label="创建时间" width="180">
         <template #default="{ row }">
-          {{ new Date(row.createdAt).toLocaleString() }}
+          {{ formatDate(row.createdAt) }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150" fixed="right">
         <template #default="{ row }">
-          <el-button text type="primary" @click="$router.push(`/posts/${row.slug}/edit`)">
+          <el-button text type="primary" @click="router.push(`/posts/${row.slug}/edit`)">
             编辑
           </el-button>
           <el-popconfirm title="确定删除？" @confirm="handleDelete(row.id)">
@@ -42,9 +42,9 @@
     </el-table>
 
     <el-pagination
-      v-model:current-page="pagination.page"
-      :page-size="pagination.pageSize"
-      :total="pagination.total"
+      v-model:current-page="page"
+      :page-size="pageSize"
+      :total="total"
       layout="prev, pager, next"
       @current-change="fetchPosts"
     />
@@ -52,35 +52,47 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted } from 'vue'
-  import { ElMessage } from 'element-plus'
-  import { postApi, type Post } from '@/api/post'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { postApi } from '@/api/post'
+import type { Post } from '@/types'
+import { formatDate } from '@/composables'
 
-  const loading = ref(false)
-  const posts = ref<Post[]>([])
-  const filter = reactive({ status: '' })
-  const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
+const router = useRouter()
 
-  onMounted(fetchPosts)
+const loading = ref(false)
+const posts = ref<Post[]>([])
+const statusFilter = ref('')
+const page = ref(1)
+const pageSize = 10
+const total = ref(0)
 
-  async function fetchPosts() {
-    loading.value = true
-    try {
-      const res = await postApi.getList({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-        published: filter.status ? filter.status === 'true' : undefined,
-      })
-      posts.value = res.data
-      pagination.total = res.total
-    } finally {
-      loading.value = false
-    }
+onMounted(fetchPosts)
+
+async function fetchPosts() {
+  loading.value = true
+  try {
+    const res = await postApi.getList({
+      page: page.value,
+      pageSize,
+      published: statusFilter.value ? statusFilter.value === 'true' : undefined,
+    })
+    posts.value = res.data
+    total.value = res.total
+  } finally {
+    loading.value = false
   }
+}
 
-  async function handleDelete(id: string) {
-    await postApi.delete(id)
-    ElMessage.success('删除成功')
-    fetchPosts()
-  }
+function handleFilterChange() {
+  page.value = 1
+  fetchPosts()
+}
+
+async function handleDelete(id: string) {
+  await postApi.delete(id)
+  ElMessage.success('删除成功')
+  fetchPosts()
+}
 </script>

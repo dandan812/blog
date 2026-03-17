@@ -1,17 +1,21 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import prisma from '../utils/db.js'
+import { success, error, serverError, notFound } from '../utils/response.js'
+import type { CommentStatus } from '../types/index.js'
 
 const createCommentSchema = z.object({
-  content: z.string().min(1),
-  author: z.string().min(1),
-  email: z.string().email(),
-  website: z.string().optional(),
-  postId: z.string(),
+  content: z.string().min(1, '评论内容不能为空'),
+  author: z.string().min(1, '请输入昵称'),
+  email: z.string().email('邮箱格式不正确'),
+  website: z.string().url('网站地址格式不正确').optional().or(z.literal('')),
+  postId: z.string().min(1, '文章ID不能为空'),
   parentId: z.string().optional(),
 })
 
-export async function getCommentsByPost(req: Request, res: Response) {
+const validStatuses: CommentStatus[] = ['pending', 'approved', 'rejected']
+
+export async function getCommentsByPost(req: Request, res: Response): Promise<void> {
   const { postId } = req.params
 
   const comments = await prisma.comment.findMany({
@@ -24,16 +28,16 @@ export async function getCommentsByPost(req: Request, res: Response) {
     orderBy: { createdAt: 'desc' },
   })
 
-  res.json(comments)
+  success(res, comments)
 }
 
-export async function createComment(req: Request, res: Response) {
+export async function createComment(req: Request, res: Response): Promise<void> {
   try {
     const data = createCommentSchema.parse(req.body)
 
     const post = await prisma.post.findUnique({ where: { id: data.postId } })
     if (!post) {
-      return res.status(404).json({ error: '文章不存在' })
+      return notFound(res, '文章不存在')
     }
 
     const comment = await prisma.comment.create({
@@ -41,26 +45,30 @@ export async function createComment(req: Request, res: Response) {
         content: data.content,
         author: data.author,
         email: data.email,
-        website: data.website,
+        website: data.website || null,
         postId: data.postId,
         parentId: data.parentId,
         status: 'pending',
       },
     })
 
-    res.status(201).json(comment)
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: '输入数据格式错误', details: error.errors })
+    success(res, comment, 201)
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return error(res, '输入数据格式错误', 400, err.errors)
     }
-    res.status(500).json({ error: '服务器错误' })
+    serverError(res)
   }
 }
 
-export async function getComments(req: Request, res: Response) {
-  const page = parseInt(req.query.page as string) || 1
-  const pageSize = parseInt(req.query.pageSize as string) || 20
-  const status = req.query.status as string | undefined
+export async function getComments(req: Request, res: Response): Promise<void> {
+  const page = Math.max(1, parseInt(req.query.page as string) || 1)
+  const pageSize = Math.min(100, parseInt(req.query.pageSize as string) || 20)
+  const statusParam = req.query.status as string | undefined
+
+  const status = statusParam && validStatuses.includes(statusParam as CommentStatus)
+    ? (statusParam as CommentStatus)
+    : undefined
 
   const where = status ? { status } : {}
 
@@ -75,15 +83,20 @@ export async function getComments(req: Request, res: Response) {
     prisma.comment.count({ where }),
   ])
 
-  res.json({ data: comments, total, page, pageSize })
+  success(res, { data: comments, total, page, pageSize })
 }
 
-export async function updateCommentStatus(req: Request, res: Response) {
+export async function updateCommentStatus(req: Request, res: Response): Promise<void> {
   const { id } = req.params
   const { status } = req.body
 
-  if (!['pending', 'approved', 'rejected'].includes(status)) {
-    return res.status(400).json({ error: '无效的状态' })
+  if (!status || !validStatuses.includes(status)) {
+    return error(res, '无效的状态值', 400)
+  }
+
+  const existing = await prisma.comment.findUnique({ where: { id } })
+  if (!existing) {
+    return notFound(res, '评论不存在')
   }
 
   const comment = await prisma.comment.update({
@@ -91,12 +104,17 @@ export async function updateCommentStatus(req: Request, res: Response) {
     data: { status },
   })
 
-  res.json(comment)
+  success(res, comment)
 }
 
-export async function deleteComment(req: Request, res: Response) {
+export async function deleteComment(req: Request, res: Response): Promise<void> {
   const { id } = req.params
 
+  const existing = await prisma.comment.findUnique({ where: { id } })
+  if (!existing) {
+    return notFound(res, '评论不存在')
+  }
+
   await prisma.comment.delete({ where: { id } })
-  res.json({ message: '删除成功' })
+  success(res, { message: '删除成功' })
 }

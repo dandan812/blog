@@ -1,19 +1,10 @@
 import api from './index'
+import type { DashboardStats, PopularPost } from '@/types'
 
 export const statsApi = {
   getDashboard: () =>
-    api.get<
-      any,
-      {
-        totalPosts: number
-        publishedPosts: number
-        draftPosts: number
-        totalComments: number
-        pendingComments: number
-        totalViews: number
-        recentPosts: any[]
-        viewsTrend: any[]
-      }
-    >('/stats/dashboard'),
-  getPopular: (limit?: number) => api.get<any, any[]>('/stats/popular', { params: { limit } }),
+    api.get<any, DashboardStats>('/stats/dashboard'),
+
+  getPopular: (limit?: number) =>
+    api.get<any, PopularPost[]>('/stats/popular', { params: { limit } }),
 }

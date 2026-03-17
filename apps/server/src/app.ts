@@ -1,34 +1,36 @@
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import dotenv from 'dotenv'
+import { config, validateConfig } from './utils/config.js'
+import { errorHandler } from './middlewares/errorHandler.js'
+import { logger } from './utils/logger.js'
 
-dotenv.config()
+validateConfig()
 
-const app = express()
-const PORT = process.env.PORT || 3001
+const app: Express = express()
 
 app.use(helmet())
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL || 'http://localhost:3000',
-      process.env.ADMIN_URL || 'http://localhost:5173',
-    ],
+    origin: [...config.cors.origins],
     credentials: true,
   })
 )
 app.use(express.json())
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: config.rateLimit.windowMs,
+    max: config.rateLimit.max,
+    message: { success: false, error: '请求过于频繁，请稍后再试' },
   })
 )
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({
+    success: true,
+    data: { status: 'ok', timestamp: new Date().toISOString() },
+  })
 })
 
 app.use('/api/auth', (await import('./routes/auth.js')).default)
@@ -37,9 +39,13 @@ app.use('/api/comments', (await import('./routes/comments.js')).default)
 app.use('/api/stats', (await import('./routes/stats.js')).default)
 
 app.use((_req, res) => {
-  res.status(404).json({ error: 'Not Found' })
+  res.status(404).json({ success: false, error: 'Not Found' })
 })
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.use(errorHandler)
+
+app.listen(config.port, () => {
+  logger.info(`Server running on port ${config.port} (${config.nodeEnv})`)
 })
+
+export default app
