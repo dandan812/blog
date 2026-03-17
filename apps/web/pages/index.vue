@@ -84,8 +84,7 @@
 
           <!-- 副标题 -->
           <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-12 font-light">
-            探索前端开发的边界，记录技术成长的轨迹。<br>
-            用代码构建有温度的数字世界。
+            <!-- 记录技术成长的轨迹。 -->
           </p>
 
           <!-- CTA 按钮组 -->
@@ -153,14 +152,14 @@
         <!-- 区域标题 -->
         <div class="max-w-2xl mb-20">
           <div
-            class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase"
+            class="inline-flex items-center gap-3 mb-6 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
           >
             <span class="w-8 h-px bg-amber-500" />
             <span>技术特性</span>
           </div>
-          <h2 class="text-4xl md:text-5xl font-bold text-black leading-tight">
+          <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white leading-tight">
             现代化的<br>
-            <span class="text-black/30">技术架构</span>
+            <span class="text-black/30 dark:text-white/30">技术架构</span>
           </h2>
         </div>
 
@@ -169,7 +168,7 @@
           gap-px: 使用 1px 间隙创建分割线效果
           bg-black/10: 间隙背景色（分割线颜色）
         -->
-        <div class="grid md:grid-cols-3 gap-px bg-black/10">
+        <div class="grid md:grid-cols-3 gap-px bg-black/10 dark:bg-white/10">
           <div
             v-for="(feature, index) in features"
             :key="feature.title"
@@ -177,28 +176,28 @@
           >
             <!-- 序号装饰 -->
             <div
-              class="text-6xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6"
+              class="text-6xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors mb-6"
             >
               0{{ index + 1 }}
             </div>
 
             <!-- 图标容器 -->
             <div
-              class="w-12 h-12 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-300 mb-6"
+              class="w-12 h-12 flex items-center justify-center border border-black/10 dark:border-white/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-300 mb-6"
             >
               <Icon
                 :name="feature.icon"
-                class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
+                class="w-5 h-5 text-black/40 dark:text-white/40 group-hover:text-white transition-colors"
               />
             </div>
 
             <!-- 标题 -->
-            <h3 class="text-xl font-bold text-black mb-3">
+            <h3 class="text-xl font-bold text-black dark:text-white mb-3">
               {{ feature.title }}
             </h3>
 
             <!-- 描述 -->
-            <p class="text-black/50 leading-relaxed">
+            <p class="text-black/50 dark:text-white/50 leading-relaxed">
               {{ feature.description }}
             </p>
           </div>
@@ -208,89 +207,29 @@
 
     <!--
       ==================== 最新文章区域 ====================
-      回到深色背景，展示最新文章列表
+      网格卡片布局，模仿技术特性区域风格
     -->
-    <section class="relative py-32 bg-[#0a0a0a]">
+    <section class="relative py-32 bg-[#fafafa] dark:bg-[#111]">
       <div class="container mx-auto px-6 md:px-12">
         <!-- 区域标题 -->
-        <div class="flex items-end justify-between mb-16">
-          <div>
-            <div
-              class="inline-flex items-center gap-3 mb-6 text-white/40 text-sm tracking-widest uppercase"
-            >
-              <span class="w-8 h-px bg-amber-500" />
-              <span>最新文章</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white">
-              思考与记录
-            </h2>
+        <div class="max-w-2xl mb-20">
+          <div
+            class="inline-flex items-center gap-3 mb-6 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
+          >
+            <span class="w-8 h-px bg-amber-500" />
+            <span>最新文章</span>
           </div>
-
-          <!-- 桌面端查看全部链接 -->
-          <NuxtLink
-            to="/blog"
-            class="hidden md:inline-flex items-center gap-2 text-white/40 hover:text-amber-500 transition-colors"
-          >
-            <span class="text-sm tracking-widest uppercase">查看全部</span>
-            <Icon
-              name="lucide:arrow-right"
-              class="w-4 h-4"
-            />
-          </NuxtLink>
-        </div>
-
-        <!--
-          文章列表
-          使用 v-if/v-else-if/v-else 处理三种状态：
-          1. 有数据：显示文章列表
-          2. 加载中：显示 loading
-          3. 无数据：显示空状态
-        -->
-        <div
-          v-if="latestArticles.length > 0"
-          class="space-y-px bg-white/5"
-        >
-          <!-- 文章列表项 -->
-          <NuxtLink
-            v-for="(article, index) in latestArticles"
-            :key="article.id"
-            :to="`/blog/${article.slug}`"
-            class="group flex items-center gap-8 p-6 md:p-8 bg-[#0a0a0a] hover:bg-white/[0.02] transition-all duration-300"
-          >
-            <!-- 序号（桌面端显示） -->
-            <div
-              class="hidden md:block text-4xl font-bold text-white/10 group-hover:text-amber-500/30 transition-colors w-16"
-            >
-              0{{ index + 1 }}
-            </div>
-
-            <!-- 文章信息 -->
-            <div class="flex-1">
-              <h3
-                class="text-xl md:text-2xl font-bold text-white group-hover:text-amber-500 transition-colors mb-2"
-              >
-                {{ article.title }}
-              </h3>
-              <!-- 摘要或内容前 100 字 -->
-              <p class="text-white/40 line-clamp-1">
-                {{ article.excerpt || article.content?.slice(0, 100) }}
-              </p>
-            </div>
-
-            <!-- 箭头图标 -->
-            <Icon
-              name="lucide:arrow-right"
-              class="w-5 h-5 text-white/20 group-hover:text-amber-500 group-hover:translate-x-2 transition-all"
-            />
-          </NuxtLink>
+          <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white leading-tight">
+            思考与记录
+          </h2>
         </div>
 
         <!-- 加载状态 -->
         <div
-          v-else-if="articlesPending"
+          v-if="articlesPending"
           class="py-16 text-center"
         >
-          <div class="inline-flex items-center gap-3 text-white/40">
+          <div class="inline-flex items-center gap-3 text-black/40 dark:text-white/40">
             <Icon
               name="lucide:loader-2"
               class="w-5 h-5 animate-spin"
@@ -299,23 +238,63 @@
           </div>
         </div>
 
+        <!-- 文章网格 -->
+        <div
+          v-else-if="latestArticles.length > 0"
+          class="grid md:grid-cols-3 gap-px bg-black/10 dark:bg-white/10"
+        >
+          <NuxtLink
+            v-for="(article, index) in latestArticles"
+            :key="article.id"
+            :to="`/blog/${article.slug}`"
+            class="group relative p-10 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-500"
+          >
+            <!-- 序号装饰 -->
+            <div
+              class="text-6xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors mb-6"
+            >
+              0{{ index + 1 }}
+            </div>
+
+            <!-- 图标容器 -->
+            <div
+              class="w-12 h-12 flex items-center justify-center border border-black/10 dark:border-white/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all duration-300 mb-6"
+            >
+              <Icon
+                name="lucide:file-text"
+                class="w-5 h-5 text-black/40 dark:text-white/40 group-hover:text-white transition-colors"
+              />
+            </div>
+
+            <!-- 标题 -->
+            <h3 class="text-xl font-bold text-black dark:text-white mb-3 line-clamp-2 group-hover:text-amber-500 transition-colors">
+              {{ article.title }}
+            </h3>
+
+            <!-- 摘要 -->
+            <p class="text-black/50 dark:text-white/50 leading-relaxed line-clamp-2">
+              {{ article.excerpt || article.content?.slice(0, 100) }}
+            </p>
+          </NuxtLink>
+        </div>
+
         <!-- 空状态 -->
         <div
           v-else
           class="py-16 text-center"
         >
-          <p class="text-white/40">
+          <p class="text-black/40 dark:text-white/40">
             暂无文章
           </p>
         </div>
 
-        <!-- 移动端查看全部 -->
-        <div class="md:hidden mt-8">
+        <!-- 查看全部 -->
+        <div class="mt-12 text-center">
           <NuxtLink
             to="/blog"
-            class="inline-flex items-center gap-2 text-amber-500"
+            class="inline-flex items-center gap-2 text-black/40 dark:text-white/40 hover:text-amber-500 transition-colors"
           >
-            <span class="text-sm tracking-widest uppercase">查看全部文章</span>
+            <span class="text-sm tracking-widest uppercase">查看全部</span>
             <Icon
               name="lucide:arrow-right"
               class="w-4 h-4"

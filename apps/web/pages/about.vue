@@ -34,27 +34,27 @@
     </section>
 
     <!-- 内容区域 -->
-    <section class="py-20 bg-[#fafafa] dark:bg-[#0a0a0a]">
+    <section class="py-20 bg-[#fafafa] dark:bg-[#111]">
       <div class="container mx-auto px-6 md:px-12">
         <div class="max-w-3xl">
           <!-- 介绍 -->
           <div class="mb-16">
             <div
-              class="inline-flex items-center gap-3 mb-6 text-black/40 text-sm tracking-widest uppercase"
+              class="inline-flex items-center gap-3 mb-6 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
             >
               <span class="w-8 h-px bg-amber-500" />
               <span>简介</span>
             </div>
-            <div class="space-y-4 text-lg text-black/70 leading-relaxed">
+            <div class="space-y-4 text-lg text-black/70 dark:text-white/70 leading-relaxed">
               <p>
-                欢迎来到我的博客！这是一个使用 <span class="text-black font-medium">Nuxt 4</span> +
-                <span class="text-black font-medium">Vue 3</span> +
-                <span class="text-black font-medium">Nuxt Content 3</span> +
-                <span class="text-black font-medium">Tailwind CSS 4</span> 构建的现代化技术博客。
+                欢迎来到我的博客！这是一个使用 <span class="text-black dark:text-white font-medium">Nuxt 4</span> +
+                <span class="text-black dark:text-white font-medium">Vue 3</span> +
+                <span class="text-black dark:text-white font-medium">Nuxt Content 3</span> +
+                <span class="text-black dark:text-white font-medium">Tailwind CSS 4</span> 构建的现代化技术博客。
               </p>
               <p>
                 本博客支持 Markdown 写作、SSR/SSG
-                与自动化部署。致力于探索前端开发的边界，记录技术成长的轨迹。
+                与自动化部署。
               </p>
             </div>
           </div>
@@ -62,29 +62,29 @@
           <!-- 特性 -->
           <div class="mb-16">
             <div
-              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+              class="inline-flex items-center gap-3 mb-8 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
             >
               <span class="w-8 h-px bg-amber-500" />
               <span>特性</span>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-px bg-black/5">
+            <div class="grid md:grid-cols-2 gap-px bg-black/5 dark:bg-white/10">
               <div
                 v-for="(feature, index) in features"
                 :key="feature.title"
-                class="group p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
+                class="group p-6 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
               >
                 <div class="flex items-start gap-4">
                   <div
-                    class="text-2xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors"
+                    class="text-2xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors"
                   >
                     0{{ index + 1 }}
                   </div>
                   <div>
-                    <h3 class="font-bold text-black mb-1">
+                    <h3 class="font-bold text-black dark:text-white mb-1">
                       {{ feature.title }}
                     </h3>
-                    <p class="text-black/50 text-sm">
+                    <p class="text-black/50 dark:text-white/50 text-sm">
                       {{ feature.description }}
                     </p>
                   </div>
@@ -96,28 +96,28 @@
           <!-- 技术栈 -->
           <div class="mb-16">
             <div
-              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+              class="inline-flex items-center gap-3 mb-8 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
             >
               <span class="w-8 h-px bg-amber-500" />
               <span>技术栈</span>
             </div>
 
-            <div class="space-y-px bg-black/5">
+            <div class="space-y-px bg-black/5 dark:bg-white/10">
               <div
                 v-for="(tech, index) in techStack"
                 :key="tech.name"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
               >
                 <div
-                  class="text-3xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors w-12"
+                  class="text-3xl font-bold text-black/10 dark:text-white/20 group-hover:text-amber-500/30 transition-colors w-12"
                 >
                   0{{ index + 1 }}
                 </div>
                 <div class="flex-1">
-                  <h3 class="text-lg font-bold text-black mb-1">
+                  <h3 class="text-lg font-bold text-black dark:text-white mb-1">
                     {{ tech.name }}
                   </h3>
-                  <p class="text-black/50 text-sm">
+                  <p class="text-black/50 dark:text-white/50 text-sm">
                     {{ tech.description }}
                   </p>
                 </div>
@@ -128,55 +128,55 @@
           <!-- 联系方式 -->
           <div>
             <div
-              class="inline-flex items-center gap-3 mb-8 text-black/40 text-sm tracking-widest uppercase"
+              class="inline-flex items-center gap-3 mb-8 text-black/40 dark:text-white/40 text-sm tracking-widest uppercase"
             >
               <span class="w-8 h-px bg-amber-500" />
               <span>联系</span>
             </div>
 
-            <div class="space-y-px bg-black/5">
+            <div class="space-y-px bg-black/5 dark:bg-white/10">
               <a
                 href="https://github.com/dandan812"
                 target="_blank"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
               >
                 <div
-                  class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
+                  class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-white/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
                 >
                   <Icon
                     name="lucide:github"
-                    class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
+                    class="w-5 h-5 text-black/40 dark:text-white/40 group-hover:text-white transition-colors"
                   />
                 </div>
                 <div class="flex-1">
-                  <div class="text-sm text-black/40 mb-1">GitHub</div>
-                  <div class="text-black font-medium">github.com/dandan812</div>
+                  <div class="text-sm text-black/40 dark:text-white/40 mb-1">GitHub</div>
+                  <div class="text-black dark:text-white font-medium">github.com/dandan812</div>
                 </div>
                 <Icon
                   name="lucide:external-link"
-                  class="w-4 h-4 text-black/20 group-hover:text-amber-500 transition-colors"
+                  class="w-4 h-4 text-black/20 dark:text-white/20 group-hover:text-amber-500 transition-colors"
                 />
               </a>
 
               <a
                 href="mailto:hu_liang2027@163.com"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#111] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
               >
                 <div
-                  class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
+                  class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-white/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
                 >
                   <Icon
                     name="lucide:mail"
-                    class="w-5 h-5 text-black/40 group-hover:text-white transition-colors"
+                    class="w-5 h-5 text-black/40 dark:text-white/40 group-hover:text-white transition-colors"
                   />
                 </div>
                 <div class="flex-1">
-                  <div class="text-sm text-black/40 mb-1">Email</div>
-                  <div class="text-black font-medium">hu_liang2027@163.com</div>
+                  <div class="text-sm text-black/40 dark:text-white/40 mb-1">Email</div>
+                  <div class="text-black dark:text-white font-medium">hu_liang2027@163.com</div>
                 </div>
                 <Icon
                   name="lucide:arrow-right"
-                  class="w-4 h-4 text-black/20 group-hover:text-amber-500 group-hover:translate-x-1 transition-all"
+                  class="w-4 h-4 text-black/20 dark:text-white/20 group-hover:text-amber-500 group-hover:translate-x-1 transition-all"
                 />
               </a>
             </div>
