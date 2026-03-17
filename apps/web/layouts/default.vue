@@ -1,7 +1,7 @@
 <template>
-  <!-- 
+  <!--
     默认布局组件 (layouts/default.vue)
-    
+
     所有页面都会使用这个布局，包含：
     - 顶部导航栏（sticky 定位）
     - 主内容区域（通过 <slot /> 渲染页面内容）
@@ -9,7 +9,7 @@
     - 全局搜索模态框
   -->
   <div class="min-h-screen flex flex-col font-sans bg-[#fafafa] dark:bg-gray-900">
-    <!-- 
+    <!--
       导航栏
       sticky: 滚动时固定在顶部
       backdrop-blur: 背景模糊效果
@@ -35,7 +35,7 @@
             :key="item.path"
             :to="item.path"
             class="text-sm text-black/40 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors tracking-widest uppercase"
-            active-class="text-black dark:text-white"  <!-- 当前页面高亮 -->
+            active-class="text-black dark:text-white"
           >
             {{ item.name }}
           </NuxtLink>
@@ -51,7 +51,7 @@
             />
           </button>
 
-          <!-- 
+          <!--
             深色模式切换
             ClientOnly: 只在客户端渲染（避免服务端/客户端不匹配）
           -->
@@ -66,7 +66,7 @@
       </nav>
     </header>
 
-    <!-- 
+    <!--
       主内容区域
       flex-1: 占据剩余空间，确保页脚在底部
       <slot /> 是页面内容的插入点
@@ -84,7 +84,7 @@
             © {{ new Date().getFullYear() }} Blog<span class="text-amber-500">.</span> All rights
             reserved.
           </div>
-          
+
           <!-- 社交链接 -->
           <div class="flex items-center gap-6">
             <a
@@ -92,20 +92,26 @@
               target="_blank"
               class="text-black/30 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
             >
-              <Icon name="lucide:github" class="w-4 h-4" />
+              <Icon
+                name="lucide:github"
+                class="w-4 h-4"
+              />
             </a>
             <a
               href="mailto:hu_liang2027@163.com"
               class="text-black/30 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
             >
-              <Icon name="lucide:mail" class="w-4 h-4" />
+              <Icon
+                name="lucide:mail"
+                class="w-4 h-4"
+              />
             </a>
           </div>
         </div>
       </div>
     </footer>
 
-    <!-- 
+    <!--
       全局搜索模态框
       v-model:open 双向绑定控制显示/隐藏
     -->
@@ -116,7 +122,7 @@
 <script setup lang="ts">
 /**
  * Default Layout - 默认布局组件
- * 
+ *
  * 这是所有页面的基础布局，提供：
  * 1. 统一的导航栏
  * 2. 页脚
@@ -150,14 +156,14 @@ onMounted(() => {
    */
   const handleKeydown = (e: KeyboardEvent) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault()  // 阻止默认行为
+      e.preventDefault() // 阻止默认行为
       isSearchOpen.value = true
     }
   }
-  
+
   // 监听键盘事件
   window.addEventListener('keydown', handleKeydown)
-  
+
   // 组件卸载时清理事件监听
   onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 })
