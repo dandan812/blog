@@ -30,7 +30,7 @@
       </div>
     </section>
 
-    <section class="sticky top-0 z-10 bg-[#fafafa] border-b border-black/5">
+    <section class="sticky top-0 z-10 bg-[#fafafa] dark:bg-[#0a0a0a] border-b border-black/5 dark:border-white/10">
       <div class="container mx-auto px-6 md:px-12">
         <div class="flex items-center justify-between py-4">
           <div class="flex items-center gap-1">
@@ -72,7 +72,7 @@
       </div>
     </section>
 
-    <section class="py-16 bg-[#fafafa]">
+    <section class="py-16 bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="container mx-auto px-6 md:px-12">
         <div
           v-if="pending"
@@ -115,7 +115,7 @@
               v-for="(article, index) in posts"
               :key="article.id"
               :to="`/blog/${article.slug}`"
-              class="group relative p-8 bg-[#fafafa] hover:bg-white transition-all duration-500"
+              class="group relative p-8 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-500"
             >
               <div
                 class="text-5xl font-bold text-black/5 group-hover:text-amber-500/10 transition-colors mb-6"
@@ -161,7 +161,7 @@
               v-for="(article, index) in posts"
               :key="article.id"
               :to="`/blog/${article.slug}`"
-              class="group flex items-center gap-8 p-6 md:p-8 bg-[#fafafa] hover:bg-white transition-all duration-300"
+              class="group flex items-center gap-8 p-6 md:p-8 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
             >
               <div
                 class="hidden md:block text-4xl font-bold text-black/5 group-hover:text-amber-500/30 transition-colors w-16"
@@ -214,7 +214,7 @@
 
     <section
       v-if="totalPages > 1"
-      class="py-12 bg-[#fafafa] border-t border-black/5"
+      class="py-12 bg-[#fafafa] dark:bg-[#0a0a0a] border-t border-black/5 dark:border-white/10"
     >
       <div class="container mx-auto px-6 md:px-12">
         <div class="flex items-center justify-center gap-2">

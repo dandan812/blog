@@ -148,7 +148,7 @@
       ==================== 技术特性展示 ====================
       使用浅色背景，展示博客的技术特点
     -->
-    <section class="relative py-32 bg-[#fafafa]">
+    <section class="relative py-32 bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="container mx-auto px-6 md:px-12">
         <!-- 区域标题 -->
         <div class="max-w-2xl mb-20">
@@ -173,7 +173,7 @@
           <div
             v-for="(feature, index) in features"
             :key="feature.title"
-            class="group relative p-10 bg-[#fafafa] hover:bg-white transition-all duration-500"
+            class="group relative p-10 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-500"
           >
             <!-- 序号装饰 -->
             <div

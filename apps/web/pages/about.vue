@@ -34,7 +34,7 @@
     </section>
 
     <!-- 内容区域 -->
-    <section class="py-20 bg-[#fafafa]">
+    <section class="py-20 bg-[#fafafa] dark:bg-[#0a0a0a]">
       <div class="container mx-auto px-6 md:px-12">
         <div class="max-w-3xl">
           <!-- 介绍 -->
@@ -72,7 +72,7 @@
               <div
                 v-for="(feature, index) in features"
                 :key="feature.title"
-                class="group p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                class="group p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
               >
                 <div class="flex items-start gap-4">
                   <div
@@ -106,7 +106,7 @@
               <div
                 v-for="(tech, index) in techStack"
                 :key="tech.name"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
               >
                 <div
                   class="text-3xl font-bold text-black/5 group-hover:text-amber-500/20 transition-colors w-12"
@@ -138,7 +138,7 @@
               <a
                 href="https://github.com/dandan812"
                 target="_blank"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
               >
                 <div
                   class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"
@@ -160,7 +160,7 @@
 
               <a
                 href="mailto:hu_liang2027@163.com"
-                class="group flex items-center gap-6 p-6 bg-[#fafafa] hover:bg-white transition-all duration-300"
+                class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#111] transition-all duration-300"
               >
                 <div
                   class="w-10 h-10 flex items-center justify-center border border-black/10 group-hover:border-amber-500 group-hover:bg-amber-500 transition-all"

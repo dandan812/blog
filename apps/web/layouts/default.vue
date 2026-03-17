@@ -8,7 +8,7 @@
     - 底部页脚
     - 全局搜索模态框
   -->
-  <div class="min-h-screen flex flex-col font-sans bg-[#fafafa] dark:bg-gray-900">
+  <div class="min-h-screen flex flex-col font-sans bg-[#fafafa] dark:bg-[#0a0a0a]">
     <!--
       导航栏
       sticky: 滚动时固定在顶部
