@@ -86,14 +86,6 @@ export default defineNuxtConfig({
   vite: {
     build: {
       target: 'esnext',
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'vue-vendor': ['vue', 'vue-router'],
-            'nuxt-vendor': ['#app', '#head'],
-          },
-        },
-      },
     },
   },
 
