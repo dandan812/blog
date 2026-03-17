@@ -176,6 +176,14 @@
                 </NuxtLink>
               </div>
             </section>
+          <GiscusComments
+              :repo="config.public.giscus.repo"
+              :repo-id="config.public.giscus.repoId"
+              :category="config.public.giscus.category"
+              :category-id="config.public.giscus.categoryId"
+              :mapping="config.public.giscus.mapping as 'pathname' | 'url' | 'title' | 'og:title'"
+              :lang="config.public.giscus.lang"
+            />
           </div>
         </div>
       </div>
@@ -207,6 +215,7 @@ marked.setOptions({
   gfm: true,
 })
 
+const config = useRuntimeConfig()
 const route = useRoute()
 const slug = route.params.slug as string
 

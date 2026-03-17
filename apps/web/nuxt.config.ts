@@ -29,8 +29,15 @@ export default defineNuxtConfig({
    */
   runtimeConfig: {
     public: {
-      // API 基础 URL，从环境变量读取，默认为本地开发地址
       apiBaseUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3001',
+      giscus: {
+        repo: process.env.NUXT_PUBLIC_GISCUS_REPO || '',
+        repoId: process.env.NUXT_PUBLIC_GISCUS_REPO_ID || '',
+        category: process.env.NUXT_PUBLIC_GISCUS_CATEGORY || '',
+        categoryId: process.env.NUXT_PUBLIC_GISCUS_CATEGORY_ID || '',
+        mapping: process.env.NUXT_PUBLIC_GISCUS_MAPPING || 'pathname',
+        lang: process.env.NUXT_PUBLIC_GISCUS_LANG || 'zh-CN',
+      },
     },
   },
 
