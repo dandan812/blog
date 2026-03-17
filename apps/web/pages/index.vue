@@ -1,7 +1,7 @@
 <template>
-  <!-- 
+  <!--
     首页组件 (pages/index.vue)
-    
+
     这是博客的首页，采用现代化的设计风格，包含：
     1. Hero 区域 - 大胆的视觉冲击
     2. 技术特性展示
@@ -9,14 +9,14 @@
     4. CTA 行动号召区域
   -->
   <div class="min-h-screen">
-    <!-- 
+    <!--
       ==================== Hero 区域 ====================
       采用深色背景 + 几何装饰的设计
       min-h-[90vh]: 占据 90% 视口高度
       overflow-hidden: 防止装饰元素溢出
     -->
     <section class="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0a0a0a]">
-      <!-- 
+      <!--
         噪点纹理背景
         使用 SVG 数据 URI 创建噪点效果
         opacity-[0.03]: 非常淡的效果，增加质感而不抢眼
@@ -28,7 +28,7 @@
         "
       />
 
-      <!-- 
+      <!--
         网格线装饰
         使用线性渐变创建微妙的网格背景
       -->
@@ -53,7 +53,7 @@
       <!-- 主要内容区域 -->
       <div class="relative container mx-auto px-6 md:px-12">
         <div class="max-w-4xl">
-          <!-- 
+          <!--
             状态标签
             inline-flex: 行内弹性布局
             tracking-widest: 字间距最大，增加设计感
@@ -66,7 +66,7 @@
             <span>技术博客</span>
           </div>
 
-          <!-- 
+          <!--
             主标题
             使用超大字号和紧凑行高
             leading-[0.9]: 行高 0.9（非常紧凑）
@@ -84,13 +84,13 @@
 
           <!-- 副标题 -->
           <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-12 font-light">
-            探索前端开发的边界，记录技术成长的轨迹。<br />
+            探索前端开发的边界，记录技术成长的轨迹。<br>
             用代码构建有温度的数字世界。
           </p>
 
           <!-- CTA 按钮组 -->
           <div class="flex flex-wrap gap-4">
-            <!-- 
+            <!--
               主要按钮 - 琥珀色背景
               group: 启用 group-hover 效果
               transition-all duration-300: 平滑过渡动画
@@ -113,7 +113,10 @@
               rel="noopener noreferrer"
               class="group inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white font-medium hover:bg-white/5 transition-all duration-300"
             >
-              <Icon name="lucide:github" class="w-4 h-4" />
+              <Icon
+                name="lucide:github"
+                class="w-4 h-4"
+              />
               <span>源码</span>
             </a>
           </div>
@@ -122,8 +125,12 @@
         <!-- 右侧装饰（仅桌面端显示） -->
         <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
           <div class="text-right">
-            <div class="text-white/10 text-[120px] font-bold leading-none select-none">01</div>
-            <div class="text-white/30 text-sm tracking-widest mt-4">NUXR 4</div>
+            <div class="text-white/10 text-[120px] font-bold leading-none select-none">
+              01
+            </div>
+            <div class="text-white/30 text-sm tracking-widest mt-4">
+              NUXR 4
+            </div>
           </div>
         </div>
       </div>
@@ -137,7 +144,7 @@
       </div>
     </section>
 
-    <!-- 
+    <!--
       ==================== 技术特性展示 ====================
       使用浅色背景，展示博客的技术特点
     -->
@@ -152,12 +159,12 @@
             <span>技术特性</span>
           </div>
           <h2 class="text-4xl md:text-5xl font-bold text-black leading-tight">
-            现代化的<br />
+            现代化的<br>
             <span class="text-black/30">技术架构</span>
           </h2>
         </div>
 
-        <!-- 
+        <!--
           特性卡片网格
           gap-px: 使用 1px 间隙创建分割线效果
           bg-black/10: 间隙背景色（分割线颜色）
@@ -199,7 +206,7 @@
       </div>
     </section>
 
-    <!-- 
+    <!--
       ==================== 最新文章区域 ====================
       回到深色背景，展示最新文章列表
     -->
@@ -214,27 +221,35 @@
               <span class="w-8 h-px bg-amber-500" />
               <span>最新文章</span>
             </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white">思考与记录</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-white">
+              思考与记录
+            </h2>
           </div>
-          
+
           <!-- 桌面端查看全部链接 -->
           <NuxtLink
             to="/blog"
             class="hidden md:inline-flex items-center gap-2 text-white/40 hover:text-amber-500 transition-colors"
           >
             <span class="text-sm tracking-widest uppercase">查看全部</span>
-            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+            <Icon
+              name="lucide:arrow-right"
+              class="w-4 h-4"
+            />
           </NuxtLink>
         </div>
 
-        <!-- 
+        <!--
           文章列表
           使用 v-if/v-else-if/v-else 处理三种状态：
           1. 有数据：显示文章列表
           2. 加载中：显示 loading
           3. 无数据：显示空状态
         -->
-        <div v-if="latestArticles.length > 0" class="space-y-px bg-white/5">
+        <div
+          v-if="latestArticles.length > 0"
+          class="space-y-px bg-white/5"
+        >
           <!-- 文章列表项 -->
           <NuxtLink
             v-for="(article, index) in latestArticles"
@@ -271,29 +286,46 @@
         </div>
 
         <!-- 加载状态 -->
-        <div v-else-if="articlesPending" class="py-16 text-center">
+        <div
+          v-else-if="articlesPending"
+          class="py-16 text-center"
+        >
           <div class="inline-flex items-center gap-3 text-white/40">
-            <Icon name="lucide:loader-2" class="w-5 h-5 animate-spin" />
+            <Icon
+              name="lucide:loader-2"
+              class="w-5 h-5 animate-spin"
+            />
             <span>加载中...</span>
           </div>
         </div>
 
         <!-- 空状态 -->
-        <div v-else class="py-16 text-center">
-          <p class="text-white/40">暂无文章</p>
+        <div
+          v-else
+          class="py-16 text-center"
+        >
+          <p class="text-white/40">
+            暂无文章
+          </p>
         </div>
 
         <!-- 移动端查看全部 -->
         <div class="md:hidden mt-8">
-          <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-amber-500">
+          <NuxtLink
+            to="/blog"
+            class="inline-flex items-center gap-2 text-amber-500"
+          >
             <span class="text-sm tracking-widest uppercase">查看全部文章</span>
-            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+            <Icon
+              name="lucide:arrow-right"
+              class="w-4 h-4"
+            />
           </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- 
+    <!--
       ==================== CTA 区域 ====================
       琥珀色背景，行动号召
     -->
@@ -307,7 +339,9 @@
       />
 
       <div class="relative container mx-auto px-6 md:px-12 text-center">
-        <h2 class="text-4xl md:text-6xl font-bold text-black mb-6">开始探索</h2>
+        <h2 class="text-4xl md:text-6xl font-bold text-black mb-6">
+          开始探索
+        </h2>
         <p class="text-xl text-black/60 mb-12 max-w-xl mx-auto">
           在代码的世界里，每一行都是一个故事
         </p>
@@ -316,7 +350,10 @@
           class="inline-flex items-center gap-3 px-10 py-5 bg-black text-white font-medium hover:bg-black/80 transition-all duration-300"
         >
           <span>浏览全部文章</span>
-          <Icon name="lucide:arrow-right" class="w-4 h-4" />
+          <Icon
+            name="lucide:arrow-right"
+            class="w-4 h-4"
+          />
         </NuxtLink>
       </div>
     </section>
@@ -333,8 +370,8 @@ import type { Post } from '~/composables/usePosts'
 
 // 网站基本信息
 const SITE_URL = 'https://blog-eight-gamma-66.vercel.app/'
-const SITE_DESC =
-  '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。'
+const SITE_DESC
+  = '探索前端开发的边界，记录技术成长的轨迹。现代前端技术博客，专注于 Vue、Nuxt、JavaScript 等技术实践分享。'
 
 /**
  * 设置页面 SEO Meta 标签
@@ -361,7 +398,7 @@ useHead({
     { name: 'twitter:title', content: 'My Blog - 思考·创造·分享' },
     { name: 'twitter:description', content: SITE_DESC },
   ],
-  link: [{ rel: 'canonical', href: SITE_URL }],  // 规范 URL（SEO）
+  link: [{ rel: 'canonical', href: SITE_URL }], // 规范 URL（SEO）
 })
 
 // 使用 usePosts composable 获取文章数据

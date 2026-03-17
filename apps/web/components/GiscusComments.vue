@@ -4,11 +4,15 @@
       <span class="w-8 h-px bg-amber-500" />
       <span>评论</span>
     </div>
-    <div ref="giscusContainer" class="giscus" />
+    <div
+      ref="giscusContainer"
+      class="giscus"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface GiscusConfig {
   repo: string
   repoId: string
