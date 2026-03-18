@@ -306,9 +306,9 @@
 
     <!--
       ==================== CTA 区域 ====================
-      琥珀色背景，行动号召
+      浅色模式琥珀色背景，深色模式使用深色背景
     -->
-    <section class="relative py-32 bg-amber-500">
+    <section class="relative py-32 bg-amber-500 dark:bg-[#0a0a0a] dark:border-t dark:border-white/10">
       <!-- 噪点纹理 -->
       <div
         class="absolute inset-0 opacity-10"
@@ -318,15 +318,15 @@
       />
 
       <div class="relative container mx-auto px-6 md:px-12 text-center">
-        <h2 class="text-4xl md:text-6xl font-bold text-black mb-6">
+        <h2 class="text-4xl md:text-6xl font-bold text-black dark:text-white mb-6">
           开始探索
         </h2>
-        <p class="text-xl text-black/60 mb-12 max-w-xl mx-auto">
+        <p class="text-xl text-black/60 dark:text-white/50 mb-12 max-w-xl mx-auto">
           在代码的世界里，每一行都是一个故事
         </p>
         <NuxtLink
           to="/blog"
-          class="inline-flex items-center gap-3 px-10 py-5 bg-black text-white font-medium hover:bg-black/80 transition-all duration-300"
+          class="inline-flex items-center gap-3 px-10 py-5 bg-black text-white dark:bg-amber-500 dark:text-black font-medium hover:bg-black/80 dark:hover:bg-amber-400 transition-all duration-300"
         >
           <span>浏览全部文章</span>
           <Icon
