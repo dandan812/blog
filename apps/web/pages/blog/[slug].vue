@@ -133,7 +133,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <button
-                    class="w-10 h-10 flex items-center justify-center border border-black/10 hover:border-black hover:bg-black hover:text-white transition-all"
+                    class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-amber-500 hover:bg-black dark:hover:bg-amber-500 hover:text-white dark:hover:text-black transition-all"
                     @click="shareToTwitter"
                   >
                     <Icon
@@ -142,7 +142,7 @@
                     />
                   </button>
                   <button
-                    class="w-10 h-10 flex items-center justify-center border border-black/10 hover:border-black hover:bg-black hover:text-white transition-all"
+                    class="w-10 h-10 flex items-center justify-center border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-amber-500 hover:bg-black dark:hover:bg-amber-500 hover:text-white dark:hover:text-black transition-all"
                     @click="copyLink"
                   >
                     <Icon
@@ -163,9 +163,9 @@
                   <div class="flex items-center gap-3">
                     <Icon
                       name="lucide:arrow-left"
-                      class="w-4 h-4 text-black/20 group-hover:text-amber-500 transition-colors"
+                      class="w-4 h-4 text-black/20 dark:text-white/20 group-hover:text-amber-500 transition-colors"
                     />
-                    <span class="font-medium text-black group-hover:text-amber-600 transition-colors line-clamp-1">
+                    <span class="font-medium text-black dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1">
                       {{ prevPost.title }}
                     </span>
                   </div>
@@ -182,12 +182,12 @@
                 >
                   <div class="text-xs text-black/30 mb-2 tracking-widest uppercase">下一篇</div>
                   <div class="flex items-center justify-end gap-3">
-                    <span class="font-medium text-black group-hover:text-amber-600 transition-colors line-clamp-1">
+                    <span class="font-medium text-black dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1">
                       {{ nextPost.title }}
                     </span>
                     <Icon
                       name="lucide:arrow-right"
-                      class="w-4 h-4 text-black/20 group-hover:text-amber-500 transition-colors"
+                      class="w-4 h-4 text-black/20 dark:text-white/20 group-hover:text-amber-500 transition-colors"
                     />
                   </div>
                 </NuxtLink>
@@ -215,10 +215,10 @@
                   class="group flex items-center gap-6 p-6 bg-[#fafafa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#1a1a1a] transition-all duration-300"
                 >
                   <div class="flex-1">
-                    <h3 class="font-bold text-black group-hover:text-amber-600 transition-colors mb-1">
+                    <h3 class="font-bold text-black dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors mb-1">
                       {{ article.title }}
                     </h3>
-                    <p class="text-black/40 text-sm line-clamp-1">
+                    <p class="text-black/40 dark:text-white/40 text-sm line-clamp-1">
                       {{ article.excerpt }}
                     </p>
                   </div>
