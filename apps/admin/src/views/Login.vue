@@ -84,8 +84,10 @@ async function handleLogin() {
   align-items: center;
   justify-content: center;
   background-color: #f3f4f6;
+  padding: 1rem;
 }
 .login-card {
-  width: 24rem;
+  width: 100%;
+  max-width: 24rem;
 }
 </style>
