@@ -168,20 +168,27 @@ const MAX_DISPLAY = 20
 const { data: allResults, pending } = await useAsyncData(
   'enhanced-search',
   async () => {
-    const allContents = await queryCollection('content').all()
-    return allContents.map((item): SearchResult => {
-      const c = item as unknown as Record<string, unknown>
-      const path = String(c._path || c.path || '')
-      return {
-        id: path,
-        title: String(c.title || ''),
-        description: String(c.description || c.excerpt || ''),
-        path,
-        type: path.startsWith('/blog') ? 'blog' : 'page',
-        date: String(c.date || c.createdAt || ''),
-        readingTime: Number(c.readingTime) || 0,
-      }
-    })
+    try {
+      // 从 API 获取所有已发布的文章
+      const { fetchPosts } = usePosts()
+      const response = await fetchPosts({ pageSize: 100, published: true })
+
+      if (!response?.data) return []
+
+      return response.data.map((post): SearchResult => ({
+        id: post.id,
+        title: post.title,
+        description: post.excerpt || '',
+        path: `/blog/${post.slug}`, // 使用正确的路径格式
+        type: 'blog',
+        date: post.createdAt,
+        readingTime: 0, // API 暂时没有阅读时长字段
+      }))
+    }
+    catch (error) {
+      console.error('Failed to load search data:', error)
+      return []
+    }
   },
   { server: false, default: () => [] },
 )
