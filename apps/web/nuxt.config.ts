@@ -1,3 +1,13 @@
+import { existsSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
+
+const contentDir = join(process.cwd(), 'content', 'blog')
+const blogRoutes = existsSync(contentDir)
+  ? readdirSync(contentDir)
+      .filter(file => file.endsWith('.md'))
+      .map(file => `/blog/${file.replace(/\.md$/i, '')}`)
+  : []
+
 /**
  * Nuxt 4 配置文件
  */
@@ -58,7 +68,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    '/blog': { swr: 3600 },
+    '/blog': { prerender: true },
     '/blog/**': { prerender: true },
     '/about': { prerender: true },
     '/_nuxt/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
@@ -78,7 +88,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,
     prerender: {
-      routes: ['/'],
+      routes: ['/', '/about', '/blog', ...blogRoutes],
       crawlLinks: true,
     },
   },

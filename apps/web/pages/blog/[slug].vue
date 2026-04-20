@@ -28,7 +28,7 @@
           加载失败
         </h1>
         <p class="text-black/40 mb-8">
-          {{ error }}
+          {{ errorMessage }}
         </p>
         <NuxtLink
           to="/blog"
@@ -44,7 +44,7 @@
     </div>
 
     <article
-      v-else-if="post"
+      v-else-if="post || contentPost"
       class="min-h-screen"
     >
       <header class="relative py-24 md:py-32 bg-[#0a0a0a]">
@@ -75,7 +75,7 @@
           </div>
 
           <div
-            v-if="post.tags?.length"
+            v-if="post?.tags?.length"
             class="flex flex-wrap gap-2 mb-6"
           >
             <span
@@ -87,14 +87,14 @@
             </span>
           </div>
 
-          <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[0.95] tracking-tight mb-6"
-          >
-            {{ post.title }}
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[0.95] tracking-tight mb-6"
+            >
+            {{ articleTitle }}
           </h1>
 
           <p class="text-lg md:text-xl text-white/50 max-w-2xl leading-relaxed mb-8">
-            {{ post.excerpt }}
+            {{ articleExcerpt }}
           </p>
 
           <div class="flex items-center gap-6 text-sm text-white/30">
@@ -103,8 +103,8 @@
                 name="lucide:calendar"
                 class="w-4 h-4"
               />
-              <time :datetime="post.createdAt">
-                {{ formatDate(post.createdAt) }}
+              <time :datetime="articleDate">
+                {{ formatDate(articleDate) }}
               </time>
             </div>
             <span class="flex items-center gap-2">
@@ -112,7 +112,7 @@
                 name="lucide:eye"
                 class="w-4 h-4"
               />
-              {{ post.viewCount }} 次阅读
+              {{ articleViewCount }} 次阅读
             </span>
           </div>
         </div>
@@ -123,8 +123,16 @@
           <div class="max-w-3xl mx-auto">
             <div
               class="prose prose-lg max-w-none dark:prose-invert"
-              v-html="renderedContent"
-            />
+            >
+              <ContentRenderer
+                v-if="contentPost"
+                :value="contentPost"
+              />
+              <div
+                v-else
+                v-html="renderedContent"
+              />
+            </div>
 
             <footer class="mt-16 pt-12 border-t border-black/5 dark:border-white/5">
               <div class="flex items-center justify-between mb-12">
@@ -274,6 +282,7 @@
 <script setup lang="ts">
 import { marked } from 'marked'
 import type { Post } from '~/composables/usePosts'
+import { fetchAllPostsForUi, fetchPostWithFallback } from '~/composables/useBlogData'
 
 marked.setOptions({
   breaks: true,
@@ -284,53 +293,55 @@ const config = useRuntimeConfig()
 const route = useRoute()
 const slug = route.params.slug as string
 
-const post = ref<Post | null>(null)
-const pending = ref(true)
-const error = ref<string | null>(null)
-const relatedPosts = ref<Post[]>([])
-const allPosts = ref<Post[]>([])
+/**
+ * 详情页首屏直接取数，API 异常时自动回退到本地 Markdown。
+ */
+const { data: postData, pending, error } = await useAsyncData(
+  `blog-post-${slug}`,
+  async () => {
+    const [postResult, posts] = await Promise.all([
+      fetchPostWithFallback(slug),
+      fetchAllPostsForUi(),
+    ])
 
-const loadPost = async () => {
-  pending.value = true
-  error.value = null
-  try {
-    const { fetchPost } = usePost(slug)
-    const result = await fetchPost()
-    if (result) {
-      post.value = result
-      const { recordView } = useRecordView()
-      recordView(result.id)
+    return {
+      ...postResult,
+      allPosts: posts,
     }
-  }
-  catch (e) {
-    error.value = e instanceof Error ? e.message : '加载失败'
-  }
-  finally {
-    pending.value = false
-  }
-}
+  },
+  {
+    default: () => ({
+      apiPost: null,
+      contentPost: null,
+      allPosts: [],
+    }),
+  },
+)
 
-const loadRelatedPosts = async () => {
-  try {
-    const { fetchPosts } = usePosts()
-    const res = await fetchPosts({ pageSize: 10, published: true })
-    if (res) {
-      allPosts.value = res.data
-      relatedPosts.value = res.data
-        .filter(p => p.slug !== slug)
-        .slice(0, 3)
-    }
-  }
-  catch { /* empty */ }
-}
+const post = computed<Post | null>(() => postData.value.apiPost)
+const contentPost = computed(() => postData.value.contentPost)
+const allPosts = computed<Post[]>(() => postData.value.allPosts)
+const errorMessage = computed(() => error.value?.message || '加载失败')
+const relatedPosts = computed(() =>
+  allPosts.value
+    .filter(item => item.slug !== slug)
+    .slice(0, 3),
+)
 
-onMounted(async () => {
-  await loadPost()
-  await loadRelatedPosts()
+onMounted(() => {
+  if (post.value?.id) {
+    const { recordView } = useRecordView()
+    recordView(post.value.id)
+  }
 })
 
+const articleTitle = computed(() => post.value?.title || contentPost.value?.title || '')
+const articleExcerpt = computed(() => post.value?.excerpt || contentPost.value?.excerpt || contentPost.value?.description || '')
+const articleDate = computed(() => post.value?.createdAt || contentPost.value?.date || '')
+const articleViewCount = computed(() => post.value?.viewCount || 0)
+
 const currentIndex = computed(() => {
-  return allPosts.value.findIndex(p => p.slug === post.value?.slug) ?? -1
+  return allPosts.value.findIndex(p => p.slug === slug) ?? -1
 })
 
 const prevPost = computed(() => {
@@ -351,11 +362,11 @@ const renderedContent = computed(() => {
 })
 
 useHead(() => ({
-  title: post.value?.title,
+  title: articleTitle.value,
   meta: [
-    { name: 'description', content: post.value?.excerpt || '' },
-    { property: 'og:title', content: post.value?.title },
-    { property: 'og:description', content: post.value?.excerpt || '' },
+    { name: 'description', content: articleExcerpt.value },
+    { property: 'og:title', content: articleTitle.value },
+    { property: 'og:description', content: articleExcerpt.value },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: shareUrl.value },
     { name: 'twitter:card', content: 'summary_large_image' },
@@ -364,7 +375,7 @@ useHead(() => ({
 
 const shareToTwitter = () => {
   window.open(
-    `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.value?.title || '')}&url=${encodeURIComponent(shareUrl.value)}`,
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(articleTitle.value)}&url=${encodeURIComponent(shareUrl.value)}`,
     '_blank',
     'noopener,noreferrer',
   )

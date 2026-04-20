@@ -50,7 +50,7 @@
       <UiLoadingState v-if="pending" />
 
       <div
-        v-else-if="error"
+        v-else-if="errorMessage"
         class="py-16 text-center"
       >
         <Icon
@@ -58,7 +58,7 @@
           class="w-12 h-12 text-red-500 mx-auto"
         />
         <p class="text-black/60 dark:text-white/60 mt-4">
-          {{ error }}
+          {{ errorMessage }}
         </p>
         <button
           class="mt-4 px-6 py-2 bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
@@ -208,42 +208,39 @@
 
 <script setup lang="ts">
 import type { Post } from '~/composables/usePosts'
+import { fetchPostsWithFallback } from '~/composables/useBlogData'
 
 useHead({
   title: '博客文章 - My Blog',
   meta: [{ name: 'description', content: '探索关于前端开发、Vue 生态和软件工程的技术文章' }],
 })
 
+const route = useRoute()
+const router = useRouter()
 const viewMode = ref<'grid' | 'list'>('grid')
-const posts = ref<Post[]>([])
-const total = ref(0)
-const currentPage = ref(1)
 const pageSize = 9
-const totalPages = ref(1)
-const pending = ref(false)
-const error = ref<string | null>(null)
+const currentPage = ref(Math.max(1, Number(route.query.page) || 1))
+
+/**
+ * 文章列表优先使用 API，失败时回退到本地 Markdown。
+ */
+const { data: postsResponse, pending, error, refresh } = await useAsyncData(
+  'blog-posts',
+  () => fetchPostsWithFallback({ page: currentPage.value, pageSize, published: true }),
+  {
+    watch: [currentPage],
+    default: () => ({ data: [], total: 0, page: 1, pageSize, totalPages: 1 }),
+  },
+)
+
+const posts = computed<Post[]>(() => postsResponse.value.data)
+const total = computed(() => postsResponse.value.total)
+const totalPages = computed(() => postsResponse.value.totalPages)
+const errorMessage = computed(() => error.value?.message || null)
 
 const loadPosts = async () => {
-  pending.value = true
-  error.value = null
-  try {
-    const { fetchPosts } = usePosts()
-    const res = await fetchPosts({ page: currentPage.value, pageSize, published: true })
-    if (res) {
-      posts.value = res.data
-      total.value = res.total
-      totalPages.value = res.totalPages
-    }
-  }
-  catch (e) {
-    error.value = e instanceof Error ? e.message : '加载失败'
-  }
-  finally {
-    pending.value = false
-  }
+  await refresh()
 }
-
-onMounted(loadPosts)
 
 const displayedPages = computed(() => {
   if (totalPages.value <= 1) return []
@@ -280,7 +277,9 @@ const displayedPages = computed(() => {
 const goToPage = (page: number) => {
   if (page < 1 || page > totalPages.value) return
   currentPage.value = page
-  loadPosts()
+  router.replace({
+    query: page === 1 ? {} : { page: String(page) },
+  })
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 

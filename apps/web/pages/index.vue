@@ -346,6 +346,7 @@
 
 import type { Feature } from '~/types'
 import type { Post } from '~/composables/usePosts'
+import { fetchPostsWithFallback } from '~/composables/useBlogData'
 
 // 网站基本信息
 const SITE_URL = 'https://blog-eight-gamma-66.vercel.app/'
@@ -380,24 +381,21 @@ useHead({
   link: [{ rel: 'canonical', href: SITE_URL }], // 规范 URL（SEO）
 })
 
-// 使用 usePosts composable 获取文章数据
-const { posts, pending: articlesPending, fetchPosts } = usePosts()
-
 /**
- * 组件挂载时获取最新文章
- * 只获取前 3 篇已发布的文章
+ * 首屏直接在服务端拉取文章，避免静态部署时首屏空白。
  */
-onMounted(async () => {
-  await fetchPosts({ pageSize: 3, published: true })
-})
+const { data: latestPostsResponse, pending: articlesPending } = await useAsyncData(
+  'home-latest-posts',
+  () => fetchPostsWithFallback({ page: 1, pageSize: 3, published: true }),
+  { default: () => ({ data: [], total: 0, page: 1, pageSize: 3, totalPages: 1 }) },
+)
 
 /**
  * 计算属性：获取最新的 3 篇文章
  * 使用 computed 确保响应式更新
  */
 const latestArticles = computed<Post[]>(() => {
-  if (!posts.value?.length) return []
-  return posts.value.slice(0, 3)
+  return latestPostsResponse.value.data.slice(0, 3)
 })
 
 /**

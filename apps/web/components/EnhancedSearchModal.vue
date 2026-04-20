@@ -146,6 +146,7 @@
 
 <script setup lang="ts">
 import { formatDate } from '~/types'
+import { fetchAllPostsForUi } from '~/composables/useBlogData'
 
 interface SearchResult {
   id: string
@@ -169,20 +170,15 @@ const { data: allResults, pending } = await useAsyncData(
   'enhanced-search',
   async () => {
     try {
-      // 从 API 获取所有已发布的文章
-      const { fetchPosts } = usePosts()
-      const response = await fetchPosts({ pageSize: 100, published: true })
-
-      if (!response?.data) return []
-
-      return response.data.map((post): SearchResult => ({
+      const posts = await fetchAllPostsForUi()
+      return posts.map((post): SearchResult => ({
         id: post.id,
         title: post.title,
         description: post.excerpt || '',
         path: `/blog/${post.slug}`, // 使用正确的路径格式
         type: 'blog',
         date: post.createdAt,
-        readingTime: 0, // API 暂时没有阅读时长字段
+        readingTime: 0,
       }))
     }
     catch (error) {
