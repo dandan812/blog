@@ -1,0 +1,1087 @@
+openapi: 3.0.3
+info:
+  title: Blog Server API
+  version: 1.0.0
+  description: |
+    Personal blog backend API for the `apps/server` service.
+    Base URL defaults to `http://localhost:3001`.
+servers:
+  - url: http://localhost:3001
+    description: Local development
+tags:
+  - name: Health
+  - name: Auth
+  - name: Posts
+  - name: Comments
+  - name: Stats
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number, minimum 1.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      name: pageSize
+      in: query
+      description: Page size, maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+  schemas:
+    ApiError:
+      type: object
+      required: [success, error]
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: Unauthorized
+        details:
+          nullable: true
+    UserSummary:
+      type: object
+      required: [id, email, role]
+      properties:
+        id:
+          type: string
+          example: clx123abc
+        email:
+          type: string
+          format: email
+          example: admin@example.com
+        name:
+          type: string
+          nullable: true
+          example: Huliang
+        role:
+          type: string
+          example: admin
+    AuthTokenResponse:
+      type: object
+      required: [user, token]
+      properties:
+        user:
+          $ref: '#/components/schemas/UserSummary'
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    AuthMeResponse:
+      allOf:
+        - $ref: '#/components/schemas/UserSummary'
+        - type: object
+          required: [createdAt]
+          properties:
+            createdAt:
+              type: string
+              format: date-time
+    Tag:
+      type: object
+      required: [id, name, slug]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+    PostAuthor:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+    CommentReply:
+      type: object
+      required: [id, content, author, email, status, postId, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        author:
+          type: string
+        email:
+          type: string
+          format: email
+        website:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        postId:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        userId:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Comment:
+      allOf:
+        - $ref: '#/components/schemas/CommentReply'
+        - type: object
+          properties:
+            replies:
+              type: array
+              items:
+                $ref: '#/components/schemas/CommentReply'
+    PostListItem:
+      type: object
+      required:
+        - id
+        - title
+        - slug
+        - content
+        - published
+        - viewCount
+        - authorId
+        - createdAt
+        - updatedAt
+        - author
+        - tags
+        - _count
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+          nullable: true
+        coverImage:
+          type: string
+          nullable: true
+        published:
+          type: boolean
+        viewCount:
+          type: integer
+        authorId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/PostAuthor'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        _count:
+          type: object
+          required: [comments]
+          properties:
+            comments:
+              type: integer
+    PostDetail:
+      allOf:
+        - $ref: '#/components/schemas/PostListItem'
+        - type: object
+          properties:
+            comments:
+              type: array
+              items:
+                $ref: '#/components/schemas/Comment'
+    PostMutationResponse:
+      type: object
+      required:
+        - id
+        - title
+        - slug
+        - content
+        - published
+        - viewCount
+        - authorId
+        - createdAt
+        - updatedAt
+        - tags
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+          nullable: true
+        coverImage:
+          type: string
+          nullable: true
+        published:
+          type: boolean
+        viewCount:
+          type: integer
+        authorId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    PaginatedPosts:
+      type: object
+      required: [data, total, page, pageSize, totalPages]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostListItem'
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+    PaginatedComments:
+      type: object
+      required: [data, total, page, pageSize]
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/CommentReply'
+              - type: object
+                properties:
+                  post:
+                    type: object
+                    required: [id, title]
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+    CreatePostRequest:
+      type: object
+      required: [title, content]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+        excerpt:
+          type: string
+        coverImage:
+          type: string
+          format: uri
+          nullable: true
+        published:
+          type: boolean
+        tagIds:
+          type: array
+          items:
+            type: string
+    UpdatePostRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+        excerpt:
+          type: string
+        coverImage:
+          type: string
+          format: uri
+          nullable: true
+        published:
+          type: boolean
+        tagIds:
+          type: array
+          items:
+            type: string
+    CreateCommentRequest:
+      type: object
+      required: [content, author, email, postId]
+      properties:
+        content:
+          type: string
+          minLength: 1
+        author:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        website:
+          type: string
+          format: uri
+          nullable: true
+        postId:
+          type: string
+        parentId:
+          type: string
+    UpdateCommentStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        name:
+          type: string
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+    ViewRecordResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: 记录成功
+    PopularPost:
+      type: object
+      required: [id, title, slug, viewCount, createdAt]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        viewCount:
+          type: integer
+        coverImage:
+          type: string
+          nullable: true
+        excerpt:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    DashboardRecentPost:
+      type: object
+      required: [id, title, slug, viewCount, createdAt]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        viewCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    ViewsTrendItem:
+      type: object
+      required: [createdAt, _count]
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        _count:
+          type: integer
+    DashboardStats:
+      type: object
+      required:
+        - totalPosts
+        - publishedPosts
+        - draftPosts
+        - totalComments
+        - pendingComments
+        - totalViews
+        - recentPosts
+        - viewsTrend
+      properties:
+        totalPosts:
+          type: integer
+        publishedPosts:
+          type: integer
+        draftPosts:
+          type: integer
+        totalComments:
+          type: integer
+        pendingComments:
+          type: integer
+        totalViews:
+          type: integer
+        recentPosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardRecentPost'
+        viewsTrend:
+          type: array
+          items:
+            $ref: '#/components/schemas/ViewsTrendItem'
+    SuccessEnvelopeAuthToken:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/AuthTokenResponse'
+    SuccessEnvelopeAuthMe:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/AuthMeResponse'
+    SuccessEnvelopePosts:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/PaginatedPosts'
+    SuccessEnvelopePostDetail:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/PostDetail'
+    SuccessEnvelopePostMutation:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/PostMutationResponse'
+    SuccessEnvelopeComments:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    SuccessEnvelopeComment:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/CommentReply'
+    SuccessEnvelopePaginatedComments:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/PaginatedComments'
+    SuccessEnvelopeMessage:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+    SuccessEnvelopePopularPosts:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PopularPost'
+    SuccessEnvelopeDashboard:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/DashboardStats'
+    SuccessEnvelopeHealth:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required: [status, timestamp]
+          properties:
+            status:
+              type: string
+              example: ok
+            timestamp:
+              type: string
+              format: date-time
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeHealth'
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Register admin user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeAuthToken'
+        '400':
+          description: Validation or duplicate email error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeAuthToken'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeAuthMe'
+        '401':
+          description: Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/posts:
+    get:
+      tags: [Posts]
+      summary: List posts
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: published
+          in: query
+          description: Filter by publish status.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Post list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePosts'
+    post:
+      tags: [Posts]
+      summary: Create post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePostMutation'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/posts/{slug}:
+    get:
+      tags: [Posts]
+      summary: Get post detail by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePostDetail'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/posts/{id}:
+    put:
+      tags: [Posts]
+      summary: Update post by id
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequest'
+      responses:
+        '200':
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePostMutation'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags: [Posts]
+      summary: Delete post by id
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/comments/post/{postId}:
+    get:
+      tags: [Comments]
+      summary: Get approved comments for one post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Approved comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeComments'
+  /api/comments:
+    post:
+      tags: [Comments]
+      summary: Create comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        '201':
+          description: Comment created as pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeComment'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags: [Comments]
+      summary: List comments for admin
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: status
+          in: query
+          description: Filter by comment status.
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+      responses:
+        '200':
+          description: Paginated comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePaginatedComments'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/comments/{id}/status:
+    patch:
+      tags: [Comments]
+      summary: Update comment status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommentStatusRequest'
+      responses:
+        '200':
+          description: Comment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeComment'
+        '400':
+          description: Invalid status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/comments/{id}:
+    delete:
+      tags: [Comments]
+      summary: Delete comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comment deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/stats/view/{postId}:
+    post:
+      tags: [Stats]
+      summary: Record post view
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: View recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeMessage'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/stats/popular:
+    get:
+      tags: [Stats]
+      summary: Get popular posts
+      parameters:
+        - name: limit
+          in: query
+          description: Max 50, default 10.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+      responses:
+        '200':
+          description: Popular posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopePopularPosts'
+  /api/stats/dashboard:
+    get:
+      tags: [Stats]
+      summary: Get admin dashboard statistics
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelopeDashboard'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Admin required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
