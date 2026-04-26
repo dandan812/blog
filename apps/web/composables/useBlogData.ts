@@ -213,7 +213,7 @@ export async function fetchPostWithFallback(slug: string): Promise<{
   }
 
   if (import.meta.client) {
-    const contentPost = await $fetch<(ContentPost & { path: string }) | null>(`/api/content-posts/${slug}`)
+    const contentPost = await $fetch<(ContentPost & { path: string }) | null>(`/api/content-post/${slug}`)
       .catch(() => null)
 
     return {

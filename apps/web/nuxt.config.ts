@@ -7,6 +7,10 @@ const blogRoutes = existsSync(contentDir)
       .filter(file => file.endsWith('.md'))
       .map(file => `/blog/${file.replace(/\.md$/i, '')}`)
   : []
+const contentPostApiRoutes = [
+  '/api/content-posts',
+  ...blogRoutes.map(route => route.replace('/blog/', '/api/content-post/')),
+]
 
 /**
  * Nuxt 4 配置文件
@@ -88,7 +92,8 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,
     prerender: {
-      routes: ['/', '/about', '/blog', ...blogRoutes],
+      // 静态部署时也需要保留客户端兜底读取 Markdown 的 API。
+      routes: ['/', '/about', '/blog', ...blogRoutes, ...contentPostApiRoutes],
       crawlLinks: true,
     },
   },
