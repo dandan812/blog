@@ -42,9 +42,10 @@ async function fetchBlogApi<T>(path: string): Promise<T | null> {
 
   try {
     const config = useRuntimeConfig()
-    return await $fetch<T>(`${config.public.apiBaseUrl}/api${path}`, {
+    const response = await $fetch(`${config.public.apiBaseUrl}/api${path}`, {
       signal: controller.signal,
     })
+    return response as T
   }
   catch {
     return null
@@ -124,6 +125,10 @@ function mapLegacyArticle(item: LegacyArticle): Post {
  * 读取本地 Markdown 文章列表，作为线上 API 不可用时的兜底数据源。
  */
 export async function fetchContentPosts(): Promise<Array<ContentPost & { path: string }>> {
+  if (import.meta.client) {
+    return await $fetch<Array<ContentPost & { path: string }>>('/api/content-posts')
+  }
+
   const posts = await queryCollection('content')
     .order('date', 'DESC')
     .all()
@@ -196,6 +201,16 @@ export async function fetchPostWithFallback(slug: string): Promise<{
   const apiPost = await fetchBlogApi<Post>(`/posts/${slug}`)
   if (apiPost) {
     return { apiPost, contentPost: null }
+  }
+
+  if (import.meta.client) {
+    const contentPost = await $fetch<(ContentPost & { path: string }) | null>(`/api/content-posts/${slug}`)
+      .catch(() => null)
+
+    return {
+      apiPost: null,
+      contentPost,
+    }
   }
 
   const contentPost = await queryCollection('content')
