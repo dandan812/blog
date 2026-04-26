@@ -47,7 +47,7 @@
     </section>
 
     <UiContentSection>
-      <UiLoadingState v-if="pending" />
+      <UiLoadingState v-if="isHydrated && pending && !posts.length" />
 
       <div
         v-else-if="errorMessage"
@@ -220,16 +220,23 @@ const router = useRouter()
 const viewMode = ref<'grid' | 'list'>('grid')
 const pageSize = 9
 const currentPage = ref(Math.max(1, Number(route.query.page) || 1))
+const isHydrated = ref(false)
+
+onMounted(() => {
+  isHydrated.value = true
+})
 
 /**
- * 文章列表优先使用 API，失败时回退到本地 Markdown。
+ * 文章列表非阻塞加载，避免客户端路由切换时 Suspense 挂起导致页面空白。
  */
-const { data: postsResponse, pending, error, refresh } = await useAsyncData(
+const { data: postsResponse, pending, error, refresh } = useAsyncData(
   'blog-posts',
   () => fetchPostsWithFallback({ page: currentPage.value, pageSize, published: true }),
   {
     watch: [currentPage],
     default: () => ({ data: [], total: 0, page: 1, pageSize, totalPages: 1 }),
+    lazy: true,
+    server: false,
   },
 )
 

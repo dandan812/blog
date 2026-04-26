@@ -42,7 +42,16 @@ async function fetchBlogApi<T>(path: string): Promise<T | null> {
 
   try {
     const config = useRuntimeConfig()
-    const response = await $fetch(`${config.public.apiBaseUrl}/api${path}`, {
+    const apiBaseUrl = config.public.apiBaseUrl || 'http://localhost:3001'
+
+    const isLocalClient = import.meta.client && window.location.hostname === 'localhost'
+    const isLocalServer = import.meta.server && useRequestURL().hostname === 'localhost'
+
+    if ((isLocalClient || isLocalServer) && !apiBaseUrl.includes('localhost')) {
+      return null
+    }
+
+    const response = await $fetch(`${apiBaseUrl}/api${path}`, {
       signal: controller.signal,
     })
     return response as T

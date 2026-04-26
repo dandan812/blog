@@ -1,13 +1,4 @@
 <template>
-  <!--
-    默认布局组件 (layouts/default.vue)
-
-    所有页面都会使用这个布局，包含：
-    - 顶部导航栏（sticky 定位）
-    - 主内容区域（通过 <slot /> 渲染页面内容）
-    - 底部页脚
-    - 全局搜索模态框
-  -->
   <div class="min-h-screen flex flex-col font-sans bg-[#fafafa] dark:bg-[#0a0a0a]">
     <!--
       导航栏

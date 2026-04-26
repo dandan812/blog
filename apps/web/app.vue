@@ -1,9 +1,4 @@
 <template>
-  <!--
-    应用根组件
-    所有页面都包裹在 NuxtLayout 中
-    NuxtPage 是动态路由渲染组件
-  -->
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>

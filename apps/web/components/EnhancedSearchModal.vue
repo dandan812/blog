@@ -166,7 +166,7 @@ const inputRef = ref<HTMLInputElement>()
 const displayLimit = ref(5)
 const MAX_DISPLAY = 20
 
-const { data: allResults, pending } = await useAsyncData(
+const { data: allResults, pending } = useAsyncData(
   'enhanced-search',
   async () => {
     try {
@@ -186,7 +186,7 @@ const { data: allResults, pending } = await useAsyncData(
       return []
     }
   },
-  { server: false, default: () => [] },
+  { server: false, lazy: true, default: () => [] },
 )
 
 const results = computed(() => {
