@@ -382,12 +382,16 @@ useHead({
 })
 
 /**
- * 首屏直接在服务端拉取文章，避免静态部署时首屏空白。
+ * 最新文章改为客户端懒加载，避免接口超时阻塞首屏 Hero 的 LCP。
  */
-const { data: latestPostsResponse, pending: articlesPending } = await useAsyncData(
+const { data: latestPostsResponse, pending: articlesPending } = useAsyncData(
   'home-latest-posts',
   () => fetchPostsWithFallback({ page: 1, pageSize: 3, published: true }),
-  { default: () => ({ data: [], total: 0, page: 1, pageSize: 3, totalPages: 1 }) },
+  {
+    default: () => ({ data: [], total: 0, page: 1, pageSize: 3, totalPages: 1 }),
+    lazy: true,
+    server: false,
+  },
 )
 
 /**

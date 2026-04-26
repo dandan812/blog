@@ -14,7 +14,24 @@ interface ContentPost {
   body?: unknown
 }
 
-const API_TIMEOUT = 8000
+interface LegacyArticle {
+  id: number | string
+  title: string
+  content: string
+  description?: string | null
+  tags?: string[] | string | null
+  cover?: string | null
+  category?: string | null
+  created_at?: string
+  updated_at?: string
+}
+
+interface LegacyArticlesResponse {
+  success: boolean
+  data: LegacyArticle[]
+}
+
+const API_TIMEOUT = 1200
 
 /**
  * 统一封装博客 API 请求，失败时返回 null，交由内容兜底处理。
@@ -65,6 +82,45 @@ function mapContentPost(item: ContentPost): Post {
 }
 
 /**
+ * 兼容旧版 blog-api 的 articles 数据结构。
+ */
+function mapLegacyArticle(item: LegacyArticle): Post {
+  const id = String(item.id)
+  let rawTags: string[] = []
+
+  if (Array.isArray(item.tags)) {
+    rawTags = item.tags
+  }
+  else if (typeof item.tags === 'string') {
+    try {
+      rawTags = JSON.parse(item.tags || '[]') as string[]
+    }
+    catch {
+      rawTags = []
+    }
+  }
+
+  return {
+    id,
+    title: item.title,
+    slug: id,
+    content: item.content || '',
+    excerpt: item.description || item.content?.slice(0, 160) || '',
+    coverImage: item.cover || null,
+    published: true,
+    viewCount: 0,
+    authorId: 'legacy-api',
+    createdAt: item.created_at || '',
+    updatedAt: item.updated_at || item.created_at || '',
+    tags: rawTags.map(tag => ({
+      id: tag,
+      name: tag,
+      slug: tag,
+    })),
+  }
+}
+
+/**
  * 读取本地 Markdown 文章列表，作为线上 API 不可用时的兜底数据源。
  */
 export async function fetchContentPosts(): Promise<Array<ContentPost & { path: string }>> {
@@ -98,6 +154,22 @@ export async function fetchPostsWithFallback(params?: {
   const apiResponse = await fetchBlogApi<PostsResponse>(`/posts?${query.toString()}`)
   if (apiResponse?.data?.length) {
     return apiResponse
+  }
+
+  const legacyResponse = await fetchBlogApi<LegacyArticlesResponse>('/articles')
+  if (legacyResponse?.data?.length) {
+    const legacyPosts = legacyResponse.data.map(mapLegacyArticle)
+    const total = legacyPosts.length
+    const totalPages = Math.max(1, Math.ceil(total / pageSize))
+    const start = (page - 1) * pageSize
+
+    return {
+      data: legacyPosts.slice(start, start + pageSize),
+      total,
+      page,
+      pageSize,
+      totalPages,
+    }
   }
 
   const contentPosts = (await fetchContentPosts()).map(mapContentPost)
