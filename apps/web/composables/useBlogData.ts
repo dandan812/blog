@@ -55,10 +55,20 @@ function toStringArray(value: unknown): string[] {
  * 静态部署或代理异常时，/api/content-posts 可能返回包装对象或非数组。
  */
 function normalizeContentPosts(value: unknown): Array<ContentPost & { path: string }> {
-  const rawPosts = Array.isArray(value)
-    ? value
-    : typeof value === 'object' && value !== null && Array.isArray((value as { data?: unknown }).data)
-      ? (value as { data: unknown[] }).data
+  let parsedValue = value
+  if (typeof value === 'string') {
+    try {
+      parsedValue = JSON.parse(value)
+    }
+    catch {
+      // ignore
+    }
+  }
+
+  const rawPosts = Array.isArray(parsedValue)
+    ? parsedValue
+    : typeof parsedValue === 'object' && parsedValue !== null && Array.isArray((parsedValue as { data?: unknown }).data)
+      ? (parsedValue as { data: unknown[] }).data
       : []
 
   return rawPosts.filter((item): item is ContentPost & { path: string } =>
@@ -234,12 +244,20 @@ export async function fetchPostWithFallback(slug: string): Promise<{
   }
 
   if (import.meta.client) {
-    const contentPost = await $fetch<(ContentPost & { path: string }) | null>(`/api/content-post/${slug}`)
-      .catch(() => null)
+    let contentPost = await $fetch<unknown>(`/api/content-post/${slug}`).catch(() => null)
+
+    if (typeof contentPost === 'string') {
+      try {
+        contentPost = JSON.parse(contentPost)
+      }
+      catch {
+        // ignore
+      }
+    }
 
     return {
       apiPost: null,
-      contentPost,
+      contentPost: (typeof contentPost === 'object' && contentPost !== null) ? contentPost as (ContentPost & { path: string }) : null,
     }
   }
 
