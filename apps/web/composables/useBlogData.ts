@@ -52,7 +52,7 @@ function toStringArray(value: unknown): string[] {
 }
 
 /**
- * 静态部署或代理异常时，/api/content-posts 可能返回包装对象或非数组。
+ * 静态部署或代理异常时，内容 JSON 可能返回包装对象或非数组。
  */
 function normalizeContentPosts(value: unknown): Array<ContentPost & { path: string }> {
   let parsedValue = value
@@ -168,7 +168,7 @@ function mapLegacyArticle(item: LegacyArticle): Post {
  */
 export async function fetchContentPosts(): Promise<Array<ContentPost & { path: string }>> {
   if (import.meta.client) {
-    return normalizeContentPosts(await $fetch<unknown>('/api/content-posts'))
+    return normalizeContentPosts(await $fetch<unknown>('/content-data/posts'))
   }
 
   const posts = await queryCollection('content')
@@ -244,7 +244,7 @@ export async function fetchPostWithFallback(slug: string): Promise<{
   }
 
   if (import.meta.client) {
-    let contentPost = await $fetch<unknown>(`/api/content-post/${slug}`).catch(() => null)
+    let contentPost = await $fetch<unknown>(`/content-data/post/${slug}`).catch(() => null)
 
     if (typeof contentPost === 'string') {
       try {
