@@ -33,6 +33,41 @@ interface LegacyArticlesResponse {
 
 const API_TIMEOUT = 1200
 
+function toStringArray(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === 'string')
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value) as unknown
+      return toStringArray(parsed)
+    }
+    catch {
+      return value ? [value] : []
+    }
+  }
+
+  return []
+}
+
+/**
+ * 静态部署或代理异常时，/api/content-posts 可能返回包装对象或非数组。
+ */
+function normalizeContentPosts(value: unknown): Array<ContentPost & { path: string }> {
+  const rawPosts = Array.isArray(value)
+    ? value
+    : typeof value === 'object' && value !== null && Array.isArray((value as { data?: unknown }).data)
+      ? (value as { data: unknown[] }).data
+      : []
+
+  return rawPosts.filter((item): item is ContentPost & { path: string } =>
+    typeof item === 'object'
+    && item !== null
+    && typeof (item as { path?: unknown }).path === 'string',
+  )
+}
+
 /**
  * 统一封装博客 API 请求，失败时返回 null，交由内容兜底处理。
  */
@@ -83,7 +118,7 @@ function mapContentPost(item: ContentPost): Post {
     authorId: item.author || 'content-author',
     createdAt: item.date,
     updatedAt: item.date,
-    tags: (item.tags || []).map(tag => ({
+    tags: toStringArray(item.tags).map(tag => ({
       id: tag,
       name: tag,
       slug: tag,
@@ -96,19 +131,7 @@ function mapContentPost(item: ContentPost): Post {
  */
 function mapLegacyArticle(item: LegacyArticle): Post {
   const id = String(item.id)
-  let rawTags: string[] = []
-
-  if (Array.isArray(item.tags)) {
-    rawTags = item.tags
-  }
-  else if (typeof item.tags === 'string') {
-    try {
-      rawTags = JSON.parse(item.tags || '[]') as string[]
-    }
-    catch {
-      rawTags = []
-    }
-  }
+  const rawTags = toStringArray(item.tags)
 
   return {
     id,
@@ -135,16 +158,14 @@ function mapLegacyArticle(item: LegacyArticle): Post {
  */
 export async function fetchContentPosts(): Promise<Array<ContentPost & { path: string }>> {
   if (import.meta.client) {
-    return await $fetch<Array<ContentPost & { path: string }>>('/api/content-posts')
+    return normalizeContentPosts(await $fetch<unknown>('/api/content-posts'))
   }
 
   const posts = await queryCollection('content')
     .order('date', 'DESC')
     .all()
 
-  return (posts || [])
-    .filter(item => Boolean(item?.path))
-    .map(item => item as ContentPost & { path: string })
+  return normalizeContentPosts(posts)
 }
 
 /**
@@ -166,12 +187,12 @@ export async function fetchPostsWithFallback(params?: {
   }
 
   const apiResponse = await fetchBlogApi<PostsResponse>(`/posts?${query.toString()}`)
-  if (apiResponse?.data?.length) {
+  if (Array.isArray(apiResponse?.data) && apiResponse.data.length) {
     return apiResponse
   }
 
   const legacyResponse = await fetchBlogApi<LegacyArticlesResponse>('/articles')
-  if (legacyResponse?.data?.length) {
+  if (Array.isArray(legacyResponse?.data) && legacyResponse.data.length) {
     const legacyPosts = legacyResponse.data.map(mapLegacyArticle)
     const total = legacyPosts.length
     const totalPages = Math.max(1, Math.ceil(total / pageSize))
@@ -237,7 +258,7 @@ export async function fetchPostWithFallback(slug: string): Promise<{
  */
 export async function fetchAllPostsForUi(): Promise<Post[]> {
   const apiResponse = await fetchBlogApi<PostsResponse>('/posts?page=1&pageSize=100&published=true')
-  if (apiResponse?.data?.length) {
+  if (Array.isArray(apiResponse?.data) && apiResponse.data.length) {
     return apiResponse.data
   }
 
