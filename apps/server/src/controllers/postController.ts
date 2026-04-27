@@ -5,11 +5,40 @@ import { config } from '../utils/config.js'
 import { success, error, serverError, notFound } from '../utils/response.js'
 import type { AuthRequest } from '../middlewares/auth.js'
 
+const imageDataUrlPattern = /^data:image\/[a-zA-Z0-9.+-]+;base64,([A-Za-z0-9+/]+={0,2})$/
+
+function isValidCoverImage(value: string): boolean {
+  if (value === '') return true
+
+  try {
+    const url = new URL(value)
+    if (url.protocol === 'http:' || url.protocol === 'https:') return true
+  } catch {
+    // 不是普通 URL 时继续按 data URL 校验。
+  }
+
+  const match = imageDataUrlPattern.exec(value)
+  if (!match) return false
+
+  const [, base64Data] = match
+  return base64Data.length > 0 && Buffer.from(base64Data, 'base64').length > 0
+}
+
+const coverImageSchema = z
+  .string()
+  .trim()
+  .refine(isValidCoverImage, '封面图片URL格式不正确')
+  .optional()
+
+function normalizeCoverImage(value?: string): string | null {
+  return value ? value : null
+}
+
 const createPostSchema = z.object({
   title: z.string().min(1, '标题不能为空'),
   content: z.string().min(1, '内容不能为空'),
   excerpt: z.string().optional(),
-  coverImage: z.string().url('封面图片URL格式不正确').optional().or(z.literal('')),
+  coverImage: coverImageSchema,
   published: z.boolean().optional(),
   tagIds: z.array(z.string()).optional(),
 })
@@ -18,7 +47,7 @@ const updatePostSchema = z.object({
   title: z.string().min(1).optional(),
   content: z.string().min(1).optional(),
   excerpt: z.string().optional(),
-  coverImage: z.string().url().optional().or(z.literal('')),
+  coverImage: coverImageSchema,
   published: z.boolean().optional(),
   tagIds: z.array(z.string()).optional(),
 })
@@ -123,7 +152,7 @@ export async function createPost(req: Request, res: Response): Promise<void> {
         slug,
         content: data.content,
         excerpt: data.excerpt,
-        coverImage: data.coverImage || null,
+        coverImage: normalizeCoverImage(data.coverImage),
         published: data.published ?? false,
         authorId: authReq.user.userId,
         tags: data.tagIds ? { connect: data.tagIds.map(id => ({ id })) } : undefined,
@@ -154,7 +183,7 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
     if (data.title !== undefined) updateData.title = data.title
     if (data.content !== undefined) updateData.content = data.content
     if (data.excerpt !== undefined) updateData.excerpt = data.excerpt
-    if (data.coverImage !== undefined) updateData.coverImage = data.coverImage || null
+    if (data.coverImage !== undefined) updateData.coverImage = normalizeCoverImage(data.coverImage)
     if (data.published !== undefined) updateData.published = data.published
     if (data.tagIds !== undefined) {
       updateData.tags = { set: data.tagIds.map(id => ({ id })) }
